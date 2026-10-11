@@ -1,0 +1,3550 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pixel Mat</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="src/themes.css" />
+    <link rel="stylesheet" href="src/icons.css" />
+    <link rel="stylesheet" href="src/panel-layout.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <img
+          class="brand-logo"
+          src="src/brand/pixerin-logo.svg"
+          width="172"
+          height="32"
+          alt="Pixel Mat"
+        />
+      </div>
+      <div class="header-actions">
+        <div class="header-file-actions" role="group" aria-label="파일 작업">
+        <div class="header-create-actions">
+        <button id="new-btn" class="quiet">
+          <span data-icon="plus"></span>새 작업</button
+        ><button id="open-btn" class="quiet">
+          <span data-icon="folder"></span>열기</button
+        >
+        </div>
+        <div class="header-save-actions">
+        <button id="save-btn" class="quiet" aria-label="프로젝트 저장" title="프로젝트 저장">
+          <span data-icon="save"></span>저장
+        </button>
+        <details id="file-more" class="file-more">
+          <summary title="파일, 캔버스" aria-label="파일, 캔버스">
+            <span data-icon="chevron-down"></span>
+          </summary>
+          <div class="file-menu">
+            <button id="save-as-btn">
+              다른 이름으로 저장<span class="menu-shortcut">Ctrl+Shift+S</span>
+            </button>
+            <button id="recovery-open">작업 복구</button>
+            <hr />
+            <button id="resize-open">캔버스 크기와 여백</button>
+            <button id="image-size-open">이미지 크기 조절</button>
+            <button id="palette-cleanup-open">팔레트 정리</button>
+            <button id="project-context-open">프로젝트 참고 및 보호 설정</button>
+          </div>
+        </details>
+        </div>
+        <button id="export-btn" class="button-primary">
+          <span data-icon="export"></span
+          ><span id="export-label">PNG 내보내기</span></button
+        ><button id="auto-export" class="button-primary" hidden="">
+          <span data-icon="export"></span> 타일 세트 내보내기
+        </button>
+        </div>
+        <div class="header-utilities" role="group" aria-label="검색과 설정">
+        <button id="command-search" class="icon-button" aria-label="명령 검색" title="명령 검색"><span data-icon="search"></span></button>
+        <button
+          id="settings-btn"
+          class="icon-button"
+          title="설정"
+          aria-label="설정"
+        >
+          <span data-icon="settings"></span>
+        </button>
+        </div>
+      </div>
+    </header>
+    <dialog id="command-dialog" aria-labelledby="command-title">
+      <div class="dialog-heading">
+        <h2 id="command-title">명령 검색</h2>
+        <button id="command-close" aria-label="닫기" class="icon-button" data-action-role="close"><span data-icon="close"></span></button>
+      </div>
+      <input
+        id="command-query"
+        type="search"
+        aria-label="명령 검색"
+        autocomplete="off"
+      />
+      <div id="command-results"></div>
+      <p id="command-empty" hidden>검색 결과가 없어요.</p>
+    </dialog>
+    <main class="workspace">
+      <aside class="tools-panel">
+        <div class="drawing-controls">
+          <div class="section-heading">편집 도구</div>
+          <div class="tool-list" role="toolbar" aria-label="픽셀 편집 도구">
+            <button data-tool="pencil" class="tool active" title="연필 (B)">
+              <span data-icon="pencil"></span><span>연필</span><kbd>B</kbd>
+            </button>
+            <button data-tool="eraser" class="tool" title="지우개 (E)">
+              <span data-icon="eraser"></span><span>지우개</span><kbd>E</kbd>
+            </button>
+            <button data-tool="picker" class="tool" title="스포이트 (I)">
+              <span data-icon="picker"></span><span>스포이트</span><kbd>I</kbd>
+            </button>
+            <button data-tool="fill" class="tool" title="채우기 (F)">
+              <span data-icon="fill"></span><span>채우기</span><kbd>F</kbd>
+            </button>
+            <button data-tool="line" class="tool" title="직선 (L)">
+              <span data-icon="line"></span><span>직선</span><kbd>L</kbd>
+            </button>
+            <button data-tool="rectangle" class="tool" title="사각형 (U)">
+              <span data-icon="rectangle"></span><span>사각형</span><kbd>U</kbd>
+            </button>
+            <button data-tool="select" class="tool" title="사각 선택 (M)">
+              <span data-icon="select"></span><span>사각 선택</span><kbd>M</kbd>
+            </button>
+            <button
+              data-tool="brush-select"
+              class="tool"
+              title="선택 브러시 (S)"
+            >
+              <span data-icon="brush"></span><span>선택 브러시</span
+              ><kbd>S</kbd>
+            </button>
+            <button data-tool="wand" class="tool" title="연결 선택 (W)">
+              <span data-icon="wand"></span><span>연결 선택</span><kbd>W</kbd>
+            </button>
+            <button data-tool="move" class="tool" title="선택 이동 (V)">
+              <span data-icon="move"></span><span>선택 이동</span><kbd>V</kbd>
+            </button>
+            <button
+              data-tool="hand"
+              class="tool"
+              title="화면 이동 (H / Space 드래그)"
+            >
+              <span data-icon="hand"></span><span>화면 이동</span><kbd>H</kbd>
+            </button>
+          </div>
+          <section
+            class="tool-category"
+            aria-labelledby="creation-tools-heading"
+          >
+            <div id="creation-tools-heading" class="section-heading">
+              제작, 보정
+            </div>
+            <div
+              class="tool-list"
+              role="group"
+              aria-labelledby="creation-tools-heading"
+            >
+              <button
+                id="geometry-open"
+                class="tool"
+                type="button"
+                title="3D 도형을 조작하고 픽셀 레이어로 추가"
+                aria-haspopup="dialog"
+              >
+                <span data-icon="cube"></span><span>3D 도형</span>
+              </button>
+              <button
+                id="refine-open"
+                class="tool"
+                type="button"
+                title="명암, 외곽선, 실루엣 로컬 보정"
+                aria-haspopup="dialog"
+              >
+                <span data-icon="refine"></span><span>픽셀 보정</span>
+              </button>
+            </div>
+          </section>
+          <details class="user-tools-section">
+            <summary>사용자 도구</summary>
+            <div id="user-tool-list"></div>
+            <button id="script-open" type="button" class="secondary">
+              도구 추가, 관리
+            </button>
+          </details>
+        </div>
+        <div class="pinned-tool-options">
+          <div id="fill-options" class="tool-options" hidden>
+            <label
+              >채우기 경계<select id="fill-source">
+                <option value="layer">현재 레이어</option>
+                <option value="visible">보이는 레이어 합성</option>
+              </select></label
+            >
+          </div>
+          <div id="picker-options" class="tool-options" hidden>
+            <label
+              >색상 참조<select id="picker-source">
+                <option value="visible">보이는 레이어 합성</option>
+                <option value="layer">현재 레이어</option>
+              </select></label
+            >
+          </div>
+          <div id="selection-options" class="tool-options" hidden>
+            <label id="selection-shape-option"
+              >선택 모양<select id="selection-shape">
+                <option value="rectangle">사각 선택</option>
+                <option value="ellipse">타원 선택</option>
+                <option value="lasso">자유 선택</option>
+                <option value="polygon">다각형 선택</option>
+              </select></label
+            >
+            <label
+              >선택 방식<select id="selection-mode">
+                <option value="replace">새 선택</option>
+                <option value="add">선택 추가</option>
+                <option value="subtract">선택 빼기</option>
+                <option value="intersect">교집합</option>
+              </select></label
+            >
+            <label id="selection-drag-option"
+              >선택 내부 드래그<select id="selection-drag">
+                <option value="pixels">픽셀 이동</option>
+                <option value="mask">테두리만 이동</option>
+              </select></label
+            >
+            <button id="reselect" class="text-button" type="button">
+              선택 복원
+            </button>
+          </div>
+          <div id="wand-options" class="tool-options" hidden>
+            <label
+              >참조 레이어<select id="wand-source">
+                <option value="active">활성 레이어</option>
+                <option value="visible">보이는 레이어 합성</option>
+              </select></label
+            >
+            <label
+              >연결 기준<select id="wand-mode">
+                <option value="color">같은 색</option>
+                <option value="opaque">불투명 영역</option>
+              </select></label
+            >
+            <label
+              ><input id="wand-contiguous" type="checkbox" checked />이어진
+              영역만</label
+            >
+            <label
+              ><input id="wand-diagonal" type="checkbox" />대각선 포함</label
+            >
+          </div>
+          <div id="brush-options" class="tool-options">
+            <label for="brush-size"
+              >크기 <span id="brush-size-label">1 px</span></label
+            ><input
+              id="brush-size"
+              type="range"
+              min="1"
+              max="8"
+              value="1"
+              aria-label="브러시 크기"
+            />
+          </div>
+          <details id="brush-details" class="compact-section">
+            <summary>브러시 옵션</summary>
+            <div
+              id="pencil-shape-options"
+              class="pencil-shapes"
+              role="group"
+              aria-label="연필 모양"
+            >
+              <button
+                type="button"
+                data-pencil-shape="square"
+                aria-pressed="true"
+              >
+                <span data-icon="rectangle"></span>사각
+              </button>
+              <button
+                type="button"
+                data-pencil-shape="circle"
+                aria-pressed="false"
+              >
+                <span data-icon="circle"></span>원형
+              </button>
+            </div>
+            <label class="symmetry-control"
+              ><input type="checkbox" id="symmetry-toggle" />좌우 대칭</label
+            >
+            <label class="checkbox-label"
+              ><input type="checkbox" id="symmetry-vertical" />상하 대칭</label
+            >
+            <details class="symmetry-options">
+              <summary>대칭축 위치</summary>
+              <label
+                >X
+                <input
+                  id="symmetry-x"
+                  type="number"
+                  step="0.5"
+                  aria-label="대칭축 X"
+              /></label>
+              <label
+                >Y
+                <input
+                  id="symmetry-y"
+                  type="number"
+                  step="0.5"
+                  aria-label="대칭축 Y"
+              /></label>
+              <button id="symmetry-edit" type="button" aria-pressed="false">
+                축 드래그
+              </button>
+              <button id="symmetry-center" type="button">중앙으로</button>
+            </details>
+            <label
+              id="pixel-perfect-option"
+              class="checkbox-label"
+              title="1px 연필의 대각선 꺾임을 정리해요."
+            >
+              <input id="pixel-perfect" type="checkbox" />픽셀 퍼펙트, 1px
+            </label>
+          </details>
+          <div id="shape-options" class="tool-options" hidden="">
+            <label
+              >도형 종류<select id="shape-kind">
+                <option value="rectangle">사각형</option>
+                <option value="ellipse">타원</option>
+                <option value="polygon">다각형</option>
+              </select></label
+            >
+            <label class="checkbox-label"
+              ><input id="shape-filled" type="checkbox" /> 내부 채우기</label
+            >
+          </div>
+          <div id="line-options" class="tool-options" hidden>
+            <label
+              >선 종류<select id="line-kind">
+                <option value="line">직선</option>
+                <option value="curve">곡선</option>
+              </select></label
+            >
+          </div>
+          <div id="path-actions" class="tool-options" hidden>
+            <p id="path-help" class="field-help"></p>
+            <button id="path-confirm" type="button" data-action-role="apply"><span data-icon="check"></span><span data-action-label>선 확정</span></button><button id="path-cancel" type="button" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>그리기 취소</span></button>
+          </div>
+        </div>
+        <div class="color-slots">
+          <button
+            id="primary-color"
+            class="color-slot active"
+            aria-label="왼쪽 버튼 색 선택"
+          >
+            <i></i><span>왼쪽</span>
+          </button>
+          <button
+            id="swap-colors"
+            class="icon-button"
+            title="좌우 색상 교환 (X)"
+            aria-label="좌우 색상 교환"
+          >
+            <span data-icon="swap"></span>
+          </button>
+          <button
+            id="secondary-color"
+            class="color-slot"
+            aria-label="오른쪽 버튼 색 선택"
+          >
+            <i></i><span>오른쪽</span>
+          </button>
+        </div>
+        <p class="color-help">팔레트 우클릭으로 오른쪽 색 지정</p>
+        <details class="compact-section shade-section" id="shade-options">
+          <summary>명암 <span class="hint-copy">, / .</span></summary>
+          <div
+            id="shade-strip"
+            class="shade-strip"
+            aria-label="명암 색상"
+          ></div>
+          <label class="compact-label"
+            >간격
+            <input
+              id="shade-strength"
+              type="range"
+              min="2"
+              max="20"
+              value="8"
+            /><span id="shade-strength-label">8%</span></label
+          >
+          <div class="ramp-controls">
+            <select id="ramp-select" aria-label="명암 색상 묶음">
+              <option value="auto">자동 명암</option></select
+            ><button
+              id="ramp-edit"
+              title="명암 색상 묶음 편집"
+              aria-label="명암 색상 묶음 편집"
+             data-action-role="edit"><span data-icon="pencil"></span><span data-action-label>편집</span></button>
+          </div>
+        </details>
+        <div class="color-library">
+          <div class="color-tabs" role="tablist" aria-label="색상 패널">
+            <button
+              id="palette-tab"
+              role="tab"
+              aria-selected="true"
+              aria-controls="palette-panel"
+            >
+              팔레트</button
+            ><button
+              id="used-tab"
+              tabindex="-1"
+              role="tab"
+              aria-selected="false"
+              aria-controls="used-panel"
+            >
+              사용한 색
+            </button>
+          </div>
+          <div
+            id="palette-panel"
+            class="palette-section"
+            role="tabpanel"
+            aria-labelledby="palette-tab"
+          >
+            <div class="section-heading">
+              팔레트 <span id="palette-count">16</span>
+              <button
+                id="palette-library-open"
+                class="text-button"
+                type="button"
+              >
+                보관함
+              </button>
+            </div>
+            <div id="palette" class="palette"></div>
+            <div class="color-editor">
+              <input
+                id="color-input"
+                type="color"
+                value="#50a889"
+                aria-label="추가할 색상"
+              /><input
+                id="color-label"
+                type="text"
+                value="#50A889"
+                maxlength="32"
+                spellcheck="false"
+                autocomplete="off"
+                aria-label="색상 코드 직접 입력"
+                aria-describedby="color-code-error"
+                title="HEX 색상 입력, Enter 적용, Esc 취소"
+              />
+              <button
+                id="add-color"
+                class="icon-button"
+                aria-label="팔레트에 색상 추가"
+                title="색상 추가"
+              >
+                <span data-icon="plus"></span>
+              </button>
+            </div>
+            <p
+              id="color-code-error"
+              class="field-help"
+              role="status"
+              hidden
+            ></p>
+          </div>
+
+          <div
+            id="used-panel"
+            class="used-panel"
+            role="tabpanel"
+            aria-labelledby="used-tab"
+            hidden=""
+          >
+            <div class="section-heading">
+              사용한 색 <span id="used-count"></span>
+            </div>
+            <select id="used-scope" aria-label="사용한 색 집계 범위">
+              <option value="layer">현재 레이어</option>
+              <option value="selection">선택 영역</option>
+              <option value="all">모든 레이어</option>
+            </select>
+            <div id="used-colors" class="used-colors"></div>
+            <p class="color-help">
+              색 클릭: 일괄 변경, 마우스 올림: 위치 표시
+            </p>
+          </div>
+        </div>
+        <button id="help-btn" class="secondary help-button">
+          도움말 <kbd>?</kbd>
+        </button>
+      </aside>
+      <section class="editor-panel" aria-label="픽셀 캔버스">
+        <div class="document-bar">
+          <div class="document-title">
+            <span data-icon="grid"></span
+            ><input
+              id="doc-name"
+              aria-label="프로젝트 이름"
+              value="Untitled"
+              maxlength="100"
+            /><span id="dimension-badge" class="badge">16 × 16</span>
+          </div>
+          <div class="history-controls">
+            <button
+              id="undo-btn"
+              class="icon-button"
+              title="실행 취소 (Ctrl+Z)"
+              aria-label="실행 취소"
+            >
+              <span data-icon="undo"></span></button
+            ><button
+              id="redo-btn"
+              class="icon-button"
+              title="다시 실행 (Ctrl+Shift+Z)"
+              aria-label="다시 실행"
+            >
+              <span data-icon="redo"></span>
+            </button>
+          </div>
+        </div>
+        <div class="mode-context" id="mode-context" hidden="">
+          <div id="auto-editor-bar" class="auto-editor-bar" hidden="">
+            <strong id="auto-description"></strong>
+            <div
+              id="auto-source-cards"
+              class="source-cards"
+              role="group"
+              aria-label="편집할 타일 원본"
+            ></div>
+            <label
+              >편집할 모양<select id="auto-source">
+                <option value="full">내부</option>
+                <option value="horizontal">상하 경계</option>
+                <option value="vertical">좌우 경계</option>
+                <option value="outer">바깥 모서리</option>
+                <option value="inner">안쪽 모서리</option>
+              </select></label
+            >
+            <button id="auto-inspect" class="secondary">
+              연결 확인<span data-icon="external"></span>
+            </button>
+            <button
+              id="auto-pin-preview"
+              class="secondary"
+              type="button"
+              aria-pressed="false"
+            >
+              연결 미리보기
+            </button>
+            <details class="mode-more" id="auto-more">
+              <summary>더 보기</summary>
+              <div class="mode-popover">
+                <span id="auto-edit-note"></span
+                ><button id="auto-single" class="text-button">
+                  현재 원본을 일반 이미지로 전환
+                </button>
+              </div>
+            </details>
+          </div>
+          <div id="tile-status" class="tile-status" hidden="">
+            <strong id="tile-description"></strong
+            ><button id="tile-check" class="secondary">
+              연결 확인<span data-icon="external"></span></button
+            ><button id="tile-edges-quick" class="secondary">경계 선택</button>
+
+            <details class="mode-more" id="tile-status-more">
+              <summary>설정과 안내</summary>
+              <div class="mode-popover">
+                <label class="checkbox-label"
+                  ><input
+                    id="tile-wrap"
+                    type="checkbox"
+                    checked=""
+                  />브러시, 채우기 경계 연결</label
+                >
+                <div class="tile-actions">
+                  <button id="tile-select-edges" class="secondary">
+                    양쪽 경계 선택</button
+                  ><button id="tile-disable" class="text-button">
+                    타일 모드 해제
+                  </button>
+                </div>
+                <p id="tile-note" class="field-help"></p>
+              </div>
+            </details>
+          </div>
+          <div id="geometry-status" class="geometry-status" hidden="">
+            <strong id="geometry-description"></strong
+            ><button id="geometry-edit" class="secondary" type="button">
+              3D 다시 편집
+            </button>
+
+            <details class="mode-more" id="geometry-status-more">
+              <summary>설정과 안내</summary>
+              <div class="mode-popover">
+                <p id="geometry-note"></p>
+                <label
+                  >꾸밀 면<select id="geometry-decoration">
+                    <option value="front">표지 / 주면 내부</option>
+                    <option value="all">보이는 모든 면의 내부</option>
+                  </select></label
+                ><button id="geometry-detach" class="text-button">
+                  가이드 해제
+                </button>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="canvas-controls">
+          <button
+            id="edit-tools-toggle"
+            class="text-button"
+            aria-expanded="false"
+            aria-controls="selection-toolbar"
+          >
+            선택과 변형
+          </button>
+          <div class="segmented" role="group" aria-label="보기">
+            <button id="grid-btn" class="icon-button selected" title="격자 표시 (G)" aria-label="격자 표시 (G)" aria-pressed="true">
+              <span data-icon="grid"></span></button
+            ><button id="selection-btn" class="icon-button" title="선택 영역 표시" aria-label="선택 영역 표시" aria-pressed="true">
+              <span data-icon="select"></span>
+            </button>
+            <button
+              id="alpha-lock-btn"
+              class="icon-button"
+              aria-label="투명 잠금"
+              title="투명 잠금 (T), 수동 편집과 AI가 칠해진 픽셀의 색만 바꿔요"
+              aria-pressed="false"
+            >
+              <span data-icon="lock"></span>
+            </button>
+          </div>
+          <div class="zoom-controls">
+            <button
+              id="view-mirror"
+              class="icon-button"
+              type="button"
+              aria-pressed="false"
+              aria-label="화면 좌우 반전"
+              title="화면만 좌우 반전, 원본과 내보내기는 유지"
+            >
+              <span data-icon="swap"></span>
+            </button>
+            <button id="zoom-out" class="icon-button" aria-label="축소">
+              <span data-icon="minus"></span>
+            </button>
+            <details id="zoom-menu">
+              <summary id="zoom-label" title="배율 설정">2400%</summary>
+              <div class="zoom-menu-panel">
+                <button id="canvas-focus" class="quiet" aria-pressed="false">
+                  캔버스 집중 모드
+                </button>
+
+                <label
+                  >배율 (%)<input
+                    id="zoom-value"
+                    type="number"
+                    min="100"
+                    max="6400"
+                    step="100"
+                    value="2400"
+                    required
+                /></label>
+                <button id="zoom-apply" type="button">적용</button>
+                <button id="zoom-actual" type="button">100% 보기</button>
+                <button id="zoom-selection" type="button">
+                  선택 영역 맞춤
+                </button>
+              </div>
+            </details>
+            <button id="zoom-in" class="icon-button" aria-label="확대">
+              <span data-icon="plus"></span></button
+            ><button id="fit-btn" class="text-button">맞춤</button>
+          </div>
+        </div>
+        <div id="viewport" class="viewport">
+          <span id="movement-feedback" class="movement-feedback" hidden></span>
+          <aside id="auto-live-preview" aria-label="타일 연결 미리보기" hidden>
+            <div class="auto-live-heading">
+              <button id="auto-live-open" type="button">연결 테스트</button
+              ><button
+                id="auto-live-close"
+                type="button"
+                aria-label="연결 미리보기 닫기"
+               class="icon-button" data-action-role="close"><span data-icon="close"></span></button>
+            </div>
+            <div class="auto-live-image">
+              <canvas id="auto-live-map" aria-label="타일 연결 결과"></canvas>
+              <div id="auto-live-highlights" aria-hidden="true"></div>
+            </div>
+          </aside>
+          <details id="corner-preview" class="corner-preview">
+            <summary>작게 보기</summary>
+            <div
+              class="corner-preview-controls"
+              role="group"
+              aria-label="미리보기 배율"
+            >
+              <button id="corner-scale-1" type="button" aria-pressed="true">
+                1배</button
+              ><button id="corner-scale-3" type="button" aria-pressed="false">
+                3배
+              </button>
+              <button id="grid-peek" type="button" aria-pressed="false">
+                격자 잠시 숨기기
+              </button>
+            </div>
+            <div class="corner-preview-stage">
+              <div
+                id="navigator"
+                tabindex="0"
+                role="group"
+                aria-label="캔버스 탐색"
+                title="드래그 또는 방향키로 화면 이동, Esc 취소"
+              >
+                <canvas
+                  id="corner-preview-canvas"
+                  aria-label="현재 그림의 실제 크기 미리보기"
+                ></canvas>
+                <div id="navigator-frame" aria-hidden="true"></div>
+              </div>
+            </div>
+          </details>
+          <span id="stream-label" class="stream-label" hidden=""
+            >실시간 미리보기, 아직 적용되지 않음</span
+          >
+          <div
+            id="placement-actions"
+            class="placement-actions"
+            hidden
+            role="group"
+            aria-label="위치 조정"
+          >
+            <span>위치 조정 중</span>
+            <button id="placement-apply" type="button" data-action-role="apply"><span data-icon="check"></span><span data-action-label>위치 확정</span> <kbd>Enter</kbd></button>
+            <button id="placement-cancel" type="button" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>배치 취소</span> <kbd>Esc</kbd></button>
+          </div>
+          <div class="canvas-surround">
+            <div class="canvas-axis">
+              <span>0, 0</span><span id="axis-end">16 px</span>
+            </div>
+            <div class="canvas-stack" id="canvas-stack">
+              <canvas id="pixel-canvas" aria-label="편집 캔버스"></canvas
+              ><canvas
+                id="overlay-canvas"
+                tabindex="0"
+                aria-label="픽셀 그리기 및 영역 선택"
+              ></canvas>
+            </div>
+            <div class="canvas-caption">
+              <span id="canvas-caption">16 × 16, 투명 배경</span
+              ><span id="preview-label">실제 크기</span>
+            </div>
+          </div>
+          <div id="selection-popover" class="selection-popover" hidden>
+            <div class="selection-bar" id="selection-toolbar" hidden>
+              <span data-icon="select"></span
+              ><span id="selection-summary">선택된 영역 없음</span
+              ><button id="select-all" class="text-button">전체 선택</button
+              ><button id="clear-selection" class="text-button" data-action-role="clear"><span data-icon="close"></span><span data-action-label>선택 해제</span></button><button
+                id="copy-selection"
+                class="text-button"
+                title="선택 복사 (Ctrl+C)"
+               data-action-role="copy"><span data-icon="copy"></span><span data-action-label>복사</span></button><button
+                id="focus-prompt"
+                class="text-button selection-shortcut"
+                title="AI 요청창 ( / )"
+              >
+                AI로 수정<span data-icon="external"></span></button
+              ><button id="copy-merged" class="text-button" type="button" data-action-role="copy"><span data-icon="copy"></span><span data-action-label>합성 복사</span></button>
+              <details id="selection-more">
+                <summary>더 보기</summary>
+                <div class="selection-more-menu">
+                  <label
+                    >선택과 채우기<select
+                      id="selection-actions"
+                      aria-label="빠른 편집"
+                    >
+                      <option value="">작업 선택…</option>
+                      <option value="painted">칠해진 픽셀 선택</option>
+                      <option value="color">왼쪽 색과 같은 픽셀 선택</option>
+                      <option value="grow">선택 1px 확장</option>
+                      <option value="shrink">선택 1px 축소</option>
+                      <option value="border">안쪽 테두리 1px 선택</option>
+                      <option value="fill-primary">왼쪽 색으로 채우기</option>
+                      <option value="fill-secondary">
+                        오른쪽 색으로 채우기
+                      </option>
+                    </select></label
+                  >
+                  <div class="selection-extra-actions">
+                    <button
+                      id="transform-flip-x"
+                      data-transform="flip-x"
+                      type="button"
+                    >
+                      좌우 반전
+                    </button>
+                    <button
+                      id="transform-flip-y"
+                      data-transform="flip-y"
+                      type="button"
+                    >
+                      상하 반전
+                    </button>
+                    <button
+                      id="transform-rotate-ccw"
+                      data-transform="rotate-ccw"
+                      type="button"
+                     data-action-role="transform"><span data-icon="rotate-left"></span><span data-action-label>왼쪽 90°</span></button>
+                    <button
+                      id="transform-rotate-cw"
+                      data-transform="rotate-cw"
+                      type="button"
+                     data-action-role="transform"><span data-icon="rotate-right"></span><span data-action-label>오른쪽 90°</span></button>
+                    <button
+                      id="selection-layer-copy"
+                      class="text-button"
+                      type="button"
+                    >
+                      선택을 새 레이어로 복사
+                    </button>
+                    <button
+                      id="selection-layer-cut"
+                      class="text-button"
+                      type="button"
+                    >
+                      선택을 새 레이어로 잘라내기
+                    </button>
+                    <button
+                      id="invert-selection"
+                      class="text-button"
+                      title="선택 반전 (Ctrl+Shift+I)"
+                    >
+                      선택 반전</button
+                    ><button
+                      id="delete-selection"
+                      class="text-button"
+                      title="선택 픽셀 삭제 (Delete)"
+                     data-action-role="delete"><span data-icon="trash"></span><span data-action-label>픽셀 삭제</span></button>
+                  </div>
+                  <div class="transform-bar">
+                    <select id="transform-action" aria-label="선택 영역 변형">
+                      <option value="">선택 영역 변형…</option>
+                      <option value="flip-x">좌우 반전</option>
+                      <option value="flip-y">상하 반전</option>
+                      <option value="rotate-cw">시계 방향 90°</option>
+                      <option value="rotate-ccw">반시계 방향 90°</option>
+                      <option value="duplicate">
+                        선택 복제 후 이동
+                      </option></select
+                    ><span id="tool-context" class="tool-context"></span>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+        <p id="edit-lock-note" class="edit-lock-note" role="status" hidden="">
+          AI 응답 대기, 편집과 영역 선택 잠김, 확대, 이동 가능
+        </p>
+
+        <details class="layer-dock" open="">
+          <summary>
+            레이어 <span id="layer-count"></span
+            ><span class="field-help hint-copy"
+              >위쪽 레이어가 앞에 표시돼요</span
+            >
+          </summary>
+          <div class="layer-content">
+            <div
+              id="layer-list"
+              class="layer-list"
+              aria-label="레이어 목록"
+            ></div>
+            <div class="layer-controls">
+              <div class="layer-actions" role="group" aria-label="레이어 추가 작업">
+                <button id="layer-add" class="icon-button" title="새 레이어" aria-label="새 레이어"><span data-icon="plus"></span></button
+                ><button id="layer-duplicate" class="icon-button" title="레이어 복제" aria-label="레이어 복제"><span data-icon="copy"></span></button
+                ><button id="layer-up" class="icon-button" title="앞으로" aria-label="앞으로">
+                  <span data-icon="arrow-up"></span></button
+                ><button id="layer-down" class="icon-button" title="뒤로" aria-label="뒤로">
+                  <span data-icon="arrow-down"></span></button
+                ><button id="layer-delete" class="icon-button" title="레이어 삭제" aria-label="레이어 삭제"><span data-icon="trash"></span></button>
+              </div>
+              <select id="layer-more" aria-label="레이어 추가 작업">
+                <option value="">레이어 작업…</option>
+                <option value="rename">이름 바꾸기 (F2)</option>
+                <option value="geometry">3D 도형 다시 편집</option>
+                <option value="merge">아래 레이어와 합치기</option>
+                <option value="solo">이 레이어만 표시</option>
+                <option value="export">이 레이어 PNG 내보내기</option>
+                <option value="mask-toggle">마스크 전환</option>
+                <option value="mask-remove">마스크 제거</option>
+                <option value="clip-add">클리핑 레이어 추가</option>
+                <option value="selection-mask">선택 영역을 마스크로</option>
+                <option value="mask-selection">마스크를 선택 영역으로</option>
+                <option value="align">레이어 정렬</option>
+              </select>
+              <button id="layer-clip-add" hidden>클리핑 레이어 추가</button>
+              <button id="layer-mask-toggle" hidden>마스크 전환</button>
+              <button id="layer-mask-link" hidden>
+                마스크와 그림 이동 연결
+              </button>
+              <button id="layer-selection-mask" hidden>
+                선택 영역을 마스크로
+              </button>
+              <button id="layer-mask-selection" hidden>
+                마스크를 선택 영역으로
+              </button>
+              <button id="layer-align-open" hidden>레이어 정렬</button>
+              <p id="layer-selection-count" class="field-help" hidden></p>
+              <div class="layer-feature-actions">
+                <button id="folder-add" title="폴더 추가" data-action-role="create"><span data-icon="plus"></span><span data-action-label>폴더 추가</span></button>
+                <button id="layer-clip" aria-pressed="false">클리핑</button>
+                <button id="layer-mask-open">마스크</button>
+              </div>
+              <select id="layer-folder" aria-label="레이어 폴더"></select>
+            </div>
+          </div>
+        </details>
+        <div class="editor-bottom">
+          <div>
+            <span id="cursor-position">X — &nbsp; Y —</span
+            ><span class="bottom-separator">/</span
+            ><span id="active-tool-label">연필</span>
+            <span id="selection-dimensions" hidden></span>
+          </div>
+          <div class="save-feedback">
+            <div id="save-status" aria-live="polite">로컬 작업 준비됨</div>
+            <button
+              id="autosave-retry"
+              type="button"
+              class="text-button"
+              hidden
+            >
+              저장 재시도
+            </button>
+          </div>
+        </div>
+      </section>
+      <aside class="ai-panel" data-inspector="ai">
+        <div class="inspector-tabs" role="tablist" aria-label="작업 패널">
+          <button
+            id="inspector-ai"
+            role="tab"
+            aria-controls="assistant-content"
+            aria-selected="true"
+          >
+            AI 수정</button
+          ><button
+            id="inspector-preview"
+            role="tab"
+            aria-controls="preview-content"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            미리보기
+          </button>
+        </div>
+        <div class="ai-scroll">
+          <div
+            id="assistant-content"
+            role="tabpanel"
+            aria-labelledby="inspector-ai"
+          >
+            <div class="ai-panel-heading">
+              <div class="model-quick">
+                <button
+                  id="model-picker-btn"
+                  class="text-button"
+                  title="모델 변경"
+                >
+                  <span id="model-label">GPT-6 Astra</span
+                  ><span data-icon="chevron-down"></span>
+                </button>
+              </div>
+              <button id="connection-badge" class="connection-badge">
+                <span data-icon="circle"></span>AI 연결 설정
+              </button>
+            </div>
+            <div class="request-section">
+              <div class="section-heading">
+                수정 범위 <span id="scope-badge">전체 캔버스</span>
+              </div>
+              <p id="ai-region-note" class="field-help" hidden></p>
+              <div class="help-label-row">
+                <label class="live-preview-control">
+                <input id="ai-economy" type="checkbox" aria-describedby="economy-note" />AI 절약 모드</label>
+                <button type="button" class="help-trigger" popovertarget="economy-help" aria-controls="economy-help" aria-expanded="false" aria-describedby="economy-help" aria-label="AI 절약 모드 안내" data-action-role="help"><span data-icon="help"></span></button>
+                <div id="economy-help" class="context-help" popover="auto" role="note" tabindex="0">
+                <p>자동 추가 보정을 생략하고, 일반 레이어는 선택 주변만 참고 이미지로 보냅니다. 전체 구도가 필요하면 끄세요.</p>
+                </div>
+              </div>
+              <p id="economy-note" class="field-help" hidden>선택 주변만 전송, 추가 보정 없음</p>
+              <div class="help-label-row">
+                <label for="ai-edit-mode">AI 수정 방식</label>
+                <button type="button" class="help-trigger" popovertarget="edit-mode-help" aria-controls="edit-mode-help" aria-expanded="false" aria-describedby="edit-mode-help" aria-label="AI 수정 방식 안내" data-action-role="help"><span data-icon="help"></span></button>
+                <div id="edit-mode-help" class="context-help" popover="auto" role="note" tabindex="0">
+                <p>정밀 수정은 최대 64×64 영역을 원래 픽셀 크기로 수정합니다. 선택 밖 픽셀도 참고 이미지에 포함됩니다.</p>
+                <p>전체 수정은 현재 레이어와 보이는 합성 이미지 전체를 전송합니다. 선택 및 보호 설정은 수정할 픽셀에 적용됩니다. OpenAI API에서 사용할 수 있습니다.</p>
+                <p>전체 수정은 고해상도에서 사용량과 대기 시간이 늘어날 수 있습니다.</p>
+                <p id="advanced-conversion-note" hidden>기본 32색으로 변환하고 투명 경계를 또렷하게 처리합니다. 기존 팔레트, 투명 잠금, 보호 설정을 우선합니다. 잠긴 반투명도는 유지합니다.</p>
+                </div>
+              </div>
+              <select id="ai-edit-mode" aria-describedby="precise-edit-note advanced-generation-note">
+                <option value="precise">정밀 수정</option>
+                <option value="whole">전체 수정, 기존 이미지 기반</option>
+              </select>
+              <input id="ai-advanced" type="checkbox" hidden aria-hidden="true" tabindex="-1" />
+              <p id="precise-edit-note" class="field-help">최대 64×64, 픽셀 단위 수정</p>
+              <p id="advanced-generation-note" class="field-help" hidden>
+                최대 4K (실험적), 작은 디테일이 달라질 수 있습니다.
+              </p>
+
+
+              <div class="prompt-heading">
+                <label for="prompt" class="prompt-label"
+                  >수정 요청</label
+                ><button id="request-history-open" class="text-button" disabled>
+                  AI 전송 기록
+                </button>
+              </div>
+              <textarea
+                id="prompt"
+                maxlength="4000"
+                placeholder="예: 초록색 물약. 둥근 병에 밝은 초록색 액체."
+              ></textarea>
+              <section id="reference-section" aria-label="참고 이미지">
+                <div class="reference-toolbar">
+                  <button id="reference-add" class="text-button" type="button">
+                    참고 이미지 추가
+                  </button>
+                  <button
+                    id="reference-paste"
+                    class="text-button"
+                    type="button"
+                    title="복사한 이미지를 참고자료로 붙여넣기"
+                  >
+                    이미지 붙여넣기
+                  </button>
+                  <input
+                    id="reference-file"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    hidden
+                  />
+                </div>
+                <div id="reference-attached" hidden>
+                  <button
+                    id="reference-edit"
+                    class="reference-thumbnail"
+                    type="button"
+                    title="참고 이미지 자르기, 설정"
+                  >
+                    <img id="reference-thumb" alt="참고 이미지" />
+                  </button>
+                  <div class="reference-description">
+                    <span id="reference-name"></span
+                    ><span id="reference-purpose-summary"></span>
+                    <div>
+                      <button
+                        id="reference-replace"
+                        type="button"
+                        class="text-button"
+                      >
+                        교체</button
+                      ><button
+                        id="reference-remove"
+                        type="button"
+                        class="text-button"
+                       data-action-role="delete"><span data-icon="trash"></span><span data-action-label>참고 이미지 제거</span></button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <p
+                id="mode-warning"
+                class="mode-warning"
+                hidden=""
+                role="status"
+              ></p>
+
+              <details class="ai-options" id="ai-options">
+                <summary>
+                  수정 옵션 <span id="ai-options-summary">색상, 형태</span>
+                </summary>
+                <p id="layer-scope" class="field-help"></p>
+                <div class="ai-constraints">
+                  <label
+                    >색상<select id="ai-palette">
+                      <option value="new">새 색 허용</option>
+                      <option value="existing">기존 팔레트만</option>
+                    </select></label
+                  ><label
+                    >형태<select id="ai-shape">
+                      <option value="change">형태 변경 허용</option>
+                      <option value="preserve">색만 변경</option>
+                    </select></label
+                  >
+                </div>
+                <p id="ai-constraint-note" class="field-help"></p>
+                <div id="icon-quality-options">
+                  <label
+                    >픽셀 검사<select id="ai-quality">
+                      <option value="off">사용 안 함</option>
+                      <option value="check">검사만</option>
+                      <option value="repair" selected>검사 후 부분 보완</option>
+                    </select></label
+                  >
+                  <p id="ai-quality-effective" class="field-help" hidden></p>
+                  <label class="live-preview-control"
+                    ><input
+                      id="ai-quality-protect"
+                      type="checkbox"
+                      checked
+                    />디테일 보호를 AI에도 적용</label
+                  >
+                  <p class="field-help">부분 보완은 최대 1회 추가 요청하며, API 요금이 늘어날 수 있습니다.</p>
+                </div>
+                <p class="scope-note" id="scope-note">
+                  선택이 없으면 현재 레이어 전체에 변경안을 만듭니다.
+                </p>
+                <p class="network-note" id="connection-note">
+                  요청 시 캔버스와 수정 내용을 OpenAI에 전송해요.
+                </p>
+              </details>
+            </div>
+            <details
+              id="submitted-request"
+              class="submitted-request"
+              hidden
+              aria-labelledby="submitted-request-title"
+            >
+              <summary class="submitted-heading">
+                <h3 id="submitted-request-title">보낸 요청</h3>
+                <span><span data-icon="lock"></span>편집 잠김</span>
+              </summary>
+              <p id="submitted-prompt"></p>
+              <div id="submitted-reference" class="submitted-reference" hidden>
+                <img id="submitted-reference-image" alt="전송한 참고 이미지" />
+                <p id="submitted-reference-purpose" class="field-help"></p>
+              </div>
+              <p id="submitted-scope" class="field-help"></p>
+              <details id="submitted-settings">
+                <summary>요청 설정</summary>
+                <dl>
+                  <dt>모델</dt>
+                  <dd id="submitted-model"></dd>
+                  <dt>수정 옵션</dt>
+                  <dd id="submitted-options"></dd>
+                </dl>
+                <button
+                  id="submitted-transmission"
+                  class="text-button"
+                  type="button"
+                >
+                  AI 전송 정보
+                </button>
+              </details>
+            </details>
+            <details
+              id="request-progress"
+              class="request-progress"
+              aria-label="이번 AI 요청 상태"
+              hidden=""
+            >
+              <summary class="request-progress-heading">
+                <strong id="request-stage" role="status">연결 중</strong
+                ><span id="request-elapsed">0초</span
+                ><span
+                  id="request-usage-summary"
+                  class="request-usage-summary"
+                ></span>
+              </summary>
+              <div id="request-metrics" class="request-metrics">
+                <div>
+                  <span>입력 토큰</span
+                  ><strong id="request-input-tokens">—</strong>
+                </div>
+                <div>
+                  <span>출력 토큰</span
+                  ><strong id="request-output-tokens">—</strong>
+                </div>
+              </div>
+              <p id="request-received">0자 수신, 0픽셀 변경</p>
+              <label
+                id="request-live-control"
+                class="live-preview-control"
+                title="도착한 변경안을 캔버스에 미리 표시합니다. 적용 전까지 원본은 유지됩니다."
+                ><input
+                  id="live-preview-toggle"
+                  type="checkbox"
+                  checked=""
+                />실시간 미리보기</label
+              >
+              <p id="request-live-note" class="field-help"></p>
+              <details class="token-help">
+                <summary>토큰 표시 안내</summary>
+                <p id="request-token-note" class="field-help"></p>
+              </details>
+            </details>
+            <div id="proposal-card" class="proposal-card" hidden="">
+              <div class="proposal-heading">
+                <span class="tiny-dot" data-icon="circle"></span
+                ><strong>픽셀 변경안</strong><span id="changed-count"></span>
+              </div>
+              <p id="proposal-summary"></p>
+              <details id="advanced-conversion" hidden>
+                <summary>색상과 투명도 조절</summary>
+                <p id="conversion-request-note" class="field-help">AI에 다시 요청하지 않고 변환합니다. 여백의 기존 픽셀은 유지합니다.</p>
+                <div class="help-label-row">
+                  <label for="conversion-method">변환 방식</label>
+                  <button type="button" class="help-trigger" popovertarget="conversion-method-help" aria-controls="conversion-method-help" aria-expanded="false" aria-describedby="conversion-method-help" aria-label="변환 방식 안내" data-action-role="help"><span data-icon="help"></span></button>
+                  <div id="conversion-method-help" class="context-help" popover="auto" role="note" tabindex="0">
+                  <p>특징 보존은 작은 색 영역과 대비를 고려합니다. 최근접 픽셀은 가장 가까운 원본 픽셀을 사용합니다.</p>
+                  <p>원본 구조는 64px 이하에서 색 영역을 원본 위치에 배정합니다. 큰 이미지는 기존 샘플링을 사용합니다. 형태나 해부학적 정확도를 보장하지는 않습니다.</p>
+                  <p>투명 여백을 줄이면 그림이 커지고 위치가 달라질 수 있습니다. 기존 배치를 유지하려면 프레임 유지를 선택하세요.</p>
+                  <p>색수에는 투명색이 포함됩니다. 보호된 픽셀과 잠긴 투명도 때문에 전체 색수는 더 많을 수 있습니다.</p>
+                  </div>
+                </div>
+                <select id="conversion-method"><option value="features" selected>특징 보존</option><option value="structure">원본 구조</option><option value="nearest">최근접 픽셀</option><option value="semantic">AI 원본 분석 (실험)</option><option value="recompose">AI 형태 재구성 (실험)</option></select>
+                <p id="conversion-recompose-note" class="field-help" hidden>작은 크기에서 특징이 읽히도록 크기와 배치를 조정합니다. 원본의 비율이 달라질 수 있으니 비교 후 적용하세요.</p>
+                <label for="conversion-fit">여백 처리</label>
+                <select id="conversion-fit"><option value="frame" selected>프레임 유지</option><option value="content">투명 여백 줄이기</option></select>
+
+                <label for="conversion-colors">최대 색 수</label>
+                <select id="conversion-colors"><option>8</option><option>16</option><option>24</option><option selected>32</option><option>64</option></select>
+                <label for="conversion-threshold">불투명 기준</label>
+                <select id="conversion-threshold"><option>64</option><option selected>128</option><option>192</option></select>
+                <label for="conversion-anchor">배치</label>
+                <select id="conversion-anchor"><option value="start">왼쪽 위</option><option value="center" selected>가운데</option><option value="end">오른쪽 아래</option></select>
+                <button id="advanced-reconvert" class="secondary" type="button">변환 적용</button>
+                <button id="conversion-cancel" class="secondary" type="button" hidden>AI 분석 취소</button>
+              </details>
+              <button id="advanced-refine" class="secondary" type="button" hidden>적용 후 AI 보정 (1회)</button>
+              <p id="whole-result-note" class="field-help" hidden></p>
+              <p id="advanced-refine-note" class="field-help" hidden>초안을 먼저 적용하고 픽셀 보정을 요청해요. 취소하거나 실패해도 적용한 초안은 남으며 실행 취소할 수 있어요.</p>
+              <details id="quality-report" hidden>
+                <summary>픽셀 검사 결과</summary>
+                <p id="quality-result" class="field-help"></p>
+                <ul id="quality-visual-findings" class="field-help" hidden></ul>
+                <p id="quality-counts" class="field-help"></p>
+                <p id="quality-regions" class="field-help" hidden>
+                  재질, 면을 구분해 검사했어요.
+                </p>
+                <button
+                  id="quality-protection-edit"
+                  class="secondary"
+                  type="button"
+                >
+                  디테일 보호 검토
+                </button>
+                <p id="quality-protection-saved" class="field-help" hidden>
+                  적용하면 선택한 보호 영역을 다음 편집에도 유지해요.
+                </p>
+                <p id="quality-usage" class="field-help" hidden>
+                  추가 요청 사용량이 일부 보고되지 않았어요. 표시된 토큰은
+                  확인된 합계예요.
+                </p>
+                <div id="quality-comparison" hidden>
+                  <div class="history-previews">
+                    <figure>
+                      <figcaption>초안</figcaption>
+                      <canvas id="quality-draft-canvas"></canvas>
+                    </figure>
+                    <figure>
+                      <figcaption>부분 보완</figcaption>
+                      <canvas id="quality-final-canvas"></canvas>
+                    </figure>
+                  </div>
+                  <button id="quality-use-draft" class="secondary">
+                    보완 대신 초안 사용
+                  </button>
+                </div>
+              </details>
+              <div class="comparison-controls">
+                <button id="compare-btn">원본 보기</button
+                ><button id="diff-btn">변경 픽셀 표시</button>
+                <button
+                  id="compare-hold"
+                  type="button"
+                  aria-pressed="false"
+                  title="마우스 또는 Space/Enter를 누르는 동안 원본을 표시합니다."
+                >
+                  누르는 동안 원본
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="ai-status"
+              class="ai-status"
+              role="status"
+              aria-live="polite"
+              hidden=""
+            ></div>
+          </div>
+          <section
+            class="result-preview"
+            id="preview-content"
+            role="tabpanel"
+            aria-labelledby="inspector-preview"
+            hidden
+          >
+            <div class="section-heading">
+              <span>보기</span
+              ><select id="preview-kind" aria-label="미리보기 종류">
+                <option value="result">완성 모습</option>
+                <option value="source">현재 원본</option>
+              </select>
+            </div>
+            <div class="preview-section">
+              <div class="section-heading">
+                미리보기
+                <button id="preview-open" class="text-button">
+                  별도 창<span data-icon="external"></span></button
+                ><span id="preview-scale-label">실제 크기, 4배</span>
+              </div>
+              <div class="preview-pair">
+                <div class="preview-tile">
+                  <canvas id="native-preview"></canvas><span>1×</span>
+                </div>
+                <div class="preview-tile light">
+                  <canvas id="large-preview"></canvas><span>4×</span>
+                </div>
+              </div>
+            </div>
+            <section id="reference-compare" hidden>
+              <div class="section-heading">참고 이미지와 비교</div>
+              <div class="reference-compare-pair">
+                <figure>
+                  <div class="reference-compare-stage">
+                    <img id="reference-compare-image" alt="참고 이미지" />
+                  </div>
+                  <figcaption>참고 이미지</figcaption>
+                </figure>
+                <figure>
+                  <div class="reference-compare-stage">
+                    <canvas id="reference-compare-canvas"></canvas>
+                  </div>
+                  <figcaption>현재 결과, 정수 배율</figcaption>
+                </figure>
+              </div>
+              <button
+                id="reference-compare-edit"
+                class="text-button"
+                type="button"
+              >
+                참고 목적 편집
+              </button>
+            </section>
+            <section
+              id="tile-preview-section"
+              class="tile-preview-section"
+              hidden=""
+            >
+              <div class="section-heading">
+                타일 반복, 3×3<button
+                  id="tile-preview-open"
+                  class="text-button"
+                >
+                  크게 보기<span data-icon="external"></span>
+                </button>
+              </div>
+              <div class="tile-repeat-stage">
+                <canvas
+                  id="tile-preview"
+                  aria-label="타일 3×3 반복 미리보기"
+                ></canvas
+                ><span class="tile-center-outline"></span>
+              </div>
+              <label class="checkbox-label"
+                ><input id="tile-boundaries" type="checkbox" checked="" />가운데
+                타일 경계 표시</label
+              >
+            </section>
+            <section id="auto-status" class="auto-status" hidden="">
+              <div class="section-heading">오토타일 연결 결과</div>
+              <canvas
+                id="auto-small-map"
+                aria-label="오토타일 테스트 맵 미리보기"
+              ></canvas>
+              <p id="auto-small-warning" class="field-help preview-help"></p>
+            </section>
+            <button id="preview-to-ai" class="secondary">
+              AI로 다듬기<span data-icon="spark"></span>
+            </button>
+          </section>
+        </div>
+        <div class="ai-footer">
+          <div id="review-actions" class="proposal-actions" hidden>
+            <button id="discard-btn" class="secondary" title="변경안을 버리고 원본을 유지해요."><span data-icon="trash"></span>변경안 버리기</button
+            ><button id="apply-btn" class="button-primary">
+              <span data-icon="check"></span>적용하기 <kbd>↵</kbd>
+            </button>
+          </div>
+          <div class="transmission-note">
+            <div class="transmission-heading">
+              <span>보낼 이미지</span>
+              <button id="transmission-details" class="text-button" aria-label="AI 전송 정보">자세히</button>
+            </div>
+            <p id="transmission-summary"></p>
+            <p id="reference-transmission-note" class="field-help" hidden>
+              참고 이미지 포함, 이미지 사용량이 추가될 수 있어요.
+            </p>
+            <p id="quality-request-note" class="field-help" hidden>
+              그림 검토와 보완에 최대 1회 더 요청해요.
+            </p>
+          </div>
+          <button id="generate-btn" class="button-primary generate">
+            <span data-icon="settings"></span
+            ><span id="generate-label">AI 연결 설정</span
+            ><kbd>Ctrl ↵</kbd></button
+          ><button id="cancel-request" class="cancel-request secondary" title="현재 AI 요청을 중단해요." hidden="">
+            <span data-icon="stop"></span><span>AI 요청 중단</span>
+          </button>
+        </div>
+      </aside>
+    </main>
+    <div id="toast" class="toast" role="status" hidden=""></div>
+    <dialog
+      id="quality-protection-dialog"
+      aria-labelledby="quality-protection-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="quality-protection-title">디테일 보호 검토</h2>
+        <button
+          class="dialog-close icon-button"
+          type="button"
+          aria-label="닫기"
+        >
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <p class="field-help">
+        파란 테두리는 보호할 픽셀이에요. 클릭하거나 드래그해 표시하고, 오른쪽
+        버튼으로 지우세요.
+      </p>
+      <p class="field-help">
+        이미 끝난 보완 결과는 바뀌지 않아요. 저장한 보호는 변경안 적용 후 다음
+        편집부터 사용해요.
+      </p>
+      <div class="protection-review-stage">
+        <canvas
+          id="quality-protection-canvas"
+          tabindex="0"
+          aria-label="디테일 보호 영역"
+        ></canvas>
+      </div>
+      <div class="protection-review-tools">
+        <button id="quality-protection-reset" type="button" class="secondary" data-action-role="reset"><span data-icon="reset"></span><span data-action-label>자동 표시 복원</span></button><button id="quality-protection-clear" type="button" class="secondary" data-action-role="clear"><span data-icon="eraser"></span><span data-action-label>새 보호 해제</span></button>
+      </div>
+      <div class="proposal-actions dialog-actions">
+        <button id="quality-protection-cancel" class="secondary" type="button" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button
+          id="quality-protection-save"
+          class="button-primary"
+          type="button"
+         data-action-role="apply"><span data-icon="check"></span><span data-action-label>보호 저장</span></button>
+      </div>
+    </dialog>
+    <dialog id="reference-dialog" aria-labelledby="reference-title">
+      <div class="dialog-heading">
+        <div>
+          <h2 id="reference-title">참고 이미지</h2>
+          <p id="reference-dialog-name" class="field-help"></p>
+          <div id="reference-source-info">
+            <span id="reference-source-note"></span>
+            <button id="reference-reconnect" type="button" hidden>
+              원본 다시 연결
+            </button>
+            <input
+              id="reference-source-file"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              hidden
+            />
+          </div>
+        </div>
+        <button
+          class="icon-button dialog-close"
+          type="button"
+          aria-label="닫기"
+        >
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <p class="field-help">
+        안쪽을 드래그해 이동하고 테두리로 크기를 조절하세요. Shift+드래그로 새 영역을 선택합니다. 선택한 부분만 전송합니다.
+      </p>
+      <div class="draft-toolbar">
+        <button id="reference-undo" type="button" data-action-role="undo"><span data-icon="undo"></span><span data-action-label>실행 취소</span></button>
+        <button id="reference-redo" type="button" data-action-role="redo"><span data-icon="redo"></span><span data-action-label>다시 실행</span></button>
+        <span class="toolbar-spacer"></span>
+        <button id="reference-pan" type="button" aria-pressed="false" data-action-role="view"><span data-icon="hand"></span><span data-action-label>화면 이동</span></button>
+        <button id="reference-zoom-out" type="button" aria-label="축소" data-action-role="zoom"><span data-icon="minus"></span><span data-action-label>−</span></button>
+        <select id="reference-zoom-value" aria-label="미리보기 배율">
+          <option id="reference-zoom-current" value="current" disabled>
+            100%
+          </option>
+          <option value="actual">100% 보기</option>
+          <option value="selection">선택 영역 맞춤</option>
+        </select>
+        <button id="reference-zoom-in" type="button" aria-label="확대" data-action-role="zoom"><span data-icon="plus"></span><span data-action-label>+</span></button>
+        <button id="reference-fit" type="button">맞춤</button>
+      </div>
+      <div class="reference-crop-stage">
+        <canvas
+          id="reference-canvas"
+          tabindex="0"
+          role="img"
+          aria-label="참고 영역 선택. 방향키로 이동할 수 있어요."
+        ></canvas>
+      </div>
+      <div class="reference-crop-fields">
+        <label
+          >X<input
+            id="reference-crop-x"
+            aria-describedby="reference-crop-error"
+            type="number"
+            min="0"
+            step="1"
+        /></label>
+        <label
+          >Y<input
+            id="reference-crop-y"
+            aria-describedby="reference-crop-error"
+            type="number"
+            min="0"
+            step="1"
+        /></label>
+        <label
+          >너비<input
+            id="reference-crop-width"
+            aria-describedby="reference-crop-error"
+            type="number"
+            min="1"
+            step="1"
+        /></label>
+        <label
+          >높이<input
+            id="reference-crop-height"
+            aria-describedby="reference-crop-error"
+            type="number"
+            min="1"
+            step="1"
+        /></label>
+        <button id="reference-reset-crop" class="secondary" type="button" data-action-role="reset"><span data-icon="reset"></span><span data-action-label>전체 이미지</span></button>
+      </div>
+      <div id="reference-crop-feedback">
+        <p id="reference-size" class="field-help"></p>
+        <p id="reference-crop-error" role="status"></p>
+      </div>
+      <fieldset class="reference-purposes">
+        <legend>어떤 부분을 참고할까요?</legend>
+        <label
+          ><input
+            type="checkbox"
+            data-reference-purpose="shape"
+          />형태, 각도</label
+        >
+        <label
+          ><input type="checkbox" data-reference-purpose="palette" />색상</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            data-reference-purpose="lighting"
+          />명암</label
+        >
+        <label
+          ><input type="checkbox" data-reference-purpose="details" />장식</label
+        >
+      </fieldset>
+      <label class="reference-note-label"
+        >유지할 핵심 특징 (선택)<textarea
+          id="reference-note"
+          rows="2"
+          maxlength="500"
+          placeholder="예: 표지 중앙의 붉은 보석은 유지해 주세요."
+        ></textarea>
+      </label>
+      <div class="proposal-actions dialog-actions">
+        <button id="reference-cancel" class="secondary" type="button" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="reference-apply" class="button-primary" type="button" data-action-role="apply"><span data-icon="check"></span><span data-action-label>참고 이미지 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="settings-dialog" aria-labelledby="settings-title">
+      <form id="settings-form">
+        <div class="dialog-heading">
+          <div>
+            <h2 id="settings-title">설정</h2>
+          </div>
+          <button
+            type="button"
+            class="icon-button dialog-close"
+            aria-label="닫기"
+          >
+            <span data-icon="close"></span>
+          </button>
+        </div>
+        <label class="language-setting"
+          >언어 / Language, 즉시 저장
+          <select id="pref-language" translate="no" aria-label="Language">
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </label>
+        <div class="settings-tabs" role="tablist" aria-label="설정 분류">
+          <button
+            type="button"
+            id="settings-tab-storage"
+            data-settings-tab="storage"
+            role="tab"
+            aria-controls="settings-storage"
+          >
+            저장 공간
+          </button>
+          <button
+            class=""
+            type="button"
+            id="settings-tab-editor"
+            data-settings-tab="editor"
+            role="tab"
+            aria-controls="settings-editor"
+          >
+            편집과 기록</button
+          ><button
+            class=""
+            type="button"
+            id="settings-tab-display"
+            data-settings-tab="display"
+            role="tab"
+            aria-controls="settings-display"
+          >
+            화면과 조작</button
+          ><button
+            class=""
+            type="button"
+            id="settings-tab-ai"
+            data-settings-tab="ai"
+            role="tab"
+            aria-controls="settings-ai"
+          >
+            AI 연결</button
+          ><button
+            type="button"
+            id="settings-tab-info"
+            data-settings-tab="info"
+            role="tab"
+            aria-controls="settings-info"
+          >
+            정보
+          </button>
+        </div>
+        <div class="settings-pages">
+          <section
+            class="settings-page"
+            id="settings-storage"
+            role="tabpanel"
+            aria-labelledby="settings-tab-storage"
+            hidden
+          >
+            <h3>작업 복구 데이터</h3>
+            <p class="field-help">저장된 파일과 일치하는 닫힌 작업만 정리합니다. 미저장 또는 변경된 작업은 보존합니다.</p>
+            <div class="settings-fields">
+              <label
+                >보관 기간 (일)<input
+                  id="pref-recoveryRetentionDays"
+                  type="number"
+                  min="1"
+                  max="3650"
+                  step="1"
+              /></label>
+              <label
+                >목표 용량 (MiB)<input
+                  id="pref-recoveryMemoryMB"
+                  type="number"
+                  min="16"
+                  max="16384"
+                  step="1"
+              /></label>
+            </div>
+            <div class="help-label-row">
+              <span class="field-help">자동으로 삭제하지 않습니다.</span>
+              <button type="button" class="help-trigger" popovertarget="recovery-storage-help" aria-controls="recovery-storage-help" aria-expanded="false" aria-describedby="recovery-storage-help" aria-label="복구 데이터 정리 기준" data-action-role="help"><span data-icon="help"></span></button>
+              <div id="recovery-storage-help" class="context-help" popover="auto" role="note" tabindex="0">
+              <p>기간이 지났거나 목표 용량을 넘긴 복사본을 정리 대상으로 제안합니다. 열린 작업, 최근 닫은 작업, 미저장 또는 변경된 파일과 기존 복구 폴더는 보존합니다. 보존 대상 때문에 목표 용량을 넘을 수 있습니다.</p>
+              </div>
+            </div>
+            <button type="button" id="storage-preview" class="secondary">
+              정리 대상 확인
+            </button>
+            <p id="storage-summary" role="status"></p>
+            <ul id="storage-candidates"></ul>
+            <button type="button" id="storage-clean" class="secondary" disabled data-action-role="delete"><span data-icon="trash"></span><span data-action-label>표시된 복사본 정리</span></button>
+            <p id="storage-result" role="status"></p>
+          </section>
+          <section
+            class="settings-page"
+            id="settings-editor"
+            role="tabpanel"
+            aria-labelledby="settings-tab-editor"
+          >
+            <div class="help-label-row">
+              <h3>입력</h3>
+              <button type="button" class="help-trigger" popovertarget="modifier-help" aria-controls="modifier-help" aria-expanded="false" aria-describedby="modifier-help" aria-label="보조키 설정 안내" data-action-role="help"><span data-icon="help"></span></button>
+              <div id="modifier-help" class="context-help" popover="auto" role="note" tabindex="0">
+              <p>선택, 복제 이동에 사용할 보조키입니다. 등록한 단축키와 Ctrl+휠 크기 조절은 바뀌지 않습니다.</p>
+              </div>
+            </div>
+            <button id="shortcut-open" type="button" class="secondary">
+              단축키 설정
+            </button>
+            <label class="setting-check"
+              ><span>스포이트로 색을 선택한 후 연필로 전환</span
+              ><input id="pref-pickerToPencil" type="checkbox"
+            /></label>
+            <div class="settings-fields">
+              <label
+                >복제 이동<select id="pref-duplicateModifier">
+                  <option value="ctrl">Ctrl+드래그</option>
+                  <option value="alt">Alt+드래그</option>
+                </select></label
+              >
+              <label
+                >선택 교집합<select id="pref-intersectionModifier">
+                  <option value="alt-shift">Alt+Shift</option>
+                  <option value="ctrl-shift">Ctrl+Shift</option>
+                </select></label
+              >
+              <label
+                >우클릭 동작<select id="pref-rightButton">
+                  <option value="secondary">오른쪽 색으로 그리기</option>
+                  <option value="picker">색상 추출</option>
+                </select></label
+              >
+              <label
+                >색상 참조<select id="pref-pickerSource">
+                  <option value="visible">보이는 레이어 합성</option>
+                  <option value="layer">현재 레이어</option>
+                </select></label
+              >
+            </div>
+
+            <div class="help-label-row"><h3>실행 취소 기록</h3><button type="button" class="help-trigger" popovertarget="history-memory-help" aria-controls="history-memory-help" aria-expanded="false" aria-describedby="history-memory-help" aria-label="실행 취소 기록의 메모리 기준" data-action-role="help"><span data-icon="help"></span></button><div id="history-memory-help" class="context-help" popover="auto" role="note" tabindex="0"><p class="field-help">
+              8–512 MiB, 10–2,000회. 실행 취소와 다시 실행의 저장 데이터를
+              합산합니다. 앱 전체 RAM이나 작업 중 임시 메모리는 포함하지
+              않습니다.
+            </p></div></div>
+            <p class="field-help">
+              메모리와 횟수 중 먼저 도달한 한도에 맞춰 오래된 기록을 정리합니다.
+            </p>
+            <div class="settings-fields">
+              <label
+                >기록 메모리 한도 (MiB)<input
+                  id="pref-historyMemoryMB"
+                  type="number"
+                  min="8"
+                  max="512"
+                  step="1"
+                  required="" /></label
+              ><label
+                >최대 실행 취소 횟수<input
+                  id="pref-historyLimit"
+                  type="number"
+                  min="10"
+                  max="2000"
+                  step="1"
+                  required=""
+              /></label>
+            </div>
+            <div class="history-usage">
+              <div>
+                <strong id="history-count"></strong
+                ><span id="history-bytes"></span>
+              </div>
+              <meter
+                id="history-meter"
+                min="0"
+                max="1"
+                value="0"
+                aria-label="기록 메모리 사용량"
+              ></meter>
+              <p id="history-estimate"></p>
+            </div>
+
+            <p class="field-help">한도를 줄여 저장하면 초과 기록이 삭제됩니다. 실행 취소 기록은 앱 종료 시 사라집니다.</p>
+            <h3>새 캔버스</h3>
+            <label
+              >기본 크기<select id="pref-canvasSize">
+                <option value="8">8 × 8</option>
+                <option value="16">16 × 16</option>
+                <option value="32">32 × 32</option>
+                <option value="64">64 × 64</option>
+              </select></label
+            >
+            <p class="field-help">새 캔버스에 적용할 크기입니다.</p>
+          </section>
+          <section
+            class="settings-page"
+            id="settings-display"
+            role="tabpanel"
+            aria-labelledby="settings-tab-display"
+          >
+            <div class="help-label-row">
+              <h3>화면 기본값</h3>
+              <button type="button" class="help-trigger" popovertarget="display-preferences-help" aria-controls="display-preferences-help" aria-expanded="false" aria-describedby="display-preferences-help" aria-label="화면 기본값 적용 안내" data-action-role="help"><span data-icon="help"></span></button>
+              <div id="display-preferences-help" class="context-help" popover="auto" role="note" tabindex="0">
+              <p>저장한 기본값은 다음 실행에도 유지됩니다. 캔버스의 빠른 버튼은 이번 실행에만 적용됩니다.</p>
+              </div>
+            </div>
+            <label class="setting-check"
+              ><span>단축키, 사용 안내를 화면에 표시</span
+              ><input id="pref-showHints" type="checkbox"
+            /></label>
+            <label
+              >앱 테마<select id="pref-theme">
+                <option value="light">라이트</option>
+                <option value="dark">다크</option>
+              </select></label
+            >
+            <label class="setting-check"
+              ><span>픽셀 격자 표시</span
+              ><input id="pref-grid" type="checkbox" /></label
+            ><label class="setting-check"
+              ><span>선택 영역 테두리 표시</span
+              ><input id="pref-selectionOutline" type="checkbox" /></label
+            ><label
+              >투명 영역 배경<select id="pref-canvasBackground">
+                <option value="theme">앱 테마에 맞춤</option>
+                <option value="dark">어두운 격자</option>
+                <option value="light">밝은 격자</option>
+              </select></label
+            ><label
+              >타일 미리보기<select id="pref-previewKind">
+                <option value="result">완성 모습, 반복 / 연결 결과</option>
+                <option value="source">현재 원본</option>
+              </select></label
+            >
+
+            <h3>마우스 휠</h3>
+            <label
+              >확대 속도<select id="pref-zoomSpeed">
+                <option value="0.5">느리게</option>
+                <option value="1">기본</option>
+                <option value="2">빠르게</option>
+              </select></label
+            ><label class="setting-check"
+              ><span>휠 확대 방향 반전</span
+              ><input id="pref-reverseZoom" type="checkbox"
+            /></label>
+            <div class="help-label-row">
+              <h3>AI 편집 미리보기</h3>
+              <button type="button" class="help-trigger" popovertarget="live-preview-help" aria-controls="live-preview-help" aria-expanded="false" aria-describedby="live-preview-help" aria-label="AI 편집 미리보기 안내" data-action-role="help"><span data-icon="help"></span></button>
+              <div id="live-preview-help" class="context-help" popover="auto" role="note" tabindex="0">
+              <p>수신 중인 변경안을 표시합니다. 요청 중에도 켜거나 끌 수 있습니다. 원본은 변경안을 적용할 때 바뀝니다.</p>
+              </div>
+            </div>
+            <label class="setting-check"
+              ><span>수신 중 픽셀 변경 표시</span
+              ><input id="pref-livePreview" type="checkbox"
+            /></label>
+
+          </section>
+          <section
+            class="settings-page"
+            id="settings-ai"
+            role="tabpanel"
+            aria-labelledby="settings-tab-ai"
+          >
+            <details id="codex-handoff">
+              <summary>Codex 스킬로 작업하기</summary>
+              <p class="field-help">Codex에서 Pixel Mat 스킬로 만든 PNG나 프로젝트를 이 앱에서 열어 편집하세요. 앱 내부 AI 수정은 아래 API 연결을 사용해요.</p>
+              <p id="codex-inspection-result" class="field-help" role="status"></p>
+              <div class="dialog-actions">
+                <button type="button" id="codex-inspect" class="secondary">설치 확인</button>
+                <button type="button" id="codex-forget" class="text-button">확인 종료</button>
+                <button type="button" id="codex-guide" class="text-button">Codex 스킬 안내</button>
+              </div>
+            </details>
+            <label
+              >연결 방식<select id="provider-input">
+                <option value="none" disabled>AI 서비스 선택</option>
+                <option value="api">OpenAI API, 별도 결제</option>
+                <option value="anthropic">Claude API, 별도 결제</option>
+                <option value="gemini">Gemini API, 별도 결제</option>
+              </select></label
+            >
+            <div id="api-settings" hidden="">
+              <div class="dialog-actions"><button type="button" id="api-setup" class="secondary">API 키 발급 화면 열기</button><button type="button" id="api-check" class="secondary">키, 모델 접근 확인</button></div>
+              <p id="api-check-result" class="field-help" role="status"></p>
+              <p class="field-help">그림을 보내지 않고 키, 모델 접근만 확인합니다.</p>
+              <p class="field-help">API 키와 모델 ID를 입력하세요. API 요금은 구독과 별도입니다.</p>
+              <label
+                >API 키<input
+                  id="api-key"
+                  type="password"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="sk-…" /></label
+              ><label class="checkbox-label"
+                ><input type="checkbox" id="remember-key" />이
+                컴퓨터에 키를 암호화하여 저장</label
+              >
+            </div>
+            <div class="model-settings">
+              <div class="help-label-row"><label for="model-select">모델 선택</label><button type="button" class="help-trigger" popovertarget="model-requirements-help" aria-controls="model-requirements-help" aria-expanded="false" aria-describedby="model-requirements-help" aria-label="모델 선택 안내" data-action-role="help"><span data-icon="help"></span></button><div id="model-requirements-help" class="context-help" popover="auto" role="note" tabindex="0"><p id="model-list-note" class="field-help">
+                정밀 수정에는 이미지 입력과 구조화 출력을, 전체 수정에는 이미지 생성 도구를 지원하는 모델이 필요합니다.
+              </p></div></div>
+              <div class="model-select-row">
+                <select id="model-select">
+                  <option value="gpt-6-astra">GPT-6 Astra</option>
+                  <option value="__custom">직접 입력…</option></select
+                >
+              </div>
+              <label id="model-custom-label" for="model-input"
+                >모델 ID<input
+                  id="model-input"
+                  value="gpt-6-astra"
+                  maxlength="100"
+                  spellcheck="false"
+                  autocomplete="off"
+              /></label>
+
+            </div>
+            <button type="button" id="clear-key-btn" class="text-button" data-action-role="delete"><span data-icon="trash"></span><span data-action-label>저장된 키 삭제</span></button>
+          </section>
+          <section
+            class="settings-page"
+            id="settings-info"
+            role="tabpanel"
+            aria-labelledby="settings-tab-info"
+            hidden
+          >
+            <h3>Pixel Mat <span id="app-version"></span></h3>
+
+            <button type="button" id="info-transmission" class="secondary">
+              AI 데이터 전송 안내
+            </button>
+            <h3>오픈소스 라이선스</h3>
+            <p class="field-help">
+              아래 조건은 외부 구성요소에 적용되며 Pixel Mat 자체의 이용, 배포
+              허가를 뜻하지 않습니다.
+            </p>
+            <details class="license-entry">
+              <summary>Electron, MIT</summary>
+              <pre id="license-electron"></pre>
+            </details>
+            <details class="license-entry">
+              <summary>pngjs, MIT</summary>
+              <pre id="license-pngjs"></pre>
+            </details>
+            <button type="button" class="secondary" id="chromium-notices" title="설치 폴더의 라이선스 문서를 브라우저에서 열기">
+              Chromium 및 포함 구성요소 고지 열기
+            </button>
+
+            <p id="legal-error" class="form-error" role="alert"></p>
+          </section>
+        </div>
+
+        <p id="settings-error" class="form-error" role="alert"></p>
+        <div class="dialog-actions">
+          <button class="text-button" type="button" id="preferences-reset" data-action-role="reset"><span data-icon="reset"></span><span data-action-label>편집, 화면 기본값 복원</span></button>
+          <button type="button" class="secondary dialog-close" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button type="submit" class="button-primary" data-action-role="save"><span data-icon="save"></span><span data-action-label>설정 저장</span></button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="transmission-dialog" aria-labelledby="transmission-title">
+      <div class="dialog-heading">
+        <h2 id="transmission-title">AI에 보내는 정보</h2>
+        <button
+          type="button"
+          class="icon-button dialog-close"
+          aria-label="닫기"
+        >
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <p id="transmission-current" class="transmission-current"></p>
+      <p id="transmission-reference" class="field-help" hidden>
+        참고 이미지의 자른 영역과 참고 목적, 설명을 함께 전송해요. 품질 보완
+        요청에도 포함돼요.
+      </p>
+      <p>
+        <strong
+          >선택 영역은 AI가 수정할 범위입니다. 참고를 위해 선택 영역 밖의 그림도
+          함께 전송됩니다.</strong
+        >
+      </p>
+      <ul class="transmission-list">
+        <li>
+          요청 문장, 팔레트, 수정 조건과 현재 레이어 이름을 보냅니다. 정밀 수정은 최대 64×64 구간을, 전체 수정은 현재 레이어와 보이는 합성 이미지 전체를 보냅니다.
+        </li>
+        <li>
+          일반 그림은 보이는 레이어의 합성 이미지를 보냅니다. 일반 숨김 레이어는
+          포함하지 않습니다.
+        </li>
+        <li>
+          반복 타일은 3×3 참고 이미지도 보냅니다. 오토타일은 현재 표시 여부와
+          관계없이 5개 원본을 조합한 타일셋, 지도를 보냅니다.
+        </li>
+        <li>
+          입체 가이드가 있는 그림은 도형의 각도와 면별 픽셀 위치도 함께
+          전송됩니다.
+        </li>
+      </ul>
+      <p id="transmission-provider" class="field-help"></p>
+      <p id="transmission-advanced" class="field-help" hidden>전체 수정 결과는 기기에서 픽셀로 변환합니다. 자동 추가 보정은 요청하지 않습니다.</p>
+      <p class="field-help">
+        그림은 선택한 AI 서비스가 처리합니다. 보관, 학습 정책과 요금은 서비스, 계정 설정에 따라 달라요. 다른 서비스로 자동 전환하지 않아요.
+      </p>
+      <p id="transmission-error" class="form-error" role="alert"></p>
+      <div class="dialog-actions">
+        <button
+          type="button"
+          class="secondary dialog-close"
+          id="transmission-cancel"
+         data-action-role="close"><span data-icon="close"></span><span data-action-label>닫기</span></button><button
+          type="button"
+          class="button-primary"
+          id="transmission-accept"
+          hidden
+         data-action-role="send"><span data-icon="spark"></span><span data-action-label>확인하고 전송</span></button>
+      </div>
+    </dialog>
+    <dialog id="new-dialog" aria-labelledby="new-dialog-title">
+      <form id="new-form">
+        <div class="dialog-heading">
+          <div>
+            <h2 id="new-dialog-title">새 작업</h2>
+          </div>
+          <button
+            type="button"
+            class="icon-button dialog-close"
+            aria-label="닫기"
+          >
+            <span data-icon="close"></span>
+          </button>
+        </div>
+
+        <div class="new-layout">
+          <section class="blank-canvas-options">
+            <h3>빈 캔버스</h3>
+
+            <label
+              >이름<input id="new-name" value="Untitled" maxlength="100"
+            /></label>
+            <div class="size-presets">
+              <button type="button" data-size="8">8 × 8</button
+              ><button type="button" data-size="16" class="selected">
+                16 × 16</button
+              ><button type="button" data-size="32">32 × 32</button
+              ><button type="button" data-size="64">64 × 64</button>
+              <button type="button" id="new-4k">4K UHD, 3840 × 2160</button>
+            </div>
+            <div class="size-inputs">
+              <label
+                >너비<input
+                  id="new-width"
+                  type="number"
+                  min="1"
+                  max="3840"
+                  value="16"
+                  required="" /></label
+              ><span>×</span
+              ><label
+                >높이<input
+                  id="new-height"
+                  type="number"
+                  min="1"
+                  max="3840"
+                  value="16"
+                  required="" /></label
+              ><span>px</span>
+            </div>
+            <p class="field-help">각 변 최대 3840px, 총 8,294,400픽셀, AI 전체 수정도 같은 상한</p>
+            <p class="field-help">큰 캔버스는 메모리를 많이 사용해요. 레이어, 마스크 합계에 따라 추가가 제한될 수 있어요.</p>
+            <div class="dialog-actions">
+              <button type="button" class="secondary dialog-close" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button type="submit" class="button-primary" data-action-role="apply"><span data-icon="plus"></span><span data-action-label>캔버스 만들기</span></button>
+            </div>
+          </section>
+          <div class="creation-options">
+            <div class="section-heading">다른 방식으로 시작</div>
+            <button id="auto-open" class="secondary tile-open" type="button">
+              지형 연결 세트<span class="creation-hint"
+                >잔디와 흙처럼 두 지형을 잇는 모서리, 경계</span
+              ></button
+            ><button id="tile-open" class="secondary tile-open" type="button">
+              반복 타일<span class="creation-hint"
+                >바닥, 벽에 반복해서 사용하는 한 장</span
+              >
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="request-history-dialog" aria-labelledby="request-history-title">
+      <div class="dialog-heading">
+        <h2 id="request-history-title">AI 전송 기록</h2>
+        <button class="icon-button dialog-close" aria-label="닫기">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="help-label-row">
+        <span class="field-help">토큰은 서비스가 보고한 사용량이며, 요금이나 구독 잔여량이 아닙니다.</span>
+        <button type="button" class="help-trigger" popovertarget="token-accounting-help" aria-controls="token-accounting-help" aria-expanded="false" aria-describedby="token-accounting-help" aria-label="토큰 집계 안내" data-action-role="help"><span data-icon="help"></span></button>
+        <div id="token-accounting-help" class="context-help" popover="auto" role="note" tabindex="0">
+        <p class="field-help">캐시, 추론 토큰은 입력과 출력의 일부이므로 합계에 다시 더하지 않아요. 서비스마다 계산 방식이 달라요.</p>
+        <p>최근 500개 요청을 보관합니다. 프롬프트, 그림, API 키는 이 기록에 저장하지 않습니다.</p>
+        </div>
+      </div>
+      <p id="transmission-log-note" class="field-help">최근 500개 요청, 프롬프트, 그림, 키는 기록에 저장하지 않습니다.</p>
+      <p id="transmission-log-total" class="field-help" aria-live="polite"></p>
+      <p id="transmission-log-error" class="form-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button type="button" id="transmission-log-refresh" class="secondary" data-action-role="refresh"><span data-icon="reset"></span><span data-action-label>새로고침</span></button><button type="button" id="transmission-log-clear" class="text-button" data-action-role="delete"><span data-icon="trash"></span><span data-action-label>전송 기록 지우기</span></button></div>
+      <div id="transmission-log-list"></div>
+      <h3>최근 요청</h3>
+      <p class="field-help">이번 실행의 최근 요청 10개입니다. 불러오기는 요청 문장만 채웁니다.</p>
+      <div id="request-history-list"></div>
+    </dialog>
+    <dialog id="recovery-dialog" aria-labelledby="recovery-title">
+      <div class="dialog-heading">
+        <h2 id="recovery-title">작업 복구</h2>
+        <button class="icon-button dialog-close" aria-label="닫기">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <p class="field-help">
+        최근 20개 작업을 보관해요. 복구본은 새 작업으로 열려요.
+      </p>
+      <p id="recovery-empty">복구할 작업이 없어요.</p>
+      <div id="recovery-list"></div>
+    </dialog>
+    <dialog id="shortcut-dialog" class="custom-tools-dialog" aria-labelledby="shortcut-dialog-title">
+      <div class="dialog-heading">
+        <h2 id="shortcut-dialog-title">단축키 설정</h2>
+        <button
+          type="button"
+          class="dialog-close icon-button"
+          aria-label="닫기"
+         data-action-role="close"><span data-icon="close"></span></button>
+      </div>
+      <p class="field-help">
+        기능마다 최대 2개, 버튼을 누르고 키를 입력하세요. Space, Esc, 방향키는
+        고정 동작입니다.
+      </p>
+      <input
+        id="shortcut-search"
+        type="search"
+        placeholder="기능 검색"
+        aria-label="기능 검색"
+      />
+      <div id="shortcut-rows"></div>
+      <p id="shortcut-status" role="status"></p>
+      <button id="shortcut-conflict" type="button" hidden>
+        충돌한 기능 보기
+      </button>
+      <div class="dialog-actions">
+        <button id="shortcut-reset" type="button" data-action-role="reset"><span data-icon="reset"></span><span data-action-label>기본값 복원</span></button><button type="button" class="dialog-close" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="shortcut-save" type="button" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>단축키 저장</span></button>
+      </div>
+    </dialog>
+    <dialog id="script-dialog" class="custom-tools-dialog" aria-labelledby="script-dialog-title">
+      <div class="dialog-heading">
+        <h2 id="script-dialog-title">사용자 도구</h2>
+        <button
+          type="button"
+          class="dialog-close icon-button"
+          aria-label="닫기"
+         data-action-role="close"><span data-icon="close"></span></button>
+      </div>
+      <div class="script-toolbar">
+        <select id="script-list" aria-label="저장된 도구"></select
+        ><button id="script-import-open" type="button" class="secondary" data-action-role="open"><span data-icon="folder"></span><span data-action-label>JavaScript 가져오기</span></button>
+        <input
+          id="script-import"
+          type="file"
+          accept=".js,text/javascript"
+          hidden
+        />
+      </div>
+      <div class="script-editor-layout">
+        <div>
+          <label>도구 이름<input id="script-name" maxlength="60" /></label>
+          <label
+            >스크립트<textarea
+              id="script-source"
+              spellcheck="false"
+              maxlength="65536"
+            ></textarea>
+          </label>
+          <div class="script-toolbar">
+            <button id="script-save" type="button" data-action-role="save"><span data-icon="save"></span><span data-action-label>도구 저장</span></button><button id="script-revert" type="button" data-action-role="reset"><span data-icon="reset"></span><span data-action-label>저장본 복원</span></button><button id="script-delete" type="button" data-action-role="delete"><span data-icon="trash"></span><span data-action-label>도구 삭제</span></button>
+            <button id="script-restore" type="button" hidden data-action-role="undo"><span data-icon="undo"></span><span data-action-label>삭제한 도구 복원</span></button>
+          </div>
+        </div>
+        <div class="script-result">
+          <span>미리보기</span><canvas id="script-preview"></canvas>
+          <div class="script-preview-controls">
+            <label
+              ><input id="script-original" type="checkbox" />원본 보기</label
+            >
+            <label
+              ><input id="script-diff" type="checkbox" />변경 픽셀 표시</label
+            >
+            <label><input id="script-mask" type="checkbox" />보호 영역</label>
+          </div>
+          <div id="script-params"></div>
+          <p id="script-status" role="status"></p>
+        </div>
+      </div>
+      <details>
+        <summary>스크립트 API</summary>
+        <p class="field-help">
+          api.pixels, api.palette, api.mask, api.width, api.height,
+          api.primary, api.secondary
+        </p>
+        <p class="field-help">
+          api.setPixel(x, y, 색상 번호), api.addColor("#RRGGBBAA")
+        </p>
+        <p class="field-help">
+          동기 JavaScript, 제한 시간 1.5초, 네트워크, 파일, 앱 접근 없음.
+          선택, 레이어, 투명 잠금은 유지됩니다.
+        </p>
+      </details>
+      <div class="dialog-actions">
+        <button type="button" class="dialog-close" data-action-role="close"><span data-icon="close"></span><span data-action-label>닫기</span></button><button id="script-cancel-run" type="button" hidden data-action-role="stop"><span data-icon="stop"></span><span data-action-label>실행 중단</span></button><button id="script-run" type="button" data-action-role="run"><span data-icon="play"></span><span data-action-label>미리보기 실행</span></button><button
+          id="script-apply"
+          class="button-primary"
+          type="button"
+          disabled
+         data-action-role="apply"><span data-icon="check"></span><span data-action-label>그림에 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="help-dialog" aria-labelledby="help-dialog-title">
+      <div class="dialog-heading">
+        <h2 id="help-dialog-title">마우스와 단축키</h2>
+        <button
+          type="button"
+          class="icon-button dialog-close"
+          aria-label="닫기"
+        >
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="shortcut-list">
+        <p>
+          <span id="help-mouse-action">왼쪽 / 오른쪽 색으로 그리기</span><kbd>좌클릭 / 우클릭</kbd>
+        </p>
+        <p><span>잠시 스포이트</span><kbd>Alt + 클릭</kbd></p>
+        <p><span>화면 이동</span><kbd>Space + 드래그 / 휠 버튼</kbd></p>
+        <p><span>브러시 크기</span><kbd>Ctrl + 휠</kbd></p>
+        <p><span>선택 추가 / 빼기</span><kbd>Shift / Alt</kbd></p>
+        <p><span>취소</span><kbd>Esc</kbd></p>
+        <p>
+          <span>선택 이동 (1px / 10px)</span><kbd>방향키 / Shift + 방향키</kbd>
+        </p>
+        <div id="custom-shortcut-help"></div>
+      </div>
+      <p class="field-help">
+        선택이 없으면 캔버스 전체가 편집 범위예요. 도형 드래그 중 Esc를 누르면
+        그리기를 취소해요.
+      </p>
+    </dialog>
+    <dialog id="confirm-dialog" aria-labelledby="confirm-dialog-title">
+      <div class="dialog-heading"><h2 id="confirm-dialog-title">현재 작업을 저장할까요?</h2></div>
+      <p class="dialog-description">저장하지 않은 변경 내용이 있습니다.</p>
+      <div class="dialog-actions">
+        <button id="confirm-cancel" class="secondary" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="confirm-skip" class="secondary">저장하지 않고 계속</button
+        ><button id="confirm-save" class="button-primary">저장 후 계속</button>
+      </div>
+    </dialog>
+    <script type="module" src="src/app.mjs"></script>
+    <dialog id="auto-create-dialog" aria-labelledby="auto-create-title">
+      <div class="dialog-heading">
+        <div>
+          <h2 id="auto-create-title">지형 연결 세트</h2>
+          <p class="field-help">소재 선택 → 모양별 편집 → 연결 테스트</p>
+        </div>
+        <button class="icon-button dialog-close" aria-label="닫기">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="creation-preview">
+        <canvas
+          id="auto-create-preview"
+          aria-label="선택한 두 소재의 지형 연결 예시"
+        ></canvas
+        ><span>연결 예시, 질감은 생성 후 편집</span>
+      </div>
+      <label>안쪽 지형<select id="auto-fg"></select></label
+      ><label>바깥쪽 배경<select id="auto-bg"></select></label>
+      <label
+        >타일 한 장의 크기<select id="auto-size">
+          <option value="8">8 × 8</option>
+          <option value="16" selected="">16 × 16</option>
+          <option value="32">32 × 32</option>
+          <option value="64">64 × 64</option>
+        </select></label
+      >
+      <details class="creation-details">
+        <summary>연결 방식과 크기 안내</summary>
+        <p class="field-help">
+          5가지 모양의 원본을 편집하면 47종 타일에 함께 반영됩니다. 공유 경계는
+          고정됩니다. 세밀한 질감 편집에는 16px 이상을 권장합니다.
+        </p>
+      </details>
+      <p id="auto-create-error" class="field-help" role="status"></p>
+      <div class="dialog-actions">
+        <button class="secondary dialog-close" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="auto-create" class="button-primary" data-action-role="create"><span data-icon="plus"></span><span data-action-label>오토타일 세트 만들기</span></button>
+      </div>
+    </dialog>
+    <dialog id="auto-workbench" aria-labelledby="auto-workbench-title">
+      <div class="dialog-heading">
+        <div>
+          <h2 id="auto-workbench-title">오토타일 연결 확인</h2>
+          <p id="auto-workbench-note" class="field-help">
+            지형을 칠하거나 지우며 연결을 확인하세요.
+          </p>
+        </div>
+        <button class="icon-button dialog-close" aria-label="닫기">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="auto-toolbar">
+        <label
+          >보기<select id="auto-show">
+            <option value="map">테스트 맵</option>
+            <option value="atlas">47종 타일 + 배경</option>
+          </select></label
+        ><label
+          >예제 불러오기<select id="auto-map-preset">
+            <option value="">지형 선택…</option>
+            <option value="island">섬 / 바깥 모서리</option>
+            <option value="hole">구멍 / 안쪽 모서리</option>
+            <option value="path">좁은 길 / 독립 칸</option>
+          </select></label
+        ><button
+          id="auto-foreground-brush"
+          class="secondary"
+          aria-pressed="true"
+        >
+          지형 칠하기</button
+        ><button
+          id="auto-background-brush"
+          class="secondary"
+          aria-pressed="false"
+        >
+          배경 지우기
+        </button>
+      </div>
+      <div class="auto-workbench-layout">
+        <div class="auto-map-stage">
+          <canvas
+            id="auto-map"
+            aria-label="10 × 8칸 테스트 맵"
+            title="왼쪽 클릭, 드래그: 지형 칠하기, 오른쪽 클릭: 지우기"
+          ></canvas
+          ><canvas
+            id="auto-atlas"
+            aria-label="47종 타일과 배경 타일, 클릭하여 선택"
+            hidden=""
+          ></canvas>
+        </div>
+        <div class="auto-piece-inspector" hidden>
+          <strong id="auto-selected-label"></strong
+          ><canvas id="auto-selected"></canvas>
+          <div
+            id="auto-source-links"
+            role="group"
+            aria-label="선택한 타일의 원본 편집"
+          ></div>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="tile-dialog" aria-labelledby="tile-title">
+      <div class="dialog-heading">
+        <div>
+          <h2 id="tile-title">게임용 반복 타일</h2>
+
+        </div>
+        <button class="icon-button dialog-close" aria-label="닫기">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <label
+        >소재<select id="tile-material">
+          <option value="grass">잔디</option>
+          <option value="dirt">흙</option>
+          <option value="stone">돌</option>
+          <option value="brick">벽돌</option>
+          <option value="water">물</option>
+          <option value="custom">직접 입력</option>
+        </select></label
+      >
+      <label id="tile-custom-label" hidden=""
+        >어떤 소재인가요?<input
+          id="tile-custom"
+          maxlength="120"
+          placeholder="예: 이끼 낀 어두운 던전 바닥"
+      /></label>
+      <label
+        >새 타일 크기<select id="tile-size">
+          <option value="8">8 × 8</option>
+          <option value="16" selected="">16 × 16</option>
+          <option value="32">32 × 32</option>
+          <option value="64">64 × 64</option>
+        </select></label
+      >
+      <p class="field-help">
+        기본색으로 시작합니다. 직접 그리거나 AI로 질감을 추가하세요.
+      </p>
+      <p id="tile-error" class="field-help" role="status"></p>
+      <div class="dialog-actions">
+        <button id="tile-use-current" class="secondary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>현재 그림에 적용</span></button><button id="tile-create" class="button-primary" data-action-role="create"><span data-icon="plus"></span><span data-action-label>새 타일 만들기</span></button>
+      </div>
+    </dialog>
+    <dialog id="tile-preview-dialog" aria-labelledby="tile-preview-title">
+      <div class="dialog-heading">
+        <div>
+          <h2 id="tile-preview-title">타일 반복 미리보기</h2>
+          <p id="tile-large-label" class="field-help"></p>
+        </div>
+        <button class="icon-button dialog-close" aria-label="닫기">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="tile-repeat-stage">
+        <canvas id="tile-large-preview"></canvas
+        ><canvas id="tile-diagnostic-overlay" aria-hidden="true"></canvas
+        ><span class="tile-center-outline"></span>
+      </div>
+      <label class="checkbox-label"
+        ><input id="tile-diagnostics" type="checkbox" />경계 차이 표시</label
+      >
+      <p id="tile-diagnostic-summary" class="field-help" hidden></p>
+    </dialog>
+    <dialog id="geometry-dialog" aria-labelledby="geometry-title">
+      <div class="dialog-heading">
+        <div>
+          <h2 id="geometry-title">3D 도형</h2>
+          <p class="field-help">
+            도형을 돌려 보고, 픽셀 결과를 새 레이어에 추가하세요.
+          </p>
+        </div>
+        <button class="icon-button dialog-close" aria-label="닫기">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="geometry-setup">
+        <label
+          >도형<select id="geometry-kind">
+            <option value="book">닫힌 책</option>
+            <option value="box">상자</option>
+            <option value="prism">삼각기둥</option>
+            <option value="pyramid">피라미드</option>
+            <option value="diamond">다이아몬드</option>
+          </select></label
+        >
+        <label
+          >시점<select id="geometry-preset">
+            <option value="lying">눕혀서 비스듬히</option>
+            <option value="oblique">세워서 비스듬히</option>
+            <option value="front">세운 정면</option>
+            <option value="overhead">바로 위에서</option>
+            <option value="isometric">등각 시점</option>
+            <option value="back">세운 뒷면</option>
+            <option value="left">세운 왼쪽 면</option>
+            <option value="right">세운 오른쪽 면</option>
+            <option value="top">세운 윗면</option>
+            <option value="bottom">세운 아랫면</option>
+            <option value="custom" disabled>직접 조절</option>
+          </select></label
+        >
+        <label
+          >자세<select id="geometry-pose">
+            <option value="upright">세움</option>
+            <option value="lying">눕힘</option>
+          </select></label
+        >
+        <label class="geometry-color"
+          >주면 색<input id="geometry-color" type="color" value="#50a889"
+        /></label>
+        <button id="geometry-fit" class="secondary" type="button">
+          화면에 맞춤</button
+        ><button id="geometry-reset" class="secondary" type="button" data-action-role="reset"><span data-icon="reset"></span><span data-action-label>초기화</span></button>
+      </div>
+      <div class="geometry-session-bar">
+        <span id="geometry-session-label">새 도형</span>
+        <div>
+          <button
+            id="geometry-undo"
+            class="icon-button"
+            title="3D 실행 취소 (Ctrl+Z)"
+            aria-label="3D 실행 취소"
+          >
+            <span data-icon="undo"></span></button
+          ><button
+            id="geometry-redo"
+            class="icon-button"
+            title="3D 다시 실행 (Ctrl+Shift+Z)"
+            aria-label="3D 다시 실행"
+          >
+            <span data-icon="redo"></span>
+          </button>
+        </div>
+      </div>
+      <div class="geometry-layout">
+        <section class="geometry-preview-column">
+          <h3>3D 모델 <span>직접 조작</span></h3>
+          <div
+            class="geometry-stage geometry-model-stage"
+            id="geometry-model-stage"
+          >
+            <canvas
+              id="geometry-model"
+              tabindex="0"
+              aria-label="3D 도형 조작. 드래그 또는 방향키로 회전. 휠로 크기 조절."
+              aria-describedby="geometry-gesture-help"
+            ></canvas>
+            <div id="geometry-rotation-ring" aria-hidden="true"></div>
+            <button
+              type="button"
+              class="geometry-handle"
+              data-geometry-handle="roll"
+              title="회전 손잡이, 드래그 또는 방향키"
+              aria-label="회전 손잡이"
+            >
+              회전</button
+            ><button
+              type="button"
+              class="geometry-handle"
+              data-geometry-handle="width"
+              title="가로 손잡이, 드래그 또는 방향키"
+              aria-label="가로 손잡이"
+            >
+              가로</button
+            ><button
+              type="button"
+              class="geometry-handle"
+              data-geometry-handle="height"
+              title="세로 손잡이, 드래그 또는 방향키"
+              aria-label="세로 손잡이"
+            >
+              세로</button
+            ><button
+              type="button"
+              class="geometry-handle"
+              data-geometry-handle="depth"
+              title="두께 손잡이, 드래그 또는 방향키"
+              aria-label="두께 손잡이"
+            >
+              두께</button
+            ><button
+              type="button"
+              class="geometry-handle"
+              data-geometry-handle="scale"
+              title="크기 손잡이, 드래그 또는 방향키"
+              aria-label="크기 손잡이"
+            >
+              크기
+            </button>
+          </div>
+          <div
+            class="geometry-manipulation"
+            role="group"
+            aria-label="3D 조작 모드"
+          >
+            <button
+              type="button"
+              data-geometry-mode="rotate"
+              aria-pressed="true"
+            >
+              회전</button
+            ><button
+              type="button"
+              data-geometry-mode="scale"
+              aria-pressed="false"
+            >
+              크기</button
+            ><button
+              type="button"
+              data-geometry-mode="width"
+              aria-pressed="false"
+            >
+              가로</button
+            ><button
+              type="button"
+              data-geometry-mode="height"
+              aria-pressed="false"
+            >
+              세로</button
+            ><button
+              type="button"
+              data-geometry-mode="depth"
+              aria-pressed="false"
+            >
+              두께
+            </button>
+          </div>
+          <div id="geometry-rotation-options" class="geometry-rotation-options">
+            <select id="geometry-rotation-axis" aria-label="회전 방향">
+              <option value="rotate">자유 회전</option>
+              <option value="yaw">좌우 회전</option>
+              <option value="elevation">상하 회전</option>
+              <option value="roll">화면 회전</option>
+            </select>
+            <label
+              ><input id="geometry-rotation-snap" type="checkbox" />15°
+              맞춤</label
+            >
+          </div>
+          <p id="geometry-gesture-help" class="field-help">
+            드래그: 회전, Shift: 화면 회전, 휠: 크기
+          </p>
+        </section>
+        <section class="geometry-preview-column">
+          <h3>픽셀 결과 <span id="geometry-result-size"></span></h3>
+          <div class="geometry-stage" id="geometry-pixel-stage">
+            <div id="geometry-pixel-wrap">
+              <canvas
+                id="geometry-canvas"
+                tabindex="0"
+                aria-label="픽셀 결과 위치 조절. 드래그 또는 방향키로 이동"
+              ></canvas>
+              <div id="geometry-pixel-box" aria-hidden="true"></div>
+              <button
+                type="button"
+                class="geometry-pixel-handle"
+                data-pixel-handle="nw"
+                aria-label="nw 크기 손잡이"
+                title="중심 기준 크기 조절"
+              ></button
+              ><button
+                type="button"
+                class="geometry-pixel-handle"
+                data-pixel-handle="ne"
+                aria-label="ne 크기 손잡이"
+                title="중심 기준 크기 조절"
+              ></button
+              ><button
+                type="button"
+                class="geometry-pixel-handle"
+                data-pixel-handle="sw"
+                aria-label="sw 크기 손잡이"
+                title="중심 기준 크기 조절"
+              ></button
+              ><button
+                type="button"
+                class="geometry-pixel-handle"
+                data-pixel-handle="se"
+                aria-label="se 크기 손잡이"
+                title="중심 기준 크기 조절"
+              ></button>
+            </div>
+          </div>
+          <div class="geometry-pixel-actions">
+            <span>드래그: 위치, 모서리: 크기</span
+            ><button
+              id="geometry-compare"
+              type="button"
+              aria-pressed="false"
+              hidden
+            >
+              원본 보기
+            </button>
+          </div>
+          <div class="geometry-native">
+            <canvas id="geometry-native"></canvas
+            ><span id="geometry-size"></span>
+          </div>
+        </section>
+      </div>
+      <div class="geometry-settings-scroll">
+        <details id="geometry-lighting">
+          <summary>조명</summary>
+          <label class="checkbox-label"
+            ><input id="geometry-light-enabled" type="checkbox" />방향 조명
+            사용</label
+          >
+          <fieldset id="geometry-light-controls" disabled>
+            <button
+              id="geometry-light-pad"
+              type="button"
+              title="드래그하거나 방향키로 조명을 움직여요."
+              aria-label="조명 방향"
+            >
+              <span id="geometry-light-dot"></span>
+            </button>
+            <label
+              >방향 °<input
+                id="geometry-light-azimuth"
+                type="number"
+                min="-180"
+                max="180"
+                value="135"
+            /></label>
+            <label
+              >앞쪽 각도 °<input
+                id="geometry-light-elevation"
+                type="number"
+                min="0"
+                max="90"
+                value="45"
+            /></label>
+            <label
+              >그림자 밝기 %<input
+                id="geometry-light-ambient"
+                type="number"
+                min="0"
+                max="100"
+                value="45"
+            /></label>
+            <label
+              >명암 단계<input
+                id="geometry-light-steps"
+                type="number"
+                min="2"
+                max="8"
+                value="4"
+            /></label>
+          </fieldset>
+        </details>
+        <details id="geometry-precise">
+          <summary>정밀 조절</summary>
+          <div class="geometry-controls">
+            <label
+              >좌우 회전<span class="geometry-number"
+                ><input
+                  id="geometry-yaw-number"
+                  type="number"
+                  min="-180"
+                  max="180"
+                  step="1"
+                  value="25"
+                  aria-label="좌우 회전 값"
+                /><span>°</span></span
+              ><input
+                id="geometry-yaw" aria-label="좌우 회전"
+                type="range"
+                min="-180"
+                max="180"
+                value="25" /><output
+                id="geometry-yaw-value"
+                hidden
+              ></output></label
+            ><label
+              >상하 회전<span class="geometry-number"
+                ><input
+                  id="geometry-elevation-number"
+                  type="number"
+                  min="-90"
+                  max="90"
+                  step="1"
+                  value="55"
+                  aria-label="상하 회전 값"
+                /><span>°</span></span
+              ><input
+                id="geometry-elevation" aria-label="상하 회전"
+                type="range"
+                min="-90"
+                max="90"
+                value="55" /><output
+                id="geometry-elevation-value"
+                hidden
+              ></output></label
+            ><label
+              >화면 회전<span class="geometry-number"
+                ><input
+                  id="geometry-roll-number"
+                  type="number"
+                  min="-180"
+                  max="180"
+                  step="1"
+                  value="30"
+                  aria-label="화면 회전 값"
+                /><span>°</span></span
+              ><input
+                id="geometry-roll" aria-label="화면 회전"
+                type="range"
+                min="-180"
+                max="180"
+                value="30" /><output
+                id="geometry-roll-value"
+                hidden
+              ></output></label
+            ><label
+              >가로<span class="geometry-number"
+                ><input
+                  id="geometry-aspect-number"
+                  type="number"
+                  min="40"
+                  max="140"
+                  step="1"
+                  value="72"
+                  aria-label="가로 값"
+                /><span>%</span></span
+              ><input
+                id="geometry-aspect" aria-label="가로"
+                type="range"
+                min="40"
+                max="140"
+                value="72" /><output
+                id="geometry-aspect-value"
+                hidden
+              ></output></label
+            ><label
+              >세로<span class="geometry-number"
+                ><input
+                  id="geometry-height-number"
+                  type="number"
+                  min="40"
+                  max="160"
+                  step="1"
+                  value="100"
+                  aria-label="세로 값"
+                /><span>%</span></span
+              ><input
+                id="geometry-height" aria-label="세로"
+                type="range"
+                min="40"
+                max="160"
+                value="100" /><output
+                id="geometry-height-value"
+                hidden
+              ></output></label
+            ><label
+              >두께<span class="geometry-number"
+                ><input
+                  id="geometry-thickness-number"
+                  type="number"
+                  min="8"
+                  max="90"
+                  step="1"
+                  value="16"
+                  aria-label="두께 값"
+                /><span>%</span></span
+              ><input
+                id="geometry-thickness" aria-label="두께"
+                type="range"
+                min="8"
+                max="90"
+                value="16" /><output
+                id="geometry-thickness-value"
+                hidden
+              ></output></label
+            ><label
+              >전체 크기<span class="geometry-number"
+                ><input
+                  id="geometry-fill-number"
+                  type="number"
+                  min="10"
+                  max="200"
+                  step="1"
+                  value="85"
+                  aria-label="전체 크기 값"
+                /><span>%</span></span
+              ><input
+                id="geometry-fill" aria-label="전체 크기"
+                type="range"
+                min="10"
+                max="200"
+                value="85" /><output id="geometry-fill-value" hidden></output
+            ></label>
+          </div>
+        </details>
+        <details class="geometry-details">
+          <summary>면 정보, AI 편집 범위</summary>
+          <div id="geometry-legend"></div>
+          <p id="geometry-warning" role="status"></p>
+        </details>
+        <p id="geometry-edit-note" class="field-help" hidden>
+          원본과 비교한 뒤 적용하세요. 원본 레이어는 보관하고, 현재 보이는
+          도형을 수정본 레이어로 추가합니다.
+        </p>
+      </div>
+      <div class="geometry-status-slot" aria-live="polite">
+        <p id="geometry-unavailable" class="field-help" hidden></p>
+        <p id="geometry-clipped" class="field-help" hidden>
+          일부가 캔버스 밖에 있어요. 위치를 옮기거나 화면에 맞춰 주세요.
+        </p>
+        <p id="geometry-error" role="alert" hidden></p>
+      </div>
+      <div class="geometry-footer">
+        <label class="checkbox-label"
+          ><input id="geometry-hide-existing" type="checkbox" />기존 레이어
+          숨기기</label
+        >
+        <div class="proposal-actions dialog-actions">
+          <button id="geometry-cancel" class="secondary" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="geometry-create" class="button-primary" data-action-role="apply"><span data-icon="plus"></span><span data-action-label>새 레이어에 추가</span></button>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="refine-dialog" aria-labelledby="refine-title">
+      <div class="dialog-heading">
+        <div>
+          <h2 id="refine-title">픽셀 보정</h2>
+          <button
+            id="refine-reset"
+            type="button"
+            class="text-button"
+            title="단계, 강도 설정을 기본값으로 복원합니다. 보호 표시는 유지합니다."
+           data-action-role="reset"><span data-icon="reset"></span><span data-action-label>기본값 복원</span></button>
+          <p id="refine-scope" class="field-help"></p>
+        </div>
+        <button
+          type="button"
+          class="icon-button dialog-close"
+          aria-label="닫기"
+        >
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <div class="refine-tabs" role="tablist" aria-label="보정 방식">
+        <button
+          id="refine-tab-shading"
+          data-refine-tab="shading"
+          role="tab"
+          aria-selected="true"
+          aria-controls="refine-panel-shading"
+        >
+          명암 단계</button
+        ><button
+          id="refine-tab-outline"
+          data-refine-tab="outline"
+          role="tab"
+          aria-selected="false"
+          tabindex="-1"
+          aria-controls="refine-panel-outline"
+        >
+          외곽선 대비</button
+        ><button
+          id="refine-tab-silhouette"
+          data-refine-tab="silhouette"
+          role="tab"
+          aria-selected="false"
+          tabindex="-1"
+          aria-controls="refine-panel-silhouette"
+        >
+          실루엣 검사
+        </button>
+        <button
+          id="refine-tab-clusters"
+          data-refine-tab="clusters"
+          role="tab"
+          aria-selected="false"
+          tabindex="-1"
+          aria-controls="refine-panel-clusters"
+        >
+          색 덩어리
+        </button>
+      </div>
+      <div class="refine-layout">
+        <div class="refine-previews">
+          <section>
+            <h3>원본 <span id="refine-candidate-count"></span></h3>
+            <div class="refine-stage">
+              <div class="refine-canvas-wrap">
+                <canvas id="refine-before"></canvas
+                ><canvas
+                  id="refine-before-overlay"
+                  class="refine-overlay"
+                  aria-label="실루엣 후보를 클릭하여 선택"
+                ></canvas>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h3>변경 후 <span id="refine-change-count"></span></h3>
+            <div class="refine-stage">
+              <div class="refine-canvas-wrap">
+                <canvas id="refine-after"></canvas
+                ><canvas
+                  id="refine-after-overlay"
+                  class="refine-overlay"
+                  aria-hidden="true"
+                ></canvas>
+              </div>
+            </div>
+          </section>
+          <div class="refine-preview-footer">
+            <label class="checkbox-label"
+              ><input id="refine-diff" type="checkbox" />변경 픽셀 표시</label
+            ><canvas id="refine-native"></canvas><span>실제 크기</span>
+          </div>
+          <details class="refine-protection" id="refine-protection">
+            <summary>
+              디테일 보호 <span id="refine-protected-count">0px</span>
+            </summary>
+            <div class="refine-protect-actions">
+              <button
+                id="refine-protect-paint"
+                type="button"
+                aria-pressed="false"
+              >
+                보호 그리기
+              </button>
+              <button
+                id="refine-protect-erase"
+                type="button"
+                aria-pressed="false"
+              >
+                보호 지우기
+              </button>
+              <button id="refine-protect-undo" type="button" data-action-role="undo"><span data-icon="undo"></span><span data-action-label>표시 되돌리기</span></button>
+              <button id="refine-protect-redo" type="button" data-action-role="redo"><span data-icon="redo"></span><span data-action-label>다시 실행</span></button>
+              <button id="refine-protect-clear" type="button" data-action-role="clear"><span data-icon="eraser"></span><span data-action-label>보호 표시 모두 해제</span></button>
+            </div>
+            <p class="field-help">파란 표시는 픽셀 보정에서 제외됩니다. AI 수정은 ‘디테일 보호를 AI에도 적용’ 설정을 따릅니다. 수동 그리기에는 적용되지 않습니다.</p>
+          </details>
+        </div>
+        <div class="refine-controls">
+          <section
+            id="refine-panel-shading"
+            role="tabpanel"
+            aria-labelledby="refine-tab-shading"
+          >
+            <label
+              >대상 색상<select id="refine-family">
+                <option value="all">모든 색상 계열</option>
+              </select></label
+            ><label
+              for="refine-levels">계열별 명암 단계 <output id="refine-levels-value">3</output
+              ><input id="refine-levels" type="range" min="2" max="6" value="3"
+            /></label>
+            <p class="field-help">비슷한 색의 명암 단계를 줄입니다. 기존 팔레트와 투명도는 유지합니다.</p>
+          </section>
+          <section
+            id="refine-panel-outline"
+            role="tabpanel"
+            aria-labelledby="refine-tab-outline"
+            hidden
+          >
+            <label>외곽선 색<select id="refine-outline-color"></select></label
+            ><label
+              >안쪽 탐색 두께<select id="refine-outline-width">
+                <option value="1">1px</option>
+                <option value="2">2px</option>
+                <option value="3">3px</option>
+              </select></label
+            ><label
+              >대비 완화 <output id="refine-strength-value">40%</output
+              ><input
+                id="refine-strength"
+                type="range"
+                min="0"
+                max="100"
+                value="40" /></label
+            ><label
+              >팔레트<select id="refine-palette">
+                <option value="new">필요한 색 추가</option>
+                <option value="existing">기존 색만 사용</option>
+              </select></label
+            >
+            <p class="field-help">선택한 외곽선 색을 안쪽 색에 가깝게 밝힙니다. 형태와 내부 선은 유지합니다.</p>
+          </section>
+          <section
+            id="refine-panel-silhouette"
+            role="tabpanel"
+            aria-labelledby="refine-tab-silhouette"
+            hidden
+          >
+            <div class="refine-candidate-options">
+              <label
+                >후보 종류<select id="refine-candidate-kind">
+                  <option value="all">모두</option>
+                  <option value="island">고립 조각</option>
+                  <option value="spur">돌출 픽셀</option>
+                  <option value="hole">작은 구멍</option>
+                </select></label
+              ><label
+                >최대 크기<select id="refine-max-area">
+                  <option value="1">1px</option>
+                  <option value="2">2px</option>
+                  <option value="3">3px</option>
+                  <option value="4">4px</option>
+                </select></label
+              >
+            </div>
+            <p class="field-help">정리할 조각을 목록이나 원본에서 선택하세요. 눈, 반짝임은 지워지지 않도록 확인하세요.</p>
+          </section>
+          <section
+            id="refine-panel-clusters"
+            role="tabpanel"
+            aria-labelledby="refine-tab-clusters"
+            hidden
+          >
+            <label
+              >최대 조각 크기<select id="refine-cluster-area">
+                <option value="1">1px</option>
+                <option value="2" selected>2px</option>
+                <option value="4">4px</option>
+                <option value="8">8px</option>
+              </select></label
+            >
+            <label
+              >색 차이 허용 <output id="refine-tolerance-value">20</output
+              ><input
+                id="refine-tolerance"
+                type="range"
+                min="0"
+                max="100"
+                value="20"
+            /></label>
+            <p class="field-help">작은 색 조각을 이웃한 큰 영역에 합칩니다. 색 계열과 투명도가 같은 후보 중 정리할 조각을 선택하세요.</p>
+          </section>
+          <div id="refine-candidate-tools" hidden>
+            <div class="refine-candidate-actions">
+              <button id="refine-select-candidates" type="button">
+                가능한 후보 선택</button
+              ><button id="refine-clear-candidates" type="button" data-action-role="clear"><span data-icon="close"></span><span data-action-label>후보 선택 해제</span></button>
+            </div>
+            <div id="refine-candidates" aria-label="실루엣 후보"></div>
+          </div>
+          <label class="checkbox-label refine-alpha"
+            ><input id="refine-alpha" type="checkbox" />투명 잠금</label
+          >
+          <p id="refine-lock-note" class="field-help"></p>
+        </div>
+      </div>
+      <div class="refine-footer">
+        <div>
+          <strong id="refine-result" role="status"></strong>
+          <p id="refine-error" role="alert" hidden></p>
+          <span class="field-help">AI 전송 없음</span>
+        </div>
+        <div class="dialog-actions">
+          <button id="refine-cancel" class="secondary" type="button" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button
+            id="refine-apply"
+            class="button-primary"
+            type="button"
+            disabled
+           data-action-role="apply"><span data-icon="check"></span><span data-action-label>보정 적용</span></button>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="ramp-dialog" aria-labelledby="ramp-dialog-title">
+      <h2 id="ramp-dialog-title">명암 색상 묶음</h2>
+      <p class="field-help">
+        기존 팔레트에서 그림자, 기본색, 밝은 면을 골라요. 묶음은 프로젝트에
+        저장됩니다.
+      </p>
+      <label>이름<input id="ramp-name" maxlength="50" /></label>
+      <div class="ramp-fields">
+        <label>그림자<select id="ramp-shadow"></select></label
+        ><label>기본색<select id="ramp-base"></select></label
+        ><label>밝은 면<select id="ramp-light"></select></label>
+      </div>
+      <p id="ramp-error" role="status"></p>
+      <div class="proposal-actions dialog-actions">
+        <button id="ramp-delete" class="secondary" data-action-role="delete"><span data-icon="trash"></span><span data-action-label>묶음 삭제</span></button><button id="ramp-cancel" class="secondary" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="ramp-save" class="button-primary" data-action-role="save"><span data-icon="save"></span><span data-action-label>묶음 저장</span></button>
+      </div>
+    </dialog>
+    <dialog id="replace-dialog" class="replace-dialog" aria-labelledby="replace-dialog-title">
+      <h2 id="replace-dialog-title">색상 일괄 변경</h2>
+      <p id="replace-source"></p>
+      <label
+        >적용 범위<select id="replace-scope">
+          <option value="selection">선택 영역, 현재 레이어</option>
+          <option value="layer">현재 레이어 전체</option>
+          <option value="all">모든 레이어, 숨김 포함, 잠금 제외</option>
+        </select></label
+      >
+      <div class="replace-inputs">
+        <label>바꿀 색<input id="replace-color" type="color" /></label
+        ><label
+          >투명도
+          <input id="replace-alpha" type="number" min="0" max="255" value="255"
+        /></label>
+      </div>
+      <p id="replace-lock-note" class="field-help"></p>
+      <div class="replace-preview"><canvas id="replace-canvas"></canvas></div>
+      <p id="replace-result" role="status"></p>
+      <div class="proposal-actions dialog-actions">
+        <button id="replace-cancel" class="secondary" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="replace-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>변경 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="guide-convert-dialog" class="document-tool-dialog" aria-labelledby="guide-convert-dialog-title">
+      <h2 id="guide-convert-dialog-title">입체 가이드를 해제할까요?</h2>
+      <p>
+        픽셀은 유지하고 가이드만 해제한 뒤 작업합니다. 실행 취소로 함께 복원할
+        수 있어요.
+      </p>
+      <div class="document-tool-actions">
+        <button data-close-document-dialog data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="guide-convert-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>해제하고 계속</span></button>
+      </div>
+    </dialog>
+    <dialog id="resize-dialog" class="document-tool-dialog" aria-labelledby="resize-dialog-title">
+      <div class="dialog-heading">
+        <h2 id="resize-dialog-title">캔버스 크기와 여백</h2>
+        <div class="draft-toolbar">
+          <button id="resize-undo" type="button" data-action-role="undo"><span data-icon="undo"></span><span data-action-label>실행 취소</span></button><button id="resize-redo" type="button" data-action-role="redo"><span data-icon="redo"></span><span data-action-label>다시 실행</span></button>
+        </div>
+      </div>
+      <p>픽셀 크기를 유지하고 캔버스 여백만 조절해요.</p>
+      <div class="document-tool-fields">
+        <label
+          >가로<input
+            id="resize-width"
+            type="number"
+            min="1"
+            max="3840"
+            required /></label
+        ><label
+          >세로<input
+            id="resize-height"
+            type="number"
+            min="1"
+            max="3840"
+            required
+        /></label>
+      </div>
+      <label
+        >기준 위치<select id="resize-anchor">
+          <option value="nw">왼쪽 위</option>
+          <option value="n">위</option>
+          <option value="ne">오른쪽 위</option>
+          <option value="w">왼쪽</option>
+          <option value="center">중앙</option>
+          <option value="e">오른쪽</option>
+          <option value="sw">왼쪽 아래</option>
+          <option value="s">아래</option>
+          <option value="se">오른쪽 아래</option>
+          <option value="custom" disabled>드래그로 지정</option>
+        </select></label
+      >
+      <label id="resize-guide-option" class="check"
+        ><input id="resize-detach" type="checkbox" />입체 가이드를 일반 픽셀로
+        전환</label
+      >
+      <div id="resize-stage" aria-label="캔버스 여백 조절">
+        <canvas
+          id="resize-comparison"
+          aria-label="원본과 잘리는 영역 비교"
+          hidden
+        ></canvas>
+        <button id="resize-compare" type="button" aria-pressed="false">
+          잘림 비교
+        </button>
+        <div id="resize-frame">
+          <canvas id="resize-preview"></canvas>
+          <button
+            type="button"
+            data-resize-edge="nw"
+            aria-label="왼쪽 위 여백 조절"
+          ></button>
+          <button
+            type="button"
+            data-resize-edge="n"
+            aria-label="위 여백 조절"
+          ></button>
+          <button
+            type="button"
+            data-resize-edge="ne"
+            aria-label="오른쪽 위 여백 조절"
+          ></button>
+          <button
+            type="button"
+            data-resize-edge="e"
+            aria-label="오른쪽 여백 조절"
+          ></button>
+          <button
+            type="button"
+            data-resize-edge="se"
+            aria-label="오른쪽 아래 여백 조절"
+          ></button>
+          <button
+            type="button"
+            data-resize-edge="s"
+            aria-label="아래 여백 조절"
+          ></button>
+          <button
+            type="button"
+            data-resize-edge="sw"
+            aria-label="왼쪽 아래 여백 조절"
+          ></button>
+          <button
+            type="button"
+            data-resize-edge="w"
+            aria-label="왼쪽 여백 조절"
+          ></button>
+        </div>
+        <span id="resize-size-label"></span>
+      </div>
+      <p class="field-help">
+        변, 모서리를 드래그해 조절하세요. 방향키는 1px, Shift+방향키는 10px씩
+        조절합니다.
+      </p>
+      <div id="resize-feedback">
+        <p id="resize-result"></p>
+        <label id="resize-crop-confirm" class="check"
+          ><input id="resize-allow-crop" type="checkbox" />잘리는 픽셀과 보호
+          표시를 확인했어요.</label
+        >
+        <p id="resize-error" role="status"></p>
+      </div>
+      <div class="document-tool-actions">
+        <button data-close-document-dialog data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="resize-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>캔버스 크기 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="palette-cleanup-dialog" class="document-tool-dialog" aria-labelledby="palette-cleanup-dialog-title">
+      <h2 id="palette-cleanup-dialog-title">팔레트 정리</h2>
+      <p>
+        사용하지 않는 색과 중복 색을 정리해요. 레이어, 명암 묶음, 선택한 색은
+        유지해요.
+      </p>
+      <div class="document-tool-preview">
+        <canvas id="palette-cleanup-preview"></canvas>
+      </div>
+      <p id="palette-cleanup-result"></p>
+      <div class="document-tool-actions">
+        <button data-close-document-dialog data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="palette-cleanup-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>정리 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="context-dialog" class="document-tool-dialog" aria-labelledby="context-dialog-title">
+      <h2 id="context-dialog-title">프로젝트 참고 및 보호 설정</h2>
+      <label class="check"
+        ><input id="context-store" type="checkbox" />참고 이미지와 프롬프트를
+        프로젝트에 보관</label
+      >
+      <p>
+        적용한 참고 이미지의 잘린 부분과 프롬프트를 파일, 자동 저장에 포함해요.
+        원본 경로는 저장하지 않아요.
+      </p>
+      <label
+        >현재 레이어의 보호 표시<select id="protection-mode">
+          <option value="canvas">캔버스 좌표에 고정</option>
+          <option value="pixels">문양과 함께 이동, 복제</option>
+        </select></label
+      >
+      <div class="document-tool-actions">
+        <button data-close-document-dialog data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="context-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>참고 설정 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="folder-dialog" class="document-tool-dialog" aria-labelledby="folder-dialog-title">
+      <h2 id="folder-dialog-title">폴더 설정</h2>
+      <label>이름<input id="folder-name" maxlength="100" /></label>
+      <label class="document-checkbox"
+        ><input id="folder-visible" type="checkbox" />폴더 표시</label
+      >
+      <label class="document-checkbox"
+        ><input id="folder-locked" type="checkbox" />폴더 잠금</label
+      >
+      <div class="dialog-actions">
+        <button id="folder-duplicate">폴더 복제</button
+        ><button id="folder-ungroup">폴더만 해제</button>
+      </div>
+      <details>
+        <summary>폴더 삭제</summary>
+        <label class="document-checkbox"
+          ><input id="folder-delete-confirm" type="checkbox" />폴더 안의
+          레이어도 삭제합니다.</label
+        >
+        <button id="folder-delete" disabled data-action-role="delete"><span data-icon="trash"></span><span data-action-label>폴더 삭제</span></button>
+      </details>
+      <div class="dialog-actions">
+        <button data-close-layer-dialog data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="folder-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>폴더 설정 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="layer-mask-dialog" class="layer-mask-dialog" aria-labelledby="layer-mask-title">
+      <h2 id="layer-mask-title">마스크 편집</h2>
+      <p class="field-help">
+        흰색은 표시하고 검정색은 숨깁니다. 원본 픽셀은 유지됩니다.
+      </p>
+      <div class="layer-mask-controls">
+        <select id="layer-mask-mode" aria-label="마스크 브러시">
+          <option value="hide">숨기기</option>
+          <option value="show">드러내기</option>
+        </select>
+        <label
+          >크기<input
+            id="layer-mask-size"
+            type="number"
+            min="1"
+            max="8"
+            value="1"
+        /></label>
+        <button id="layer-mask-undo" data-action-role="undo"><span data-icon="undo"></span><span data-action-label>되돌리기</span></button>
+        <button id="layer-mask-redo" data-action-role="redo"><span data-icon="redo"></span><span data-action-label>다시 실행</span></button><button id="layer-mask-invert">반전</button>
+        <button id="layer-mask-reveal">모두 표시</button
+        ><button id="layer-mask-hide">모두 숨김</button>
+      </div>
+      <div class="layer-mask-previews">
+        <figure>
+          <figcaption>마스크 편집</figcaption>
+          <canvas
+            id="layer-mask-canvas"
+            tabindex="0"
+            aria-label="마스크 편집"
+          ></canvas>
+        </figure>
+        <figure>
+          <figcaption>합성 미리보기</figcaption>
+          <canvas id="layer-mask-preview"></canvas>
+          <button id="layer-mask-compare" aria-pressed="false">
+            누르는 동안 마스크 없이 보기
+          </button>
+        </figure>
+      </div>
+      <p id="layer-mask-scope" class="field-help"></p>
+      <label class="checkbox-label"
+        ><input type="checkbox" id="layer-mask-linked" />그림과 함께 이동</label
+      >
+      <p class="field-help">오른쪽 버튼은 반대로 칠합니다.</p>
+      <div class="dialog-actions">
+        <button data-close-layer-dialog data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="layer-mask-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>마스크 적용</span></button>
+      </div>
+    </dialog>
+    <dialog id="layer-align-dialog" class="layer-mask-dialog" aria-labelledby="layer-align-dialog-title">
+      <h2 id="layer-align-dialog-title">레이어 정렬</h2>
+      <p class="field-help">
+        선택한 레이어의 칠해진 픽셀을 정렬합니다. 선택 영역이 있으면 그 안에서만
+        이동합니다.
+      </p>
+      <div class="layer-mask-controls">
+        <select id="layer-align-reference" aria-label="정렬 기준">
+          <option value="canvas">캔버스, 선택 영역 기준</option>
+          <option value="active">활성 레이어 기준</option>
+        </select>
+        <select id="layer-align-direction" aria-label="정렬 방향">
+          <option value="left">왼쪽 정렬</option>
+          <option value="center-x">가로 가운데 정렬</option>
+          <option value="right">오른쪽 정렬</option>
+          <option value="top">위쪽 정렬</option>
+          <option value="center-y">세로 가운데 정렬</option>
+          <option value="bottom">아래쪽 정렬</option>
+        </select>
+      </div>
+      <div class="layer-mask-previews">
+        <figure>
+          <figcaption>원본</figcaption>
+          <canvas id="layer-align-before"></canvas>
+        </figure>
+        <figure>
+          <figcaption>정렬 미리보기</figcaption>
+          <canvas id="layer-align-preview"></canvas>
+        </figure>
+      </div>
+      <p id="layer-align-status" class="field-help" role="status"></p>
+      <div class="dialog-actions">
+        <button data-close-layer-dialog data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="layer-align-apply" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>정렬 적용</span></button>
+      </div>
+    </dialog>
+    <dialog
+      id="layer-context-menu"
+      class="layer-context-menu"
+      aria-label="레이어 작업"
+    ></dialog>
+    <dialog id="palette-library-dialog" aria-labelledby="palette-library-title">
+      <h2 id="palette-library-title">팔레트 보관함</h2>
+      <div class="palette-library-save-row">
+        <label>이름<input id="palette-library-name" maxlength="60" /></label
+        ><button id="palette-library-save" type="button" data-action-role="save"><span data-icon="save"></span><span data-action-label>현재 팔레트 저장</span></button>
+      </div>
+      <label>저장한 팔레트<select id="palette-library-list"></select></label>
+      <div id="palette-library-colors"></div>
+      <p id="palette-library-info" class="field-help"></p>
+      <p class="field-help">
+        기존 그림은 유지하고 없는 색과 명암 묶음만 추가해요.
+      </p>
+      <div class="palette-library-files">
+        <button id="palette-library-import" type="button" data-action-role="open"><span data-icon="folder"></span><span data-action-label>팔레트 가져오기</span></button><button id="palette-library-export" type="button" data-action-role="export"><span data-icon="export"></span><span data-action-label>팔레트 내보내기</span></button><button id="palette-library-delete" type="button" data-action-role="delete"><span data-icon="trash"></span><span data-action-label>보관함에서 삭제</span></button>
+      </div>
+      <p id="palette-library-error" role="status" class="field-help"></p>
+      <div class="dialog-actions">
+        <button id="palette-library-close" type="button" data-action-role="close"><span data-icon="close"></span><span data-action-label>닫기</span></button><button
+          id="palette-library-apply"
+          type="button"
+          class="button-primary"
+         data-action-role="create"><span data-icon="plus"></span><span data-action-label>색상 추가</span></button>
+      </div>
+    </dialog>
+    <dialog id="image-size-dialog" aria-labelledby="image-size-title">
+      <h2 id="image-size-title">이미지 크기 조절</h2>
+      <p class="field-help" id="image-size-description">
+        가장 가까운 픽셀을 사용해 크기를 바꿔요. 축소하면 세부 표현이 사라질 수
+        있어요.
+      </p>
+      <div class="image-size-previews">
+        <figure>
+          <figcaption>원본</figcaption>
+          <canvas
+            id="image-size-source"
+            width="320"
+            height="240"
+            tabindex="0"
+            aria-label="잘라낼 영역 드래그"
+          ></canvas>
+        </figure>
+        <figure>
+          <figcaption>결과 미리보기</figcaption>
+          <canvas id="image-size-preview" width="320" height="240"></canvas>
+        </figure>
+      </div>
+      <div id="image-crop-controls" hidden>
+        <div class="image-crop-fields">
+          <label
+            >X<input id="image-crop-x" type="number" min="0" value="0" /></label
+          ><label
+            >Y<input id="image-crop-y" type="number" min="0" value="0" /></label
+          ><label
+            >가로<input id="image-crop-width" type="number" min="1" /></label
+          ><label
+            >세로<input id="image-crop-height" type="number" min="1"
+          /></label>
+        </div>
+        <button id="image-crop-reset" type="button" data-action-role="reset"><span data-icon="reset"></span><span data-action-label>전체 이미지</span></button><span class="field-help"
+          >안쪽 드래그: 이동, 모서리: 크기, Shift 드래그: 새 영역, Esc:
+          취소</span
+        >
+      </div>
+      <div class="image-size-fields">
+        <label
+          >출력 가로<input
+            id="image-size-width"
+            type="number"
+            min="1"
+            max="3840" /></label
+        ><label
+          >출력 세로<input
+            id="image-size-height"
+            type="number"
+            min="1"
+            max="3840" /></label
+        ><label class="checkbox-label"
+          ><input id="image-size-aspect" type="checkbox" checked />비율
+          유지</label
+        >
+      </div>
+      <div class="image-size-presets">
+        <button id="image-size-half" type="button">½ 배</button
+        ><button id="image-size-double" type="button">2 배</button
+        ><button id="image-size-original" type="button">원래 크기</button>
+      </div>
+      <label id="image-size-reduce-option" class="checkbox-label"
+        ><input id="image-size-reduce" type="checkbox" />256색으로 줄이기, 색과
+        투명도가 달라질 수 있어요</label
+      >
+      <label id="image-size-detach-option" class="checkbox-label"
+        ><input id="image-size-detach" type="checkbox" />입체 가이드를 일반
+        픽셀로 전환</label
+      >
+      <p id="image-size-status" class="field-help" role="status"></p>
+      <div class="dialog-actions">
+        <button id="image-size-cancel" type="button" data-action-role="cancel"><span data-icon="close"></span><span data-action-label>취소</span></button><button id="image-size-apply" type="button" class="button-primary" data-action-role="apply"><span data-icon="check"></span><span data-action-label>크기 적용</span></button>
+      </div>
+    </dialog>
+  </body>
+</html>
