@@ -1,0 +1,83 @@
+{
+  "generatedOn": "2026-11-17",
+  "preparedOn": "2026-11-22",
+  "model": "unknown (built-in host image tool)",
+  "comparison": "Same generated source before and after local skill conversion; not a same-GPT controlled trial",
+  "selection": "First recorded replicate of sword and explorer, chosen to cover object and character; the original study retained two replicates of four subjects",
+  "imageRequestsPerCase": 1,
+  "externalReferences": 0,
+  "additionalImageRequestsForConversion": 0,
+  "reportedTokens": null,
+  "billedCost": null,
+  "hostReasoningTokens": null,
+  "cases": [
+    {
+      "id": "sword-1",
+      "prompt": "A steel short sword placed diagonally from lower left to upper right, with a golden crossguard, a red gem in the hilt, a dark wrapped grip, and its complete blade and pommel visible. No hand or character.\nCreate a single game sprite. Native canvas exactly 32 by 32 pixels, at most 16 colors including transparency. Design the silhouette and essential features to read at that small size. Crisp connected pixel clusters, restrained flat shading, clean dark outline, no antialiasing, no blur, no gradients, no text, no ground shadow. The complete object fits inside the canvas with transparent margins. Use a genuinely transparent background, never a painted checkerboard.",
+      "source": {
+        "file": "sword-source.png",
+        "sha256": "404dc7f58dd49c845532a628e9bcce16b0a973faf466a0119dd36980b3c252ca",
+        "width": 1254,
+        "height": 1254,
+        "rgbaColors": 36611,
+        "partialAlphaPixels": 257296
+      },
+      "native": {
+        "file": "sword-native.png",
+        "sha256": "3d2f2192cb77c8ec152b3111c293a27bd56c527ea5e600479d11faefc44aad70",
+        "width": 32,
+        "height": 32,
+        "rgbaColors": 16,
+        "partialAlphaPixels": 0
+      },
+      "project": {
+        "file": "sword.pixeltool",
+        "sha256": "06babcfd6227a360de3c47e4be4459669516127beafd70931d547edccbae2648"
+      },
+      "conversion": {
+        "method": "features",
+        "fit": "frame",
+        "totalColorBudget": 16,
+        "alphaThreshold": 128,
+        "dithering": false,
+        "manualPixelChanges": 0,
+        "acceptedReviewChanges": 0,
+        "storedFormatVersion": 2
+      }
+    },
+    {
+      "id": "explorer-1",
+      "prompt": "A small full-body fantasy explorer standing in a slight three-quarter view, with short brown hair, a blue tunic, a tan shoulder bag, separate boots and a readable face, holding one wooden staff.\nCreate a single game sprite. Native canvas exactly 32 by 32 pixels, at most 16 colors including transparency. Design the silhouette and essential features to read at that small size. Crisp connected pixel clusters, restrained flat shading, clean dark outline, no antialiasing, no blur, no gradients, no text, no ground shadow. The complete object fits inside the canvas with transparent margins. Use a genuinely transparent background, never a painted checkerboard.",
+      "source": {
+        "file": "explorer-source.png",
+        "sha256": "1985bc8b4121e708594ebaf7a29a3132f4f68ff82cd25e3cb3fb19148c9887e5",
+        "width": 1254,
+        "height": 1254,
+        "rgbaColors": 46106,
+        "partialAlphaPixels": 335610
+      },
+      "native": {
+        "file": "explorer-native.png",
+        "sha256": "e18244684eb0519459bace38efa3363f602fad7e1852c6563fb24ec7e4cdb096",
+        "width": 32,
+        "height": 32,
+        "rgbaColors": 16,
+        "partialAlphaPixels": 0
+      },
+      "project": {
+        "file": "explorer.pixeltool",
+        "sha256": "99af3326ccb622fc97d5528e63e8230bba4c72b6cbf3a5e385837ef99b50d821"
+      },
+      "conversion": {
+        "method": "features",
+        "fit": "frame",
+        "totalColorBudget": 16,
+        "alphaThreshold": 128,
+        "dithering": false,
+        "manualPixelChanges": 0,
+        "acceptedReviewChanges": 0,
+        "storedFormatVersion": 2
+      }
+    }
+  ]
+}
