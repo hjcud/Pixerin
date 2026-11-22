@@ -1,18 +1,19 @@
 # Windows beta distribution
 
-Pixel Mat **0.22.0-beta.2** is a local, unsigned Windows x64 folder build.
+Pixel Mat **0.23.0-beta.1** is a local, unsigned Windows x64 folder build.
 Published files are listed on [GitHub Releases](https://github.com/hjcud/Pixerin/releases).
 There is no automatic updater. The owner authorized source and beta publication
 after manual review; a repository rename remains a separate decision.
-Use the **beta.2** archives for review: they replace the complete six-locale
-catalog from Korean-only input. Earlier beta.1/`-previous-` folders remain local
-history and are not publication candidates. See
+This release adds the preferred whole-chip workflow and its region-allocation
+beta option. The earlier 0.22.0-beta.2 release remains historical. Current catalogs
+retain the Korean-source replacement and add seven directly authored workflow
+messages in all six locales. See
 [translation provenance](TRANSLATION_PROVENANCE_REVIEW.md) and
 [the current publication checklist](PUBLICATION_CHECKLIST.md).
 
 ## Install and start
 
-1. Verify `SHA256SUMS.txt` with PowerShell: `Get-FileHash -Algorithm SHA256 .\PixelMat-0.22.0-beta.2-win-x64.zip`.
+1. Verify `SHA256SUMS.txt` with PowerShell: `Get-FileHash -Algorithm SHA256 .\PixelMat-0.23.0-beta.1-win-x64.zip`.
 2. Extract the entire ZIP into a writable local folder. Keep its contents together.
 3. Run `PixelTool-win32-x64\PixelTool.exe`. No installer or administrator access is required.
 4. Open a `.pixeltool` project or PNG with **Open**, edit, then **Save as** to a new project. **Export** writes a native PNG. The executable retains its old filename for compatibility.
@@ -33,7 +34,7 @@ of disposable test folders. Offline drawing, project saves and PNG I/O need no A
 
 ## Standalone skill
 
-Extract `pixel-mat-skill-0.22.0-beta.2.zip`. Its `pixel-mat` folder includes the
+Extract `pixel-mat-skill-0.23.0-beta.1.zip`. Its `pixel-mat` folder includes the
 runtime and dependencies. Node 22+ is required; Electron and `npm install` are not.
 The app folder also includes the same runnable skill at `skills/pixel-mat`, so
 its local README and linked guides remain usable offline. Copying this folder
@@ -81,7 +82,7 @@ pnpm test:package
 Remove-Item Env:PIXEL_MAT_BUILD_ROOT
 ```
 
-Deliverables are in `dist/beta/0.22.0-beta.2/`: app ZIP, skill ZIP, SHA-256 sums,
+Deliverables are in `dist/beta/0.23.0-beta.1/`: app ZIP, skill ZIP, SHA-256 sums,
 manifest, installation instructions, changelog and a GitHub Releases body draft.
 Builds contain required runtime notices and first-party license terms. Sources,
 credentials, test profiles and research artwork are not bundled indiscriminately.

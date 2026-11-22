@@ -714,6 +714,7 @@ function render() {
     $("proposal-card").hidden = !proposal;
     $("advanced-refine").hidden = $("advanced-refine-note").hidden = !proposal?.advancedGeneration || Boolean(proposal?.wholeImage);
     $("whole-result-note").hidden = !proposal?.imageInfo;
+    if(proposal?.imageInfo?.chipBoard)$("conversion-method").value='nearest';
     if (proposal?.imageInfo) {
       const info = proposal.imageInfo;
       bindText($("whole-result-note"),()=>t("생성 이미지 {0}×{1} → 문서 {2}×{3}, {4}",info.sourceWidth,info.sourceHeight,info.targetWidth,info.targetHeight,
@@ -722,7 +723,7 @@ function render() {
     $("advanced-refine").disabled = busy || otherWorkAI || Boolean(proposal?.reconverting);
     $("apply-btn").disabled = Boolean(proposal?.reconverting);
     for (const id of ["conversion-method", "conversion-fit", "conversion-colors", "conversion-threshold", "conversion-anchor"])
-      $(id).disabled = Boolean(proposal?.reconverting);
+      $(id).disabled = Boolean(proposal?.reconverting)||Boolean(proposal?.imageInfo?.chipBoard&&id!=='conversion-colors');
     $("advanced-conversion").hidden = !proposal?.sourceId;
     $("advanced-reconvert").disabled = Boolean(proposal?.reconverting);
     const semanticConversion=['semantic','recompose'].includes($("conversion-method").value);
@@ -3485,6 +3486,9 @@ function renderAdvancedControls() {
   const wholeSupported = supportsImageGeneration(settings.provider) && imageLayerSupported;
   if (!frozen && !wholeSupported) $("ai-advanced").checked = false;
   const advanced = $("ai-advanced").checked;
+  $("whole-strategy").value=preferences.wholeStrategy;
+  $("whole-strategy").disabled=frozen;
+  for(const option of $("whole-strategy").options)option.disabled=option.value.startsWith('chip-')&&(doc.width!==16||doc.height!==16);
   $("ai-advanced").disabled = frozen || !wholeSupported;
   $("ai-edit-mode").disabled = frozen;
   $("ai-edit-mode").value = advanced ? "whole" : "precise";
@@ -3557,6 +3561,11 @@ $("ai-shape").onchange = () => {
 $("ai-palette").onchange = () => render();
 $("ai-advanced").onchange = () => { $("ai-edit-mode").value = $("ai-advanced").checked ? "whole" : "precise"; render(); };
 $("ai-edit-mode").onchange = () => { $("ai-advanced").checked = $("ai-edit-mode").value === "whole"; render(); };
+$("whole-strategy").onchange=async()=>{
+  const next={...preferences,wholeStrategy:$("whole-strategy").value};
+  try{if(bridge)settings=await bridge.savePreferences(next);applyPreferences(bridge?settings.preferences:next);}
+  catch(error){toast(error.message,true);render();}
+};
 $("ai-economy").onchange = () => render();
 for (const id of ["ai-quality", "ai-quality-protect"])
   $(id).onchange = () => {
@@ -6297,6 +6306,7 @@ async function generate({ refine = false } = {}) {
       quality,
       advancedGeneration,
       wholeImage: advancedGeneration,
+      wholeStrategy: advancedGeneration ? preferences.wholeStrategy : undefined,
       economy,
       manualRefinement: refine,
       requestId: String(id),
@@ -6351,8 +6361,8 @@ async function generate({ refine = false } = {}) {
       draft,
     };
     pendingSourceId = null;
-    $("conversion-colors").value = "32";
-    $("conversion-method").value = "features";
+    $("conversion-colors").value = result.imageInfo?.chipBoard ? "16" : "32";
+    $("conversion-method").value = result.imageInfo?.chipBoard ? "nearest" : "features";
     $("conversion-fit").value = "frame";
     $("conversion-threshold").value = "128";
     $("conversion-anchor").value = "center";

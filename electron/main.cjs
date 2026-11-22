@@ -1150,6 +1150,7 @@ app.whenReady().then(async () => {
     const owner=work(),cached=generatedSources.get(owner,sourceId);
     // The renderer can select a method, but cannot inject a model-authored plan.
     const options={colors:conversion?.colors,threshold:conversion?.threshold,anchor:conversion?.anchor,method:conversion?.method,fit:conversion?.fit};
+    if(imageGeneration.wholeStrategyFor(cached.input)!=='raster')options.method='nearest';
     const convert=(analysis)=>{const{sourceImage,...result}=imageGeneration.imageProposal(cached.input,cached.sourceImage,cached.usage,{...options,analysis});return{...result,sourceId,sourceAnalyzed:Boolean(analysis)};};
     if(!['semantic','recompose'].includes(options.method))return convert();
     const source=imageGeneration.sourceForAnalysis(cached.input,cached.sourceImage);

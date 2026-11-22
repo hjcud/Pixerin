@@ -1,50 +1,50 @@
 {
   "format": "pixel-mat-translation-provenance",
   "version": 1,
-  "release": "0.22.0-beta.2",
+  "release": "0.23.0-beta.1",
   "authoredOn": "2026-11-22",
   "sourceLanguage": "ko",
   "sourceFile": "ko-source.mjs",
-  "sourceSHA256": "0cb271dd6010bc3ee50348bacd32e7c62d865e4a577886b2af5571feb1fa61c5",
-  "entries": 1814,
+  "sourceSHA256": "a571373d5e4dfcd9581cb314ead3b819d769b4a6e7cb8f5eceb7c97c153fa73f",
+  "entries": 1821,
   "method": "Fresh direct authoring in the authorized Codex work from Korean-only source inventory; previous translated values not supplied as generation input. Integration review uses product behavior and tests.",
   "externalTranslationServiceRequests": 0,
   "hostTokenUsage": null,
   "locales": {
     "en": {
       "file": "en.mjs",
-      "entries": 1814,
-      "sha256": "9fa6cd74f35b6f7e4559878a2bf9518f2386c03294731ecad6f097ef6a1e5810",
+      "entries": 1821,
+      "sha256": "85b392bf32cd91af87d93759758bdb9aaf98b8889949634d74f9bf75c9787bd5",
       "source": "korean-source-only-host-authoring"
     },
     "ja": {
       "file": "ja.mjs",
-      "entries": 1814,
-      "sha256": "6edc8b80478acc0ee692e3e786e00daabf89c3bd227fa060881a8eab79f9fe65",
+      "entries": 1821,
+      "sha256": "a83f59109dbcd86aeac13acbd81ee925da4dd102574c54a3a1f2a39a46db7b25",
       "source": "korean-source-only-host-authoring"
     },
     "zh-CN": {
       "file": "zh-CN.mjs",
-      "entries": 1814,
-      "sha256": "7755f47389b25187dd1eb2ec8226a775e5c7efd6ff7be06658143d6553a06a01",
+      "entries": 1821,
+      "sha256": "03f69f601145dc032240f80d5c5f45af9c3ef76944b3c302020c78ba05f1b054",
       "source": "korean-source-only-host-authoring"
     },
     "es": {
       "file": "es.mjs",
-      "entries": 1814,
-      "sha256": "d525319677fc90a1e87c9c2a6255c0b5c64cf52012aab2f7ffd1b127b5410d68",
+      "entries": 1821,
+      "sha256": "d3c825fc1bdb29f933da83015dca6c286e5839c0a85559a254a415f98935b805",
       "source": "korean-source-only-host-authoring"
     },
     "fr": {
       "file": "fr.mjs",
-      "entries": 1814,
-      "sha256": "8e45073ad7a594cbb32aae83801f1c06aece6e8674642a9e4f0a550849e94dcb",
+      "entries": 1821,
+      "sha256": "bb2fa6f90e7df762d5764a0f9fe2c7490dd16b64f83b7a8a5d82a8bb079994e3",
       "source": "korean-source-only-host-authoring"
     },
     "de": {
       "file": "de.mjs",
-      "entries": 1814,
-      "sha256": "c393522b8af73b29d9d94a01402082abd49a3dcf31fc305a76e3ce21d4b38847",
+      "entries": 1821,
+      "sha256": "d7168f6ead852d460a57f34ba3ec5e2d76c18249f9234a40060d2515e58f0460",
       "source": "korean-source-only-host-authoring"
     }
   },
@@ -93,5 +93,13 @@
   "reviewAdjustments": [
     "Combined shortcut labels use the same freshly authored base label and ASCII shortcut suffix as runtime titles; no source keys or bindings changed.",
     "77 Japanese values edited individually against Korean source to use conjunctions/regular punctuation instead of decorative middle dots; constraints, keys and placeholders retained."
+  ],
+  "supplements": [
+    {
+      "date": "2026-11-22",
+      "scope": "Seven whole-image workflow UI/error messages",
+      "entries": 7,
+      "source": "Korean source strings and implemented behavior; direct host authoring for all six locales without a translation service."
+    }
   ]
 }

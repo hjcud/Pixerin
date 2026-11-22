@@ -3,6 +3,7 @@ import { sampleDraft, reduceDraftColors, perceptualColor, colorDistance } from "
 import { MAX_CANVAS_EDGE, MAX_CANVAS_PIXELS } from "../src/document-region.mjs";
 import { fitDraft, sampleSourceStructure } from "./source-structure.mjs";
 import { semanticDraft } from "./semantic-conversion.mjs";
+import { resolveWholeStrategy, convertWholeChipBoard } from './chip-board.mjs';
 
 export function wholeImagePlan(doc) {
   // Use native document resolution whenever the provider accepts it. Pad/round
@@ -46,8 +47,14 @@ export function unpadDraft(doc,image) {
 // Quantize the bounded draft once, then copy palette indices with nearest-pixel
 // fitting. Never allocate an object/run per 4K pixel or smooth native pixels.
 export function wholeImageProposal(input, scope, image, conversion) {
-  const { document: doc, mask } = scope, { colors, threshold, anchor, method, fit="frame" } = conversion;
+  const { document: doc, mask } = scope, { colors, threshold, anchor, fit="frame" } = conversion;
+  let method=conversion.method;
   const sourceWidth=image.width,sourceHeight=image.height;
+  const strategy=resolveWholeStrategy(input.wholeStrategy||'raster',doc.width,doc.height);
+  let chip=null;
+  if(strategy!=='raster')try{chip=convertWholeChipBoard(image,{strategy,colors,palette:input.paletteOnly?doc.palette:undefined,writable:mask});}
+  catch(error){throw new Error(t('색칩 격자를 읽을 수 없어요. 원본을 유지했어요.'),{cause:error});}
+  if(chip){image=chip.image;method='nearest';}
   // The submitted source is center-padded to the provider's frame. Remove that
   // padding before fitting, rather than leaving most of a very wide canvas unchanged.
   image=unpadDraft(doc,image);
@@ -65,7 +72,7 @@ export function wholeImageProposal(input, scope, image, conversion) {
     writable[sy * workWidth + sx] = 1;
   }
   const sampled=semantic?semantic.data:method==='structure'?sampleSourceStructure(image,workWidth,workHeight,{threshold,colors,writable}).data:sampleDraft(image,workWidth,workHeight,threshold,workWidth*workHeight<=65536?method:'nearest');
-  const reduced = reduceDraftColors(sampled, colors - 1, writable);
+  const reduced = chip ? sampled : reduceDraftColors(sampled, colors - 1, writable);
   const palette = [...doc.palette], indices = new Uint16Array(doc.width * doc.height).fill(65535);
   const lookup = new Map(), labs = [];
   const rgbaHex = (r,g,b,a) => "#" + [r,g,b,a].map(v => v.toString(16).padStart(2,"0")).join("").toUpperCase();
@@ -102,5 +109,6 @@ export function wholeImageProposal(input, scope, image, conversion) {
   return { proposal: { summary:t("기존 이미지의 전체 수정안이에요. 작은 디테일과 경계를 비교한 뒤 적용해 주세요."),
     new_colors:palette.slice(doc.palette.length),raster:{width:doc.width,height:doc.height,pixels:indices}},
     imageInfo:{sourceWidth,sourceHeight,targetWidth:doc.width,targetHeight:doc.height,
-      scaled:image.width!==doc.width||image.height!==doc.height,fitted:width!==doc.width||height!==doc.height} };
+      scaled:sourceWidth!==doc.width||sourceHeight!==doc.height,fitted:width!==doc.width||height!==doc.height,
+      wholeStrategy:strategy,...(chip?{chipBoard:chip.diagnostics}:{})} };
 }

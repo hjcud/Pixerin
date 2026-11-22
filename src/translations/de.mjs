@@ -1813,5 +1813,12 @@ export default {
   "외곽선 다듬기": "Kontur verfeinern",
   "실루엣 개선": "Silhouette verbessern",
   "보호 영역": "Schutzbereich",
-  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Beachtet Sperre und Transparenzsperre jeder Ebene. Transparenz 0 ist vollständig transparent."
+  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Beachtet Sperre und Transparenzsperre jeder Ebene. Transparenz 0 ist vollständig transparent.",
+  "전체 수정 생성 방식": "Verfahren für die Gesamtbearbeitung",
+  "최신 스킬 (기본)": "Neuester Skill (Standard)",
+  "중앙 대표색": "Zentraler Median",
+  "영역 배정 (베타)": "Bereichszuweisung (Beta)",
+  "기존 이미지 변환": "Standard-Bildkonvertierung",
+  "최신 스킬은 16×16에서 중앙 대표색을 사용합니다. 다른 크기는 기존 이미지 변환을 사용합니다.": "Der neueste Skill verwendet bei 16×16 zentrale Medianwerte. Andere Größen verwenden die Standard-Bildkonvertierung.",
+  "색칩 격자를 읽을 수 없어요. 원본을 유지했어요.": "Das Farbraster konnte nicht gelesen werden. Das Original wurde beibehalten."
 };

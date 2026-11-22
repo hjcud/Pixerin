@@ -10,8 +10,10 @@ import { publicUsage } from "./progress.mjs";
 import { sampleDraft, reduceDraftColors, perceptualColor, colorDistance } from "./pixel-conversion.mjs";
 import { fitDraft, sampleSourceStructure } from "./source-structure.mjs";
 import { semanticDraft } from "./semantic-conversion.mjs";
+import { resolveWholeStrategy, wholeChipInstructions } from './chip-board.mjs';
 
 export const MAX_GENERATED_BYTES = 32 * 1024 * 1024;
+export const wholeStrategyFor = input => input.wholeImage ? resolveWholeStrategy(input.wholeStrategy||'raster',input.document?.width,input.document?.height) : 'raster';
 export function advancedInput(raw) {
   // Main already owns a frozen IPC snapshot. Whole-image normalization changes
   // only these option fields; avoid cloning every 4K grid repeatedly.
@@ -33,6 +35,7 @@ export function advancedInput(raw) {
 
 export function buildImageRequest(raw, model) {
   const input = advancedInput(raw), { document, region } = imageScope(input);
+  const strategy=input.wholeImage?resolveWholeStrategy(input.wholeStrategy||'raster',document.width,document.height):'raster';
   if (typeof model !== "string" || !/^[a-zA-Z0-9._-]{1,100}$/.test(model))
     throw new Error(t("모델 ID를 확인해 주세요."));
   const png = (composite) => "data:image/png;base64," + PNG.sync.write(input.wholeImage ? wholeContextFrame(document,documentRGBA(document,composite)) : {
@@ -62,9 +65,9 @@ export function buildImageRequest(raw, model) {
     { type: "input_text", text: JSON.stringify({ referencePurposes: reference.purposes, note: reference.note, rule: "Use only these reference purposes; never override edit protections." }) },
     { type: "input_image", image_url: reference.image },
   );
-  return { model, store: false, instructions, input: [{ role: "user", content }],
+  return { model, store: false, instructions:strategy==='raster'?instructions:wholeChipInstructions, input: [{ role: "user", content }],
     tools: [{ type: "image_generation", model: "gpt-image-2.5-flare", size: input.wholeImage ? wholeImagePlan(document).size : "1024x1024", quality: "medium", background: "transparent", output_format: "png",
-      ...(input.wholeImage ? { action: hasArtwork ? "edit" : "generate" } : {}) }],
+      ...(strategy!=='raster'?{background:'opaque',action:'generate'}:input.wholeImage ? { action: hasArtwork ? "edit" : "generate" } : {}) }],
     tool_choice: { type: "image_generation" }, max_tool_calls: 1,
   };
 }
@@ -91,7 +94,8 @@ export function sourceForAnalysis(input,base64){
 // Deterministic conversion. Never change an existing palette entry or touch
 // pixels outside the server-derived scope. Alpha locks preserve exact alpha.
 export function imageProposal(raw, base64, usage = null, conversion = {}) {
-  const { colors = 32, threshold = 128, anchor = "center", method = "features", fit = "frame" } = conversion;
+  const chip=raw.wholeImage&&resolveWholeStrategy(raw.wholeStrategy||'raster',raw.document?.width,raw.document?.height)!=='raster';
+  const { colors = chip?16:32, threshold = 128, anchor = "center", method = "features", fit = "frame" } = conversion;
   if (![8, 16, 24, 32, 64].includes(colors) || ![64, 128, 192].includes(threshold) || !["center", "start", "end"].includes(anchor) || !["features", "nearest", "structure", "semantic", "recompose"].includes(method) || !["frame", "content"].includes(fit))
     throw new Error(t("이미지 변환 설정이 올바르지 않아요."));
   const input = advancedInput(raw), scope = imageScope(input);
