@@ -4558,7 +4558,8 @@ body.reviewing .ai-panel[data-inspector="preview"] .ai-footer {
   bottom: calc(100% + 12px);
   right: 0;
   width: 270px;
-  max-height: 320px;
+  /* Keep upward actions inside the clipped canvas on short desktop windows. */
+  max-height: min(320px, calc(var(--viewport-height, 400px) - 80px));
   overflow-y: auto;
   border: 1px solid var(--line-strong);
   border-radius: 8px;

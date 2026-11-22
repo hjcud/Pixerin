@@ -1447,6 +1447,7 @@ function setTool(next) {
 function positionCanvas() {
   const v = $("viewport"),
     surround = uiDocument.querySelector(".canvas-surround");
+  v.style.setProperty("--viewport-height", v.clientHeight + "px");
   surround.style.width = doc.width * zoom + "px";
   surround.style.left =
     Math.round((v.clientWidth - doc.width * zoom) / 2 + viewX) + "px";
