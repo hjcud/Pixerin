@@ -11,7 +11,7 @@ Pixel Mat은 Windows 앱과 독립 실행형 Node CLI, AI 호스트용 스킬을
 않으므로 실제 크기에서 확인해야 합니다.
 
 **Windows 베타: 0.23.0-beta.2.** 공개 파일은
-[릴리스 페이지](https://github.com/hjcud/Pixerin/releases), 서명되지 않은 폴더형
+[릴리스 페이지](https://github.com/hjcud/pixel-mat/releases), 서명되지 않은 폴더형
 배포물의 실행·업데이트 방법은 [베타 안내](BETA_DISTRIBUTION.md)에서 확인하세요.
 이번 후보는 한국어 원문에서 6개 언어 번역을 새로 작성했습니다.
 [번역 출처 기록](TRANSLATION_PROVENANCE_REVIEW.md)과
@@ -127,7 +127,8 @@ pnpm build:skill
 
 데스크톱 검사는 격리 프로필과 모의 모델을 사용합니다. 통과는 기술 동작의 증거이며
 그림 품질 승인이 아닙니다. [기여 안내](CONTRIBUTING.md),
-[이슈](https://github.com/hjcud/Pixerin/issues), [보안 신고](SECURITY.md),
+[이슈](https://github.com/hjcud/pixel-mat/issues), [보안 신고](SECURITY.md),
 [라이선스 범위·출처](LICENSE_SCOPE.md), [외부 구성요소](THIRD_PARTY_NOTICES.md)를 확인하세요.
-저장소 기여 문서는 영어가 기본입니다. 현재 `Pixerin` URL을 유지하며, 향후
-`pixel-mat`으로 바꿀 때를 위한 [이름 변경 계획](docs/REPOSITORY_PLAN.md)을 준비했습니다.
+저장소 기여 문서는 영어가 기본입니다. 저장소 주소는
+**[hjcud/pixel-mat](https://github.com/hjcud/pixel-mat)**입니다.
+[저장소 이름과 이력 정리](docs/REPOSITORY_PLAN.md)에 변경 내용을 기록했습니다.

@@ -36,4 +36,4 @@
 This beta preserves static v1/v2, animation v3 and existing autosave identifiers.
 Technical checks do not certify artistic quality or reliable 16px character likeness.
 The beta.1 section records an unpublished preparation build. Current release
-availability and downloads are listed on [GitHub Releases](https://github.com/hjcud/Pixerin/releases).
+availability and downloads are listed on [GitHub Releases](https://github.com/hjcud/pixel-mat/releases).

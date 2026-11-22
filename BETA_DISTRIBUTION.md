@@ -1,7 +1,7 @@
 # Windows beta distribution
 
 Pixel Mat **0.23.0-beta.2** is a local, unsigned Windows x64 folder build.
-Published files are listed on [GitHub Releases](https://github.com/hjcud/Pixerin/releases).
+Published files are listed on [GitHub Releases](https://github.com/hjcud/pixel-mat/releases).
 There is no automatic updater. The owner authorized source and beta publication
 after manual review; a repository rename remains a separate decision.
 This release revises whole-chip landmark-allocation guidance and adds an exact

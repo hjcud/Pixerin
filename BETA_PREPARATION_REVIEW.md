@@ -40,8 +40,9 @@ English, Korean and Japanese README entry points link to the same actual workflo
 all seven app locales remain. Existing issue forms/PR structure were inspected
 against the owner's read-only Shinjuku repository and retained. MIT terms cover
 repository-owned material to the extent rights are held; third-party notices and
-known provenance limits remain separate. Current origin stays
-`https://github.com/hjcud/Pixerin.git`. No future slug is advertised as a download.
+known provenance limits remain separate. The preparation used the former Pixerin
+origin. The current canonical repository is `https://github.com/hjcud/pixel-mat.git`;
+see [the subsequent identity update](docs/REPOSITORY_PLAN.md).
 
 ## Executed checks
 

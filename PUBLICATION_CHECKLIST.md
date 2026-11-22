@@ -3,7 +3,7 @@
 Version: **Pixel Mat 0.23.0-beta.2**, Windows x64. After completing manual beta
 review on 2026-11-22, the owner authorized source/beta publication and the
 portfolio case study. Actual available files are listed on
-[GitHub Releases](https://github.com/hjcud/Pixerin/releases). This checklist
+[GitHub Releases](https://github.com/hjcud/pixel-mat/releases). This checklist
 separates completed checks from optional follow-ups and disclosed beta limits.
 
 | Area | Disposition |
@@ -17,8 +17,8 @@ separates completed checks from optional follow-ups and disclosed beta limits.
 | Current archives | Select only `dist/beta/0.23.0-beta.2/`; verify `SHA256SUMS.txt` and `manifest.json`. Earlier beta/previous folders are historical, not current publication candidates. |
 | Release copy | Installation/update/removal guide, change log and release body distinguish unsigned Windows folder build, skill requirements, experimental methods and unknown model accounting. |
 | Signing | No certificate/signing service configured. Owner decides whether to publish this explicitly unsigned beta or provision signing later. Do not claim a signed installer. |
-| Repository URLs | Keep the actual `hjcud/Pixerin` origin until a separately approved rename; check resulting links after any rename. Do not advertise a proposed slug as a download. |
-| Git and remote operations | Source commits/push and the beta release are authorized. Use actual current timestamps, with no backfill. Keep the `Pixerin` name; a rename remains a separate decision. The manual artifact workflow is available independently of the source CI. |
+| Repository URLs | The owner authorized `hjcud/pixel-mat`; keep current clone, issue and beta download links canonical. Verify the preserved old-name redirects and unchanged release assets. |
+| Git and remote operations | On 2026-11-23 the owner authorized the repository rename and source-history reconstruction. Preserve original release tags and assets; back up the original history and use an exact remote lease for the main update. Assigned import dates do not date QA results. |
 
 The 0.23.0-beta.2 update changes generation guidance, not the decoder or UI. Its
 new regression replays the retained preferred board with its fixed palette and

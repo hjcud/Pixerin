@@ -16,7 +16,7 @@ source-landmark priorities; a fresh generation is a new drawing, not an exact
 reproduction. The separate same-user-prompt experiment remains unchanged.
 
 **Windows beta: 0.23.0-beta.2.** See the
-[release page](https://github.com/hjcud/Pixerin/releases) for published files and
+[release page](https://github.com/hjcud/pixel-mat/releases) for published files and
 [beta installation and updates](BETA_DISTRIBUTION.md) for the unsigned folder build.
 This candidate replaces all six translated catalogs from Korean-only authoring
 input; see [translation provenance](TRANSLATION_PROVENANCE_REVIEW.md) and
@@ -155,11 +155,11 @@ establish technical behavior, not artwork quality. [Contributing](CONTRIBUTING.m
 lists the appropriate focused checks and test storage rules.
 
 Report reproducible bugs and suggestions using the
-[current repository's issues](https://github.com/hjcud/Pixerin/issues).
+[current repository's issues](https://github.com/hjcud/pixel-mat/issues).
 Use English for repository contributions. See [security reporting](SECURITY.md),
 [license scope and asset provenance](LICENSE_SCOPE.md), and
 [third-party notices](THIRD_PARTY_NOTICES.md).
 
-The repository retains its existing `Pixerin` URL. A future `pixel-mat` slug
-change has a separate [rename plan](docs/REPOSITORY_PLAN.md); it does not change
-project formats or recovery identifiers.
+The repository is **[hjcud/pixel-mat](https://github.com/hjcud/pixel-mat)**.
+[Repository identity and history](docs/REPOSITORY_PLAN.md) records the rename and
+source import reconstruction. Project formats and recovery identifiers are unchanged.
