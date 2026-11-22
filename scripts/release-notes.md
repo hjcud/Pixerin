@@ -12,6 +12,8 @@ them for manual editing and export. AI edits are reviewed before atomic apply/un
 - Safe Codex CLI status detection and file handoff; host sign-in remains owned by Codex. In-app generation uses explicitly configured API providers.
 - English, Korean and Japanese guides, input/output comparisons and clear experimental limits.
 - Versioned runnable app ZIP and self-contained Node 22+ skill ZIP with SHA-256 sums.
+- Selection actions remain reachable in short canvas viewports.
+- Miniworld static-resource study with actual drafts, editable results and 13 exact RGBA replay checks; no Unity runtime integration is claimed.
 
 ## Install
 

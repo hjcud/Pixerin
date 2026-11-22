@@ -11,7 +11,7 @@ separates completed checks from optional follow-ups and disclosed beta limits.
 | Translation origin | Completed in current sources: all 10,884 values replaced from Korean-only authoring input; source/locale manifest and build-time verification implemented. See [provenance review](TRANSLATION_PROVENANCE_REVIEW.md). |
 | First-party license | MIT grant retained; application ships `LICENSE.pixel-mat` beside Electron's original `LICENSE`; skill has its own root grant. |
 | Third-party notices | Preserve Electron, Chromium and pngjs notices. Playwright is test-only; Codex CLI is not redistributed. |
-| User artwork/data | Personal references, other games' production assets, credentials, profiles and research snapshots are excluded. Public comparison inputs are documented text-only generations. |
+| User artwork/data | Personal references, credentials, profiles, unrelated production assets and private research snapshots are excluded. The documented Miniworld study includes only selected comparison assets, with provenance and a separate artwork notice; the app's MIT grant does not relicense that game artwork. |
 | Dependency audit | Current `pnpm audit --json` reports zero known advisories. This is not a guarantee of absence of vulnerabilities. |
 | Application compatibility | Keep `.pixeltool` static v1/v2, animation v3, palette format, profile/recovery keys and offline editing. Verify current tests and extracted archive round trip. |
 | Current archives | Select only `dist/beta/0.22.0-beta.2/`; verify `SHA256SUMS.txt` and `manifest.json`. Earlier beta/previous folders are historical, not current publication candidates. |
