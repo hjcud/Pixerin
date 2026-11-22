@@ -1,0 +1,74 @@
+:root {
+  font:
+    12px "Segoe UI",
+    "Malgun Gothic",
+    sans-serif;
+  background: var(--art-surround);
+  color: var(--text);
+}
+:root:lang(ja) {
+  font-family: "Segoe UI", "Yu Gothic UI", Meiryo, sans-serif;
+}
+:root:lang(zh-CN) {
+  font-family: "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+}
+body {
+  margin: 0;
+  padding: 14px;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+select {
+  border: 1px solid var(--line-strong);
+  background: var(--raised);
+  color: inherit;
+  padding: 5px;
+  border-radius: 4px;
+}
+p {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 140px;
+  padding: 14px;
+  border-radius: 6px;
+}
+.checker {
+  color: var(--art-muted);
+  background: repeating-conic-gradient(
+      var(--checker-a) 0% 25%,
+      var(--checker-b) 0% 50%
+    )
+    0 / 16px 16px;
+}
+.light {
+  background: #eeeeee;
+  color: #333333;
+}
+.dark {
+  background: #242424;
+  color: #eeeeee;
+}
+figure {
+  margin: 0;
+  text-align: center;
+}
+canvas {
+  image-rendering: pixelated;
+  display: block;
+  margin: auto;
+}
+figcaption {
+  margin-top: 8px;
+  font-size: 10px;
+}

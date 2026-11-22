@@ -1,0 +1,29 @@
+name: Plan maintenance
+description: Plan documentation, tooling, refactoring, or repository upkeep.
+title: "[Maintenance] "
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Explain the current problem and why this work is needed. Write in English.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: List the affected areas and any boundaries that matter.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Describe the observable completion conditions and relevant verification.
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Related issues and references

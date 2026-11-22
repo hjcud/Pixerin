@@ -1,0 +1,10 @@
+# Keep translation fingerprints stable on Windows and Linux checkouts.
+* text=auto eol=lf
+*.png -text
+*.ico -text
+*.webp -text
+*.gif -text
+*.pixeltool -text
+# Evidence manifests refer to exact source bytes, including editable projects.
+/docs/miniworld/** -text
+/docs/comparison/** -text

@@ -1,0 +1,97 @@
+{
+  "format": "pixel-mat-translation-provenance",
+  "version": 1,
+  "release": "0.22.0-beta.2",
+  "authoredOn": "2026-11-22",
+  "sourceLanguage": "ko",
+  "sourceFile": "ko-source.mjs",
+  "sourceSHA256": "0cb271dd6010bc3ee50348bacd32e7c62d865e4a577886b2af5571feb1fa61c5",
+  "entries": 1814,
+  "method": "Fresh direct authoring in the authorized Codex work from Korean-only source inventory; previous translated values not supplied as generation input. Integration review uses product behavior and tests.",
+  "externalTranslationServiceRequests": 0,
+  "hostTokenUsage": null,
+  "locales": {
+    "en": {
+      "file": "en.mjs",
+      "entries": 1814,
+      "sha256": "9fa6cd74f35b6f7e4559878a2bf9518f2386c03294731ecad6f097ef6a1e5810",
+      "source": "korean-source-only-host-authoring"
+    },
+    "ja": {
+      "file": "ja.mjs",
+      "entries": 1814,
+      "sha256": "6edc8b80478acc0ee692e3e786e00daabf89c3bd227fa060881a8eab79f9fe65",
+      "source": "korean-source-only-host-authoring"
+    },
+    "zh-CN": {
+      "file": "zh-CN.mjs",
+      "entries": 1814,
+      "sha256": "7755f47389b25187dd1eb2ec8226a775e5c7efd6ff7be06658143d6553a06a01",
+      "source": "korean-source-only-host-authoring"
+    },
+    "es": {
+      "file": "es.mjs",
+      "entries": 1814,
+      "sha256": "d525319677fc90a1e87c9c2a6255c0b5c64cf52012aab2f7ffd1b127b5410d68",
+      "source": "korean-source-only-host-authoring"
+    },
+    "fr": {
+      "file": "fr.mjs",
+      "entries": 1814,
+      "sha256": "8e45073ad7a594cbb32aae83801f1c06aece6e8674642a9e4f0a550849e94dcb",
+      "source": "korean-source-only-host-authoring"
+    },
+    "de": {
+      "file": "de.mjs",
+      "entries": 1814,
+      "sha256": "c393522b8af73b29d9d94a01402082abd49a3dcf31fc305a76e3ce21d4b38847",
+      "source": "korean-source-only-host-authoring"
+    }
+  },
+  "compatibleViews": {
+    "ai-connections-messages.mjs": {
+      "entries": 62,
+      "sha256": "20aa18335e0ae3b98bdb070d140379d79d7823afcde20f7960f2a4a2e4a03404"
+    },
+    "animation-messages.mjs": {
+      "entries": 57,
+      "sha256": "5a8280a758d622b03ea10a48956bf74d3b0a4402b5ec1edd9b26da9e87ad8f82"
+    },
+    "editor-review-messages.mjs": {
+      "entries": 13,
+      "sha256": "b1ebbec920018327086d612ce07b704d7cd278c9cdc9512d48c5889d7441ea4b"
+    },
+    "image-generation-messages.mjs": {
+      "entries": 53,
+      "sha256": "b20ad7a94d1b5775f47c1726729bb48b51917c009a6bea27a1d0e92feee1b0d9"
+    },
+    "large-canvas-messages.mjs": {
+      "entries": 9,
+      "sha256": "99bfa83a99c6f5dd67a8071ee889e1a1212339c4002568ae8659f3add0393227"
+    },
+    "layer-messages.mjs": {
+      "entries": 90,
+      "sha256": "ccd4fe1f8b79e33e61a760b4cca996a0c40dcbf5ede8965e74aa29e19d33fd8f"
+    },
+    "panel-layout-messages.mjs": {
+      "entries": 28,
+      "sha256": "693403cda1ce142a3a12284cf1e44f0afe6ee81b56b5034bebd91338465e5683"
+    },
+    "ui-copy-messages.mjs": {
+      "entries": 117,
+      "sha256": "158cd12e97e7227b9b2d7e2fb18295348ad758cb0d9e96799821108ffc6c96ea"
+    },
+    "whole-image-messages.mjs": {
+      "entries": 17,
+      "sha256": "bb17e550a55137954642ca178eaf818e1f1a0dd0eb8a0da4cf55857f2dd35ea5"
+    },
+    "workspace-messages.mjs": {
+      "entries": 114,
+      "sha256": "3aa6319ca3dde2181b778dd1bc87e33782a33970c96cf753d1fc9396b06cd577"
+    }
+  },
+  "reviewAdjustments": [
+    "Combined shortcut labels use the same freshly authored base label and ASCII shortcut suffix as runtime titles; no source keys or bindings changed.",
+    "77 Japanese values edited individually against Korean source to use conjunctions/regular punctuation instead of decorative middle dots; constraints, keys and placeholders retained."
+  ]
+}

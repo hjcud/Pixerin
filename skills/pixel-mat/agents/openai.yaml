@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pixel Mat"
+  short_description: "Exact-grid pixel art and coherent sprite animation"
+  default_prompt: "Use $pixel-mat to create an editable pixel sprite or animation with a consistent palette and verified native pixel dimensions."

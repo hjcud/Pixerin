@@ -1,0 +1,41 @@
+name: Suggest a feature or improvement
+description: Describe a user need or an improvement to Pixel Mat.
+title: "[Suggestion] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: Please write in English. Focus on the desired experience; an implementation proposal is optional.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What are you trying to do, and what is inconvenient today?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggestion
+      description: Describe the proposed behavior and scope.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: What observable outcome would satisfy this request?
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Alternatives and references
+      description: Include related issues, examples, or alternatives considered.
+  - type: checkboxes
+    id: duplicate-check
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked that no existing issue covers the same suggestion.
+          required: true

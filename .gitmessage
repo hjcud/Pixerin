@@ -1,0 +1,8 @@
+# <type>(<optional-scope>): <imperative English summary>
+#
+# Explain the reason and relevant behavior or compatibility changes if needed.
+#
+# Refs #<existing-issue-number>
+# Use Closes only when the issue is fully resolved.
+# Use BREAKING CHANGE: to explain an incompatible change and migration.
+# See CONTRIBUTING.md. Do not leave placeholder issue references in the message.

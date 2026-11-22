@@ -1,0 +1,41 @@
+name: Build beta artifacts
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-beta:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install pinned dependencies
+        run: npx --yes pnpm@11.25.0 install --frozen-lockfile
+      - name: Check source
+        run: |
+          node scripts/check-translations.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node --test tests/*.test.mjs
+      - name: Build local beta archives
+        run: node scripts/build-beta.mjs
+      - name: Read artifact version
+        id: version
+        run: |
+          $betaVersion = node -p "require('./package.json').version"
+          "value=$betaVersion" >> $env:GITHUB_OUTPUT
+      - name: Check packaged runtime
+        run: node scripts/package-test.cjs
+      - name: Verify extracted app and skill round trip
+        run: node scripts/beta-roundtrip-desktop-test.cjs
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pixel-mat-windows-beta
+          path: dist/beta/${{ steps.version.outputs.value }}/*
+          if-no-files-found: error
+          retention-days: 14

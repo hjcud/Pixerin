@@ -1,0 +1,50 @@
+name: Report a bug
+description: Report an error or unexpected behavior in Pixel Mat.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Please write in English and include enough detail to reproduce the problem. Remove credentials and unrelated personal data from attachments.
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Include the Pixel Mat version, Windows version, and whether you use a packaged build or source checkout.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the actual behavior and its impact. Include the connection mode and model if AI editing is involved.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Create a canvas with...
+        2. Select...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, screenshots, or sample files
+      description: Include a minimal example you can share publicly, if available.
+  - type: checkboxes
+    id: duplicate-check
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked that no existing issue reports the same problem.
+          required: true

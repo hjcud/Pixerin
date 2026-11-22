@@ -1,0 +1,115 @@
+/* Shared interface colors. Artwork and preview backgrounds remain independent. */
+:root {
+  color-scheme: dark;
+  --bg: #1c1c1c;
+  --panel: #222222;
+  --raised: #2b2b2b;
+  --surface-hover: #353535;
+  --line: #3c3c3c;
+  --line-strong: #666666;
+  --muted: #aaaaaa;
+  --text-secondary: #cccccc;
+  --text: #e9e9e9;
+  --accent: #abd8fa;
+  --accent-ink: #183a55;
+  --accent-text: #b1dafa;
+  --accent-border: #5c8aaf;
+  --accent-soft: #303030;
+  --error: #f4b4bd;
+  --error-bg: #482e3e;
+  --error-border: #935466;
+  --warning: #e8cca8;
+  --art-surround: #242424;
+  --art-line: #666666;
+  --art-muted: #aaaaaa;
+  --checker-a: #303030;
+  --checker-b: #262626;
+  --canvas-shadow: 0 10px 40px #0003;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #eef5fc;
+  --panel: #ffffff;
+  --raised: #f3f8fd;
+  --surface-hover: #deedfa;
+  --line: #cedfec;
+  --line-strong: #8caec8;
+  --muted: #57718a;
+  --text-secondary: #405f78;
+  --text: #243c52;
+  --accent: #b8ddfa;
+  --accent-ink: #204866;
+  --accent-text: #2a648e;
+  --accent-border: #7daaca;
+  --accent-soft: #e3f1fd;
+  --error: #a83a53;
+  --error-bg: #fff0f3;
+  --error-border: #d99aaa;
+  --warning: #846025;
+  --art-surround: #e9e9e9;
+  --art-line: #aaaaaa;
+  --art-muted: #666666;
+  --checker-a: #dddddd;
+  --checker-b: #f1f1f1;
+  --canvas-shadow: 0 8px 28px #00000018;
+}
+.viewport,
+.auto-map-stage {
+  background-color: var(--art-surround);
+}
+.canvas-axis,
+.canvas-caption {
+  color: var(--art-muted);
+}
+.canvas-stack {
+  box-shadow:
+    var(--canvas-shadow),
+    0 0 0 1px var(--art-line);
+  background-image: repeating-conic-gradient(
+    var(--checker-a) 0% 25%,
+    var(--checker-b) 0% 50%
+  );
+}
+body[data-canvas-background="light"] .canvas-stack {
+  --checker-a: #dddddd;
+  --checker-b: #f1f1f1;
+  background-image: repeating-conic-gradient(
+    var(--checker-a) 0% 25%,
+    var(--checker-b) 0% 50%
+  );
+}
+body[data-canvas-background="dark"] .canvas-stack {
+  --checker-a: #303030;
+  --checker-b: #262626;
+}
+.preview-tile {
+  background: #242424;
+  border-color: #666666;
+}
+.preview-tile > span {
+  color: #aaaaaa;
+}
+.preview-tile.light {
+  background: #eeeeee;
+  border-color: #aaaaaa;
+}
+.preview-tile.light > span {
+  color: #666666;
+}
+.result-preview .auto-status {
+  background: var(--art-surround);
+  border-color: var(--art-line);
+}
+button,
+input,
+select,
+textarea {
+  accent-color: var(--accent-text);
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}

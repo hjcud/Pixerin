@@ -1,0 +1,104 @@
+@import url("./icons/masks.css");
+/* All application symbols render at their native 16px size, at every breakpoint. */
+body [data-icon][aria-hidden],
+body [data-icon] > svg[viewBox="0 0 16 16"] {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  flex: 0 0 16px;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+svg[viewBox="0 0 16 16"] {
+  display: block;
+  fill: currentColor;
+  stroke: none;
+  shape-rendering: crispEdges;
+  image-rendering: pixelated;
+}
+.brand-mark[data-icon] {
+  transform: none;
+  color: var(--accent-text);
+}
+.ai-title .spark-box[data-icon] {
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  background: none;
+}
+.connection-badge > [data-icon],
+.connection-badge.ready > [data-icon],
+.tiny-dot[data-icon] {
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  background: none;
+  color: var(--warning);
+}
+.connection-badge.ready > [data-icon],
+.tiny-dot[data-icon] {
+  color: var(--accent-text);
+}
+.layer-visibility,
+.layer-lock {
+  min-width: 28px;
+  min-height: 28px;
+}
+/* Native disclosure and select glyphs use the same 16-unit line artwork. */
+summary {
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+summary::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin-right: 4px;
+  vertical-align: -3px;
+  background: currentColor;
+}
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
+.request-progress-heading::after {
+  content: none;
+}
+.request-progress.in-progress .request-progress-heading strong::before {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 0;
+  background: currentColor;
+  vertical-align: -3px;
+}
+select {
+  appearance: none;
+  padding-right: 28px !important;
+  background-position: right 7px center !important;
+  background-size: 16px 16px !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Never rotate pixel artwork through fractional angles while waiting for AI. */
+.busy .generate svg,
+.request-progress.in-progress .request-progress-heading strong::before {
+  animation: pixel-pulse 1.5s steps(2, end) infinite;
+  transform: none;
+}
+@keyframes pixel-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .busy .generate svg,
+  .request-progress.in-progress .request-progress-heading strong::before {
+    animation: none;
+  }
+}
