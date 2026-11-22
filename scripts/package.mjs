@@ -14,9 +14,13 @@ if (process.platform !== "win32")
 await checkTranslations();
 const source = path.dirname(require("electron")),
   dist = path.join(root, "dist"),
-  destination = path.join(dist, "PixelTool-win32-x64");
+  buildRoot = process.env.PIXEL_MAT_BUILD_ROOT ? path.resolve(process.env.PIXEL_MAT_BUILD_ROOT) : dist,
+  destination = path.join(buildRoot, "PixelTool-win32-x64");
+if (buildRoot !== dist && !buildRoot.startsWith(dist + path.sep))
+  throw new Error("An isolated build root must stay inside this repository's dist directory.");
 await import("./brand-assets.mjs");
 await fs.mkdir(dist, { recursive: true });
+await fs.mkdir(buildRoot, { recursive: true });
 // A fresh stage prevents retired files or accidental local additions from shipping.
 const out = await fs.mkdtemp(path.join(dist, ".package-"));
 await fs.cp(source, out, {

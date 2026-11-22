@@ -6,6 +6,7 @@ import { promisify } from 'node:util';
 const root = path.resolve(import.meta.dirname, '..');
 const run = promisify(execFile);
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
+const buildRoot = process.env.PIXEL_MAT_BUILD_ROOT ? path.resolve(process.env.PIXEL_MAT_BUILD_ROOT) : path.join(root, 'dist');
 if (process.platform !== 'win32') throw Error('Windows beta packaging requires Windows.');
 if (!/^\d+\.\d+\.\d+-beta\.\d+$/.test(pkg.version)) throw Error('Use an explicit beta version.');
 for (const script of ['package.mjs', 'build-skill.mjs']) {
@@ -17,7 +18,7 @@ await fs.mkdir(base, { recursive: true });
 // Build in a fresh folder. Existing, reviewable deliverables are never deleted.
 const stage = await fs.mkdtemp(path.join(base, '.building-'));
 const appName = `PixelMat-${pkg.version}-win-x64.zip`;
-await run('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', path.join(root, 'scripts', 'archive-folder.ps1'), '-SourcePath', path.join(root, 'dist', 'PixelTool-win32-x64'), '-ArchivePath', path.join(stage, appName)], { windowsHide: true });
+await run('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', path.join(root, 'scripts', 'archive-folder.ps1'), '-SourcePath', path.join(buildRoot, 'PixelTool-win32-x64'), '-ArchivePath', path.join(stage, appName)], { windowsHide: true });
 const skillName = `pixel-mat-skill-${pkg.version}.zip`;
 await fs.copyFile(path.join(root, 'dist', 'pixel-mat-skill.zip'), path.join(stage, skillName));
 for (const [from, to] of [['BETA_DISTRIBUTION.md', 'INSTALL.md'], ['scripts/release-notes.md', 'release-notes.md'], ['CHANGELOG.md', 'CHANGELOG.md'], ['TRANSLATION_PROVENANCE_REVIEW.md', 'TRANSLATION_PROVENANCE_REVIEW.md'], ['PUBLICATION_CHECKLIST.md', 'PUBLICATION_CHECKLIST.md']])
