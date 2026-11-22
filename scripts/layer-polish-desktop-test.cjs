@@ -165,7 +165,9 @@ const { _electron } = require("./test-electron.cjs"),
 
     // Register both slots through the real shortcut editor; local mask history
     // follows the user's bindings rather than a second hardcoded key map.
+    await require("./editor-ready.cjs")(page);
     await page.locator("#settings-btn").click();
+    await page.locator("#settings-dialog").waitFor({state:"visible"});
     await page.locator('[data-settings-tab="editor"]').click();
     await page.locator("#shortcut-open").click();
     const slot = (id, n) =>

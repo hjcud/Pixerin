@@ -221,7 +221,10 @@ const assert = require("node:assert/strict");
       await fs.readFile(await require("./draft-file.cjs")(page,profile), "utf8"),
     );
     assert.deepEqual(after, before);
+    await require("./editor-ready.cjs")(page);
+    assert.equal((await page.evaluate(()=>window.pixeltool.getSettings())).provider,"none");
     await page.locator("#settings-btn").click();
+    await page.locator("#settings-dialog").waitFor({state:"visible"});
     assert.equal(await page.locator("#provider-input").inputValue(), "none");
     assert.equal(
       await page.locator("#model-input").inputValue(),

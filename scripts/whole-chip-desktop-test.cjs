@@ -15,6 +15,10 @@ const {_electron}=require('./test-electron.cjs'),fs=require('node:fs/promises'),
   const encoded=PNG.sync.write({width,height:width,data}).toString('base64');
   await app.evaluate((_,encoded)=>{globalThis.__chipCalls=[];globalThis.fetch=async(_url,options)=>{globalThis.__chipCalls.push(JSON.parse(options.body));return Response.json({status:'completed',output:[{type:'image_generation_call',status:'completed',result:encoded}]});};},encoded);
   await require('./configure-test-api.cjs')(page);
+  await page.locator('#settings-btn').click();
+  await page.locator('#settings-dialog').waitFor({state:'visible'});
+  assert.equal(await page.locator('#pref-wholeStrategy').inputValue(),'latest');
+  await page.keyboard.press('Escape');
   await page.locator('#ai-edit-mode').selectOption('whole');
   await page.locator('#ai-options > summary').click();
   assert.equal(await page.locator('#whole-strategy').inputValue(),'latest');
@@ -32,6 +36,10 @@ const {_electron}=require('./test-electron.cjs'),fs=require('node:fs/promises'),
   if(await discard.count())await discard.click();else await page.locator('#proposal-discard').click();
   await page.locator('#whole-strategy').selectOption('chip-region');
   await page.waitForFunction(async()=>((await window.pixeltool.getSettings()).preferences.wholeStrategy)==='chip-region');
+  await page.locator('#settings-btn').click();
+  await page.locator('#settings-dialog').waitFor({state:'visible'});
+  assert.equal(await page.locator('#pref-wholeStrategy').inputValue(),'chip-region');
+  await page.keyboard.press('Escape');
   await page.locator('#generate-btn').click();
   await page.locator('#proposal-card').waitFor({state:'visible'});
   assert.equal(await app.evaluate(()=>globalThis.__chipCalls.length),2);
