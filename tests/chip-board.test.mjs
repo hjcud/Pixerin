@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
 import {PNG} from 'pngjs';
 import {decodeChipBoard,convertWholeChipBoard,resolveWholeStrategy} from '../electron/chip-board.mjs';
 import {createDocument,ensureLayers,applyProposal,documentRGBA} from '../src/core.mjs';
@@ -34,6 +35,21 @@ test('chip decoder preserves fixed cells and edge-connected empty cells without 
 test('chip decoding rejects merged/invalid grids instead of inventing coordinates',()=>{
   const source=board();source.data.fill(255);assert.throws(()=>decodeChipBoard(source),/gate/);
   assert.throws(()=>decodeChipBoard({width:16,height:16,data:new Uint8Array(1024)}),/raster/);
+});
+
+test('current app/skill projections reproduce the retained preferred board and fixed palette exactly',async()=>{
+  const directory=new URL('../docs/whole-style-recovery/',import.meta.url);
+  const source=PNG.sync.read(await fs.readFile(new URL('accepted-board.png',directory)));
+  const before=Buffer.from(source.data),palette=JSON.parse(await fs.readFile(new URL('palette.json',directory)));
+  for(const [strategy,file]of [['chip-median','accepted-median.png'],['chip-region','accepted-region.png']]){
+    const expected=PNG.sync.read(await fs.readFile(new URL(file,directory)));
+    const result=convertWholeChipBoard(source,{strategy,palette,colors:16});
+    assert.deepEqual(Buffer.from(documentRGBA(result.document)),expected.data);
+    assert.equal(result.diagnostics.foregroundCells,99);
+    assert.equal(result.diagnostics.mixedPigmentCells,50);
+    assert.equal(result.diagnostics.singlePigmentContractPassed,false);
+  }
+  assert.deepEqual(Buffer.from(source.data),before);
 });
 test('unwritable chip colors cannot train the generated palette',()=>{
   const first=board(),second=board(),writable=Array(256).fill(false);writable[7*16+7]=true;

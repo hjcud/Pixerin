@@ -1,6 +1,22 @@
-# Ordinary image request and Pixel Mat whole-image workflow
+# Preferred whole-chip style and the same-prompt experiment
 
-The current [same-user-prompt comparison](whole-comparison/README.md) uses a
+The user's preferred earlier **Whole-chip central median** is retained as an
+accepted style reference. The current app/skill decoder reproduces it exactly
+from its original board and fixed palette. The beta region projection also
+matches the retained pixels. This is an exact local replay, not a new generation.
+
+![Preferred earlier whole-chip result, exact 16x enlargement](whole-style-recovery/accepted-median-display.png)
+
+See [why the showcase changed, revised guidance and exact replay](whole-style-recovery/README.md).
+The later showcase used a new board and an automatically fitted palette; the
+sampler name alone did not preserve its face/prop allocation. Workflow 2 restores
+landmark-allocation priorities and preserves accepted boards/palettes for review.
+Two new attempts failed strict chip validation and are recorded, not promoted as
+successful native results. Reliable improvement across new draws is unproven.
+
+## Separate identical-user-prompt experiment
+
+The retained [same-user-prompt comparison](whole-comparison/README.md) uses a
 complex red-hood character. Both actual requests explicitly ask for native
 16x16 pixel art and at most 16 colors including transparency, with the same
 reference. The ordinary output is preserved unchanged; the whole-image output
