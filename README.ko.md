@@ -10,7 +10,7 @@ Pixel Mat은 Windows 앱과 독립 실행형 Node CLI, AI 호스트용 스킬을
 `.pixeltool` 파일을 만듭니다. 얼굴·손·작은 소품의 세부 형태가 모두 보존되지는
 않으므로 실제 크기에서 확인해야 합니다.
 
-**Windows 베타: 0.23.0-beta.1.** 공개 파일은
+**Windows 베타: 0.23.0-beta.2.** 공개 파일은
 [릴리스 페이지](https://github.com/hjcud/Pixerin/releases), 서명되지 않은 폴더형
 배포물의 실행·업데이트 방법은 [베타 안내](BETA_DISTRIBUTION.md)에서 확인하세요.
 이번 후보는 한국어 원문에서 6개 언어 번역을 새로 작성했습니다.

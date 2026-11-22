@@ -14,6 +14,7 @@ third-party component's terms or license third-party user inputs.
 | User-imported art and external project resources | Rights remain with their respective owners; not included by this grant |
 | Miniworld illustrative PNGs/projects in `docs/miniworld` | External game-project resources published by their owner for this case study; not relicensed as an independent asset pack by the tool's MIT grant. See [asset notice](docs/miniworld/ASSET_NOTICE.md). |
 | Reference-conditioned comparison artwork in `docs/whole-comparison` | Owner-selected reference and derived experimental artwork; the software MIT grant does not establish or replace the reference's rights. See the [case-study scope](docs/whole-comparison/README.md). |
+| Retained style and rejected trials in `docs/whole-style-recovery` | The same owner-selected reference-conditioned scope applies; selected reproduction evidence is not a separately licensed asset pack. See [replay and trial scope](docs/whole-style-recovery/README.md). |
 | Text-only generated documentation examples | Supplied as examples with the repository's grant to the extent rights are held; no exclusivity or copyrightability claim |
 
 The name and logo can identify this project and modified copies, but this license

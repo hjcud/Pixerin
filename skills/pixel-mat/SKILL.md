@@ -23,6 +23,15 @@ Advanced choices are `chip-median`, `chip-region` (beta, 16x16 only), and `raste
 Read [whole-image.md](references/whole-image.md) before using the chip route.
 Use the bundled version, not an old research helper. The CLI itself calls no model.
 
+Before a reference-conditioned generation, name the identity landmarks and
+contacts that need native cells. Let the bundled policy allocate those before
+decorative shading; do not replace them with a generic instruction to simplify.
+For a style the user already likes, keep its exact project/PNG and palette as
+the acceptance reference. A fresh board with the same sampler is a new drawing,
+not a reproduction. Reuse an accepted board for exact reproduction, and pass its
+palette to `whole-prepare --palette` when retaining those colors is intended.
+Reject invalid boards and review the decoded sprite before replacing a showcase.
+
 Keep supplied dimensions, artwork and palette. A large reference image does not
 imply a larger logical sprite. For an existing game, first read
 [resource-contract.md](references/resource-contract.md) and match the active

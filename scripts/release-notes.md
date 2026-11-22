@@ -1,4 +1,4 @@
-# Pixel Mat 0.23.0-beta.1
+# Pixel Mat 0.23.0-beta.2
 
 An unsigned Windows x64 beta of the local pixel editor and standalone AI skill.
 The skill produces native PNGs and editable `.pixeltool` projects; the app opens
@@ -6,11 +6,13 @@ them for manual editing and export. AI edits are reviewed before atomic apply/un
 
 ## Changes
 
+- Workflow 2 budgets source identity landmarks and hand/prop contacts before decorative simplification. Central-median sampling itself is unchanged.
+- Green subject colors avoid the green gap key. Saved accepted boards and palettes remain the reproducible style reference; a new generation is not an exact replay.
 - Shared whole-chip central median is the latest 16x16 workflow; region allocation is an explicit beta option in advanced settings and the skill.
 - The app and skill enforce the same grid, scope, palette and alpha guards. Invalid boards reject without a guessed fallback.
 - Fresh same-user-prompt Codex-host comparison, with raw outputs, actual dimensions and native detail limitations.
 
-- Replace the complete six-locale application catalog from Korean-only authoring input; preserve all 1,814 keys and 10,884 translated values with build-verified provenance hashes. Earlier uncertain translation-service output is not embedded in this candidate.
+- Retain the Korean-source six-locale replacement and seven workflow messages: 1,821 keys and 10,926 translated values with build-verified provenance hashes.
 
 - App/skill palette interchange and concise task-based skill guidance.
 - Safe Codex CLI status detection and file handoff; host sign-in remains owned by Codex. In-app generation uses explicitly configured API providers.

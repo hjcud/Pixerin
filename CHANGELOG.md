@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.23.0-beta.2 — 2026-11-23
+
+- Restore source-landmark and whole-body allocation priorities in workflow 2 before optional texture/highlights; retain the same central-median decoder and region-allocation beta.
+- Reserve the green gap material exclusively for transport; request dark source greens for subject materials to avoid missing chip components.
+- Explain that a fresh generated board is a new drawing, while exact board/palette replay reproduces an accepted sprite. Keep prior comparison evidence separate from revised trials.
+- Preserve palettes, protected edits, file formats, autosave identifiers and all seven UI catalogs.
+
 ## 0.23.0-beta.1 — 2026-11-22
 
 - Add shared app/skill whole-chip central median and region allocation decoding.

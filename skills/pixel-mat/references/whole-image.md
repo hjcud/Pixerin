@@ -33,6 +33,20 @@ An invalid board is rejected with no guessed grid or silent fallback. Diagnostic
 report mixed chip interiors: a technically valid decoded PNG does not prove the
 image model obeyed one-pigment-per-chip instructions or preserved source identity.
 
+Workflow 2 reserves native space for source identity landmarks and prop contacts
+before optional texture/highlights. For standing humanoids it offers a compact
+whole-body budget while requiring source-dependent proportions. Green clothing
+uses dark source greens/teals so it cannot be mistaken for the green gap material.
+This changes generation guidance; central-median sampling itself is unchanged.
+
+A named projection is not a saved style: two generated boards can have different
+face, pose and prop allocation even with the same reference and requested size.
+Keep an accepted board, native project, palette and exact prompt. Re-decoding the
+same board with the same settings reproduces pixels; a new generation does not.
+An existing `--palette` retains colors, not missing shapes. Inspect 1x and integer
+zooms against the accepted sprite before replacing it; rejected attempts stay in
+the generation record and must not be presented as successful native output.
+
 In the app, **AI edit options → Whole-image workflow** defaults to the latest
 workflow. Central median, region allocation beta and standard raster conversion
 can be selected explicitly. Scope, layer, palette, protection and exact alpha

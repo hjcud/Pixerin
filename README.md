@@ -10,7 +10,12 @@ The image model supplies a draft; local tools produce the requested grid,
 limited palette and editable `.pixeltool` file. Review the actual native result:
 conversion cannot recover every face, hand or small prop.
 
-**Windows beta: 0.23.0-beta.1.** See the
+The [preferred whole-chip style replay](docs/whole-style-recovery/README.md)
+retains an accepted board, palette and native result together. Workflow 2 restores
+source-landmark priorities; a fresh generation is a new drawing, not an exact
+reproduction. The separate same-user-prompt experiment remains unchanged.
+
+**Windows beta: 0.23.0-beta.2.** See the
 [release page](https://github.com/hjcud/Pixerin/releases) for published files and
 [beta installation and updates](BETA_DISTRIBUTION.md) for the unsigned folder build.
 This candidate replaces all six translated catalogs from Korean-only authoring

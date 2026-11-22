@@ -1,6 +1,6 @@
 # Public beta publication checklist
 
-Version: **Pixel Mat 0.23.0-beta.1**, Windows x64. After completing manual beta
+Version: **Pixel Mat 0.23.0-beta.2**, Windows x64. After completing manual beta
 review on 2026-11-22, the owner authorized source/beta publication and the
 portfolio case study. Actual available files are listed on
 [GitHub Releases](https://github.com/hjcud/Pixerin/releases). This checklist
@@ -14,20 +14,26 @@ separates completed checks from optional follow-ups and disclosed beta limits.
 | User artwork/data | Personal references, credentials, profiles, unrelated production assets and private research snapshots are excluded. The documented Miniworld study includes only selected comparison assets, with provenance and a separate artwork notice; the app's MIT grant does not relicense that game artwork. |
 | Dependency audit | Current `pnpm audit --json` reports zero known advisories. This is not a guarantee of absence of vulnerabilities. |
 | Application compatibility | Keep `.pixeltool` static v1/v2, animation v3, palette format, profile/recovery keys and offline editing. Verify current tests and extracted archive round trip. |
-| Current archives | Select only `dist/beta/0.23.0-beta.1/`; verify `SHA256SUMS.txt` and `manifest.json`. Earlier beta/previous folders are historical, not current publication candidates. |
+| Current archives | Select only `dist/beta/0.23.0-beta.2/`; verify `SHA256SUMS.txt` and `manifest.json`. Earlier beta/previous folders are historical, not current publication candidates. |
 | Release copy | Installation/update/removal guide, change log and release body distinguish unsigned Windows folder build, skill requirements, experimental methods and unknown model accounting. |
 | Signing | No certificate/signing service configured. Owner decides whether to publish this explicitly unsigned beta or provision signing later. Do not claim a signed installer. |
 | Repository URLs | Keep the actual `hjcud/Pixerin` origin until a separately approved rename; check resulting links after any rename. Do not advertise a proposed slug as a download. |
 | Git and remote operations | Source commits/push and the beta release are authorized. Use actual current timestamps, with no backfill. Keep the `Pixerin` name; a rename remains a separate decision. The manual artifact workflow is available independently of the source CI. |
 
-The 0.23.0-beta.1 workflow update adds whole-chip request/selection/alpha/palette checks and a seven-locale native workflow-selector check. Prior broad layout/dialog/help results below describe the unchanged beta.2 baseline; new workflow UI is checked separately.
+The 0.23.0-beta.2 update changes generation guidance, not the decoder or UI. Its
+new regression replays the retained preferred board with its fixed palette and
+compares both projections at exact RGBA level. The focused native workflow check
+passes with mocked model calls. Two real host-image trials failed the unchanged
+chip gate and are disclosed; neither is an accepted native quality improvement.
 
-Source acceptance: **406/406** unit/contract tests, seven-locale language checks,
+Current source acceptance: **407/407** unit/contract tests and the focused native
+whole-chip check. Historical baseline checks cover seven-locale language checks,
 33 main/native layout cases, 166 dialog views, 72 help cases and five native
 panels. Artifact acceptance uses `pnpm test:package` and `pnpm test:beta` against
 the final build, including the strict module routes, preserved notices and the
 source-matching provenance/locale hashes. Actual results are retained in
-`artifacts/translation-replacement/verification.json`; these are technical checks,
+`artifacts/translation-replacement/verification.json` and the current
+`artifacts/whole-style-recovery-20261122/` logs; these are technical checks,
 not native-speaker or artwork certification.
 
 ## Beta quality limits to disclose
