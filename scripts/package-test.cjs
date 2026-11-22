@@ -7,8 +7,7 @@ const assert = require("node:assert/strict");
   const root = path.resolve(__dirname, "..");
   const profile = await require("./test-runner.cjs").createProfile("packaged-profile-");
   const executablePath = path.join(
-    root,
-    "dist",
+    process.env.PIXEL_MAT_BUILD_ROOT || path.join(root, "dist"),
     "PixelTool-win32-x64",
     "PixelTool.exe",
   );

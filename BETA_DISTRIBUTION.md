@@ -70,6 +70,17 @@ pnpm test:package
 pnpm test:beta
 ```
 
+To package while a previous folder build remains open, choose a separate build
+root inside `dist` for the current shell. The executable/folder name inside the
+archive stays the same; existing app profiles and running work are untouched.
+
+```powershell
+$env:PIXEL_MAT_BUILD_ROOT = Join-Path (Get-Location) 'dist/release-runtime'
+pnpm build:beta
+pnpm test:package
+Remove-Item Env:PIXEL_MAT_BUILD_ROOT
+```
+
 Deliverables are in `dist/beta/0.22.0-beta.2/`: app ZIP, skill ZIP, SHA-256 sums,
 manifest, installation instructions, changelog and a GitHub Releases body draft.
 Builds contain required runtime notices and first-party license terms. Sources,
