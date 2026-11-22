@@ -140,8 +140,17 @@ const { _electron } = require("./test-electron.cjs"),
   });
   await scenario("guide-conversion", g, {}, async ({ page, draft, tool }) => {
     await tool("select");
+    // Reproduce the short canvas available on smaller CI/desktop displays.
+    await page.locator("#viewport").evaluate((element) => {
+      element.style.maxHeight = "160px";
+    });
     await page.keyboard.press("Control+a");
     await page.locator("#selection-more > summary").click();
+    await page.waitForFunction(() => {
+      const menu = document.querySelector(".selection-more-menu").getBoundingClientRect();
+      const viewport = document.querySelector("#viewport").getBoundingClientRect();
+      return menu.top >= viewport.top && menu.bottom <= viewport.bottom;
+    });
     await page.locator("#transform-flip-x").click();
     await page.locator("#guide-convert-dialog").waitFor({ state: "visible" });
     await page
