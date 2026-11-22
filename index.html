@@ -1083,6 +1083,9 @@
                   수정 옵션 <span id="ai-options-summary">색상, 형태</span>
                 </summary>
                 <p id="layer-scope" class="field-help"></p>
+                <label for="whole-strategy">전체 수정 생성 방식</label>
+                <select id="whole-strategy"><option value="latest">최신 스킬 (기본)</option><option value="chip-median">중앙 대표색</option><option value="chip-region">영역 배정 (베타)</option><option value="raster">기존 이미지 변환</option></select>
+                <p class="field-help">최신 스킬은 16×16에서 중앙 대표색을 사용합니다. 다른 크기는 기존 이미지 변환을 사용합니다.</p>
                 <div class="ai-constraints">
                   <label
                     >색상<select id="ai-palette">

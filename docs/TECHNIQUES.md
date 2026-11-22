@@ -7,6 +7,8 @@ host image tool or an explicitly configured API. The local CLI calls no model.
 
 | Availability | Method | What is established | Limit |
 | --- | --- | --- | --- |
+| Whole-image latest at 16x16 | Whole-chip central median | Shared app/skill policy, 256-chip gate and exact local native decoding; matches the retained preferred example | Mixed chip interiors and loss of expression/props remain possible |
+| Whole-image beta choice at 16x16 | Whole-chip region allocation | Same generated board and palette, fixed-interior structure projection | More abstract detail; not a universally better candidate |
 | Default | Feature-aware raster sampling, aspect-preserving frame fit, perceptual source-color palette fitting | Exact output dimensions, bounded palette, binary-alpha conversion, no dithering | Fine details can disappear; no semantic recognition |
 | Default local workflow | Indexed grids and named pixel parts | Explicit native cells, editable project, exact palette indices | Authoring quality depends on the host/designer |
 | Optional | Source structure | Connected regions project into intersecting source cells with bounded fallback | Source support does not prove anatomy or expression |

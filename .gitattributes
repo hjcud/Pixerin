@@ -8,3 +8,4 @@
 # Evidence manifests refer to exact source bytes, including editable projects.
 /docs/miniworld/** -text
 /docs/comparison/** -text
+/docs/whole-comparison/** -text

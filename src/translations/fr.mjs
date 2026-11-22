@@ -1813,5 +1813,12 @@ export default {
   "외곽선 다듬기": "Retoucher les contours",
   "실루엣 개선": "Améliorer la silhouette",
   "보호 영역": "Zone protégée",
-  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Respecte le verrouillage de chaque calque et de sa transparence. Une transparence de 0 est entièrement transparente."
+  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Respecte le verrouillage de chaque calque et de sa transparence. Une transparence de 0 est entièrement transparente.",
+  "전체 수정 생성 방식": "Méthode de retouche globale",
+  "최신 스킬 (기본)": "Compétence la plus récente (par défaut)",
+  "중앙 대표색": "Médiane centrale",
+  "영역 배정 (베타)": "Répartition des régions (bêta)",
+  "기존 이미지 변환": "Conversion d’image standard",
+  "최신 스킬은 16×16에서 중앙 대표색을 사용합니다. 다른 크기는 기존 이미지 변환을 사용합니다.": "La compétence la plus récente utilise les médianes centrales en 16×16. Les autres tailles utilisent la conversion d’image standard.",
+  "색칩 격자를 읽을 수 없어요. 원본을 유지했어요.": "La grille de couleurs n’a pas pu être lue. L’original a été conservé."
 };

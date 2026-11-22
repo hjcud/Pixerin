@@ -21,6 +21,7 @@ export const DEFAULT_PREFERENCES = Object.freeze({
   reverseZoom: false,
   previewKind: "result",
   livePreview: true,
+  wholeStrategy: 'latest',
 });
 
 const rules = {
@@ -44,6 +45,7 @@ const rules = {
   reverseZoom: (v) => typeof v === "boolean",
   previewKind: (v) => ["result", "source"].includes(v),
   livePreview: (v) => typeof v === "boolean",
+  wholeStrategy: (v) => ['latest','chip-median','chip-region','raster'].includes(v),
 };
 
 // Disk migration uses per-field defaults; IPC rejects malformed values atomically.

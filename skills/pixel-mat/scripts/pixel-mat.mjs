@@ -17,12 +17,13 @@ import { semanticDraft } from "../../../electron/semantic-conversion.mjs";
 import { sourceAnalysisContext, semanticInstructions, semanticPlanSchema } from "../../../electron/semantic-analysis.mjs";
 import { renderSourceLayout, assertLayoutReadable, layoutPlanningInstructions } from "../../../electron/source-layout.mjs";
 import { samplingPlanesContext, renderSamplingPlanes } from "../../../electron/source-planes.mjs";
+import { resolveWholeStrategy, convertWholeChipBoard, wholeChipInstructions, WHOLE_WORKFLOW_VERSION } from "../../../electron/chip-board.mjs";
 import { capturePalette, validatePalette, PALETTE_FILE_LIMIT } from "../../../src/palette-library.mjs";
 
 setLanguage("en");
 const [command, ...args] = process.argv.slice(2), options = new Map();
 const flags = new Set(["overwrite", "no-loop"]);
-const allowed = new Set(["input", "output", "width", "height", "colors", "threshold", "method", "fit", "reference", "palette", "frames", "prompt", "duration", "mask", "plan", "scale", "columns", "frame", "context", "patch", "style", "outline", ...flags]);
+const allowed = new Set(["input", "output", "width", "height", "colors", "threshold", "method", "fit", "reference", "palette", "frames", "prompt", "duration", "mask", "plan", "scale", "columns", "frame", "context", "patch", "style", "outline", "strategy", ...flags]);
 for (let i = 0; i < args.length; i++) {
   const key = args[i].startsWith("--") ? args[i].slice(2) : "";
   if (!allowed.has(key) || options.has(key) && key !== "input") throw Error("Unknown or duplicate option: " + args[i]);
@@ -154,6 +155,17 @@ async function main() {
     const context=(usePlanes?samplingPlanesContext:sourceAnalysisContext)(await readPNG(inputs()[0]),{width:number('width'),height:number('height')});
     const guidance=usePlanes?{}:command==='layout-context'?{purpose:'source-layout',instructions:layoutPlanningInstructions}:{instructions:semanticInstructions,responseSchema:semanticPlanSchema};
     console.log(JSON.stringify({output:await writeJSON({...context,...guidance}),width:context.width,height:context.height,sourceHash:context.sourceHash}));return;
+  }
+  if(command==='whole-context'){
+    const width=number('width',16),height=number('height',16),strategy=resolveWholeStrategy(options.get('strategy')||'latest',width,height);
+    console.log(JSON.stringify({workflowVersion:WHOLE_WORKFLOW_VERSION,width,height,strategy,prompt:options.get('prompt')||'',instructions:strategy==='raster'?'Generate one transparent complete image draft for local pixel conversion.':wholeChipInstructions}));return;
+  }
+  if(command==='whole-prepare'){
+    if(inputs().length!==1)throw Error('Whole conversion needs one image');
+    const width=number('width',16),height=number('height',16),strategy=resolveWholeStrategy(options.get('strategy')||'latest',width,height),image=await readPNG(inputs()[0]);
+    const palette=options.has('palette')?await fixedPalette(options.get('palette')):undefined;
+    const result=strategy==='raster'?{document:convertSpriteDrafts([image],{width,height,colors:number('colors',16),palette,method:'features'}),diagnostics:{strategy}}:convertWholeChipBoard(image,{strategy,colors:number('colors',16),palette});
+    console.log(JSON.stringify({output:await writeJSON(result.document),diagnostics:result.diagnostics,...inspect(result.document)}));return;
   }
   if (command === "prepare") {
     const images = []; let cells = 0;

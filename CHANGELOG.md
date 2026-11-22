@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.23.0-beta.1 — 2026-11-22
+
+- Add shared app/skill whole-chip central median and region allocation decoding.
+- Default the latest whole-image workflow to central median at 16x16; retain raster conversion at other sizes and as an explicit option.
+- Expose region allocation as a beta option in advanced AI settings and the standalone skill.
+- Validate chip layout before conversion; preserve writable scope, existing palettes and exact locked alpha without automatic repair or fallback.
+- Add seven Korean-source UI/error messages with all six locale translations and updated provenance.
+- Record a fresh same-user-prompt Codex-host comparison, including the unchanged raw outputs and native detail limitations.
+
 ## 0.22.0-beta.2 — 2026-11-22
 
 - Replace all six translated application catalogs directly from the unchanged Korean source, without prior translation-service output as authoring input.

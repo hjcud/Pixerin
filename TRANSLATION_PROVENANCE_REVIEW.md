@@ -1,11 +1,17 @@
 # Translation provenance and distribution review
 
-Scope: Pixel Mat **0.22.0-beta.2**, prepared on 2026-11-22. This document
+Baseline scope: Pixel Mat **0.22.0-beta.2**, prepared on 2026-11-22. This document
 distinguishes the prior service-route uncertainty from the provenance of the
 current catalogs. It does not certify native-speaker quality, exclusive
 copyright in common UI phrases, or the legality of every historical activity.
 
 ## Why the catalogs are replaced
+
+The **0.23.0-beta.1** supplement adds seven Korean-source whole-image workflow
+UI/error messages, directly authored in all six locales. The current inventory
+is **1,821 keys / 10,926 translated values**. The original 1,814-key replacement
+record below remains historical evidence; its content is retained. The updated
+manifest records current source/locale hashes and the supplement's origin.
 
 The historical [IP review](IP_REVIEW.md) records an undocumented Google Translate
 `translate_a/single` route with `client=gtx`. The script named by that old review

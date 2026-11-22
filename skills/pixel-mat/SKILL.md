@@ -14,6 +14,15 @@ are in [getting-started.md](references/getting-started.md).
 
 ## Start with the intended asset
 
+For a new image-generation request, use the current bundled workflow by default:
+run `whole-context --width W --height H --prompt "..."` and follow its returned
+instructions with the host's authorized image tool. Then use `whole-prepare` on
+the actual output. `--strategy latest` is the default: 16x16 uses the user's
+preferred whole-chip central median; other sizes keep standard raster conversion.
+Advanced choices are `chip-median`, `chip-region` (beta, 16x16 only), and `raster`.
+Read [whole-image.md](references/whole-image.md) before using the chip route.
+Use the bundled version, not an old research helper. The CLI itself calls no model.
+
 Keep supplied dimensions, artwork and palette. A large reference image does not
 imply a larger logical sprite. For an existing game, first read
 [resource-contract.md](references/resource-contract.md) and match the active

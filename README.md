@@ -10,7 +10,7 @@ The image model supplies a draft; local tools produce the requested grid,
 limited palette and editable `.pixeltool` file. Review the actual native result:
 conversion cannot recover every face, hand or small prop.
 
-**Windows beta: 0.22.0-beta.2.** See the
+**Windows beta: 0.23.0-beta.1.** See the
 [release page](https://github.com/hjcud/Pixerin/releases) for published files and
 [beta installation and updates](BETA_DISTRIBUTION.md) for the unsigned folder build.
 This candidate replaces all six translated catalogs from Korean-only authoring
@@ -18,6 +18,12 @@ input; see [translation provenance](TRANSLATION_PROVENANCE_REVIEW.md) and
 [the publication checklist](PUBLICATION_CHECKLIST.md).
 
 ## What the workflow produces
+
+The [current whole-image comparison](docs/WHOLE_COMPARISON.md) uses the same user
+brief and reference for an ordinary Codex-host image request and the preferred
+whole-chip central-median workflow. Both explicitly request native 16x16.
+Region allocation is an advanced beta choice. These new routes share the app
+and skill runtime; their native constraints do not guarantee faithful faces.
 
 | Object, 32×32 at 8× | Character, 32×32 at 8× |
 | --- | --- |

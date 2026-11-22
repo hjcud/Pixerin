@@ -49,3 +49,5 @@ jobs:
           node scripts/workflow-polish-desktop-test.cjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node scripts/save-recovery-desktop-test.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node scripts/whole-chip-desktop-test.cjs

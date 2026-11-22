@@ -1813,5 +1813,12 @@ export default {
   "외곽선 다듬기": "Refine outline",
   "실루엣 개선": "Improve silhouette",
   "보호 영역": "Protection region",
-  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Respects each layer's lock and transparency lock. Alpha 0 is fully transparent."
+  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Respects each layer's lock and transparency lock. Alpha 0 is fully transparent.",
+  "전체 수정 생성 방식": "Whole-image workflow",
+  "최신 스킬 (기본)": "Latest skill (default)",
+  "중앙 대표색": "Central median",
+  "영역 배정 (베타)": "Region allocation (beta)",
+  "기존 이미지 변환": "Standard image conversion",
+  "최신 스킬은 16×16에서 중앙 대표색을 사용합니다. 다른 크기는 기존 이미지 변환을 사용합니다.": "The latest skill uses central medians at 16×16. Other sizes use standard image conversion.",
+  "색칩 격자를 읽을 수 없어요. 원본을 유지했어요.": "The color-chip grid could not be read. The original has been preserved."
 };

@@ -1813,5 +1813,12 @@ export default {
   "외곽선 다듬기": "Ajustar contorno",
   "실루엣 개선": "Mejorar silueta",
   "보호 영역": "Región protegida",
-  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Respeta los bloqueos de capa y transparencia de cada capa. El alfa 0 es totalmente transparente."
+  "각 레이어의 잠금과 투명 잠금을 따릅니다. 투명도 0은 완전 투명입니다.": "Respeta los bloqueos de capa y transparencia de cada capa. El alfa 0 es totalmente transparente.",
+  "전체 수정 생성 방식": "Método de edición global",
+  "최신 스킬 (기본)": "Habilidad más reciente (predeterminada)",
+  "중앙 대표색": "Mediana central",
+  "영역 배정 (베타)": "Asignación de regiones (beta)",
+  "기존 이미지 변환": "Conversión de imagen estándar",
+  "최신 스킬은 16×16에서 중앙 대표색을 사용합니다. 다른 크기는 기존 이미지 변환을 사용합니다.": "La habilidad más reciente usa medianas centrales a 16×16. Los demás tamaños usan la conversión de imagen estándar.",
+  "색칩 격자를 읽을 수 없어요. 원본을 유지했어요.": "No se pudo leer la cuadrícula de muestras de color. Se ha conservado el original."
 };
