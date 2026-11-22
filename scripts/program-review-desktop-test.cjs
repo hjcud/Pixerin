@@ -77,13 +77,19 @@ const fs = require("node:fs/promises"),
     await page.mouse.up();
     await page.keyboard.press("Escape");
     await check(
-      "capture loss rolls back only the pending pencil stroke",
+      "capture loss with held buttons rolls back only the pending pencil stroke",
       async () => {
         await page.mouse.click(...(await at(0, 0)));
         const before = await pixels();
         await page.mouse.move(...(await at(4, 6)));
         await page.mouse.down();
-        await c.evaluate((c) => c.releasePointerCapture(1));
+        // Exercise the held-button branch explicitly. Windows can report a
+        // native release with buttons=0; that separate branch must wait for up.
+        await c.dispatchEvent("lostpointercapture", {
+          pointerId: 1,
+          pointerType: "mouse",
+          buttons: 1,
+        });
         await page.mouse.move(...(await at(5, 6)));
         await page.mouse.up();
         assert.deepEqual(await pixels(), before);
