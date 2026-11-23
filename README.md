@@ -9,8 +9,7 @@ layers and palette in the app.
 **Windows beta · 0.23.0-beta.2**
 [Download app](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip) ·
 [Download skill](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip) ·
-[Release notes and checksums](https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2) ·
-[Portfolio examples](https://hjcud.github.io/#pixel-mat)
+[Release notes and checksums](https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2)
 
 ## Why I built it
 
@@ -19,82 +18,131 @@ pixel boundaries. I needed assets with actual pixel dimensions for my game.
 Pixel Mat connects generation instructions, local pixel conversion and an editor
 so a draft can become a PNG and a project I can keep working on.
 
-## A 16×16 character
-
-| AI-generated 16×16 chip board | Native 16×16 result, enlarged 16× |
+| Generated 16×16 chip board | Native 16×16 result, enlarged 16× |
 | --- | --- |
-| <img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="Actual generated board with 256 separated color chips"> | <img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="Chosen red-hood character at an exact 16x enlargement"> |
+| <img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="Actual generated board with 256 separated color chips"> | <img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="Red-hood character at an exact 16x enlargement"> |
 
-This retained example uses the original board and a fixed palette of 16 entries,
-including transparency. The current app and skill reproduce its pixels exactly.
-[Native PNG, project and replay](docs/whole-style-recovery/README.md) ·
+This example uses a fixed palette of 16 entries, including transparency.
+[Example files and processing record](docs/whole-style-recovery/README.md) ·
 [Separate identical-user-prompt comparison](docs/whole-comparison/README.md)
 
-### The default 16×16 workflow
+## Quick start
 
-1. **Plan the pixel allocation.** The skill asks the AI to place the face, body,
-   hands and props together within the final 256 cells, then generate a chip board.
-2. **Check the grid and read its colors.** Local code finds the separated chips,
-   validates their count and alignment, and reads each chip's central RGB medians.
-3. **Separate the background.** Only empty gray cells connected to the outside
-   become transparent, keeping enclosed matching colors in the subject.
-4. **Match the palette and save.** Map colors to a supplied palette or fit the
-   requested color limit. Save a native PNG and an editable `.pixeltool` project.
+| I want to… | Start here | Requirements |
+| --- | --- | --- |
+| Generate or transform a sprite with an AI host | [Use the skill](#use-the-skill) | Node 22+ and a skill-capable host; new image generation also needs an image tool |
+| Open and edit an existing PNG or project | [Use the Windows app](#use-the-windows-app) | Windows x64; no separate Node install or AI account for manual editing |
 
-At 16×16, **Whole-chip central median** is the default. **Region allocation** is
-an optional beta projection of the same board. Other sizes use standard raster
-conversion. See [workflow details](skills/pixel-mat/references/whole-image.md).
+### Use the skill
 
-## Work with the result
+The walkthrough below uses **Codex CLI/IDE on Windows**. Keep the complete built
+skill ZIP: the source skill folder alone does not include its runtime.
+
+1. Download the **skill ZIP** above and extract it.
+2. Copy its complete `pixel-mat` folder to `%USERPROFILE%\.agents\skills\pixel-mat`.
+   `SKILL.md` must be directly inside that folder, beside `scripts`, `runtime` and
+   `node_modules`. Back up an existing installation before replacing it.
+3. In PowerShell, check Node and the bundled CLI:
+
+   ```powershell
+   node --version
+   node "$env:USERPROFILE\.agents\skills\pixel-mat\scripts\pixel-mat.mjs" help
+   ```
+
+   Node must be 22 or newer. A command list beginning with `Pixel Mat:` confirms
+   the CLI runs; it does not yet confirm that the AI host discovered the skill.
+4. Open a new Codex session and use `/skills` or type `$` to find `pixel-mat`.
+   If it is missing, check the folder layout and restart Codex.
+
+Select the skill, confirm that your host has an image-generation tool, and ask:
+
+> $pixel-mat
+>
+> Create a 16×16 lantern icon with at most 16 colors including transparency.
+> Save `lantern.png`, `lantern.pixeltool`, and an 8× preview as `lantern-preview.png`.
+
+**Check the first result:** `lantern.png` should be **16×16**, the preview
+**128×128**, and `lantern.pixeltool` should open in Pixel Mat as a 16×16 project.
+Inspect the native image as well as the enlargement.
+
+If image generation is unavailable, use the [local example](#try-the-local-example)
+below. For another host or operating system, use its supported skill directory
+and invocation method. [Host setup and troubleshooting](skills/pixel-mat/references/getting-started.md) ·
+[Official Codex skill discovery guide](https://learn.chatgpt.com/docs/build-skills)
+
+### Use the Windows app
+
+1. Download the **app ZIP** above, extract the complete folder, and run
+   `PixelTool-win32-x64\PixelTool.exe`. Keep its runtime files together. The beta is unsigned.
+2. On GitHub, download this [sample project](docs/whole-style-recovery/accepted-median.pixeltool)
+   using **Download raw file**, then open it in Pixel Mat. It is a 16×16 character.
+   You can also open `lantern.pixeltool` from the skill walkthrough.
+3. Change a pixel, use **Save as** to save `edited.pixeltool`, and export `edited.png`.
+4. Close the edited tab, reopen `edited.pixeltool`, and check that the edit remains.
+   The exported PNG should still be 16×16. Keep the original project for comparison.
 
 <img src="docs/readme/editor.png" width="800" alt="Pixel Mat Windows editor with a 32x40 Miniworld house project, Korean UI">
 
-The Windows editor with a 32×40 Miniworld house project. More game resource
-examples are in the [portfolio](https://hjcud.github.io/#pixel-mat).
+The editor with a separate 32×40 Miniworld house project. Manual editing and file
+operations work offline; the app supports seven UI languages.
+[Installation and updates](BETA_DISTRIBUTION.md) · [Editor guide](docs/EDITOR_GUIDE.md)
 
-| Task | Available workflow |
+## Requests by task
+
+Select Pixel Mat in your host and attach the named reference or project files.
+
+| Task | Example request |
 | --- | --- |
-| Generate from a brief or reference | Image generation followed by chip or raster conversion |
-| Design exact pixels or reusable parts | AI-authored grids and part layouts with `from-grid` / `from-parts` |
-| Refine an existing sprite | Manual tools or bounded AI proposals, with selection, palette and alpha protections |
-| Animate an accepted sprite | Reuse native parts and motion plans; export sheets, frame JSON and APNG |
+| Generate from a reference | “Use the attached character reference to make a 16×16 sprite with at most 16 colors including transparency. Keep the hood, fringe and hand-to-lantern contact. Deliver the PNG and editable project.” |
+| Reuse a game's palette | “Convert `tree-draft.png` to 24×40 using the palette from `house.pixeltool`. Save `tree.png` and `tree.pixeltool`.” |
+| Refine an existing sprite | “In `character.pixeltool`, brighten only the lantern using the existing palette. Keep the pose and all other pixels. Show the proposed edit before applying it.” |
+| Animate an accepted sprite | “Make a four-frame idle animation from `character.pixeltool`, at 120 ms per frame. Reuse the accepted pixels and parts, keep one palette, and show the frames for review. Deliver the project, sprite sheet, frame JSON and APNG.” |
 
-Review AI proposals before applying them, then undo the change in one step.
-The app and standalone CLI share the pixel, palette and project code.
+Exact grids and reusable parts use `from-grid` / `from-parts`; bounded repairs
+use `review-context` / `refine`; motion plans use `render-motion`. The image
+workflow is one route, not a prerequisite for every task.
+[Skill guide](skills/pixel-mat/SKILL.md) · [CLI reference](skills/pixel-mat/references/cli.md)
 
-## Start with the app
+## How the default 16×16 workflow works
 
-1. Download the Windows x64 ZIP above and extract the **complete folder**.
-2. Run `PixelTool.exe`; keep the runtime files beside it. The beta is unsigned.
-3. Open a PNG or `.pixeltool`, edit it, save the project and export a native PNG.
+1. **Plan the pixel allocation.** Ask the AI to place the face, body, hands and
+   props together within the final 256 cells, then generate a chip board.
+2. **Check the grid and read colors.** Find separated chips, validate their count
+   and alignment, and read each chip's central RGB medians.
+3. **Separate the background.** Make only outside-connected empty gray cells
+   transparent, keeping enclosed matching colors in the subject.
+4. **Match the palette and save.** Use a supplied palette or fit the requested
+   color limit; save the PNG and editable project.
 
-Manual editing and file operations work offline. The app supports seven UI
-languages. See [installation and updates](BETA_DISTRIBUTION.md) and the
-[editor guide](docs/EDITOR_GUIDE.md).
+At 16×16, **Whole-chip central median** is the default. **Region allocation** is
+an optional beta projection of the same board. Other sizes use standard raster
+conversion. The app and CLI share these routines; AI proposals are checked
+against edit protections before application, with one-step undo.
+[Workflow details](skills/pixel-mat/references/whole-image.md)
 
-## Install and use the skill
+## Try the local example
 
-Download the skill ZIP above and keep the complete `pixel-mat` folder, including
-its runtime and dependencies. Install it in your AI host's supported skill
-directory. **Node 22+** is required; Electron and a package install are not.
-[Installation and first task](skills/pixel-mat/references/getting-started.md)
+<details>
+<summary>Verify conversion without image generation or an API key</summary>
 
-Ask an image-capable AI host:
+Download the [chip board](docs/whole-style-recovery/accepted-board.png) and
+[palette](docs/whole-style-recovery/palette.json) using **Download raw file**.
+Keep the names `accepted-board.png` and `palette.json`, and open PowerShell in
+that work folder. After the skill installation above, run:
 
-> Use Pixel Mat to make a 16×16 explorer with at most 16 colors including
-> transparency. Show the native result and an integer enlargement, and deliver
-> the PNG and editable project.
-
-To process a generated 16×16 chip board locally:
-
-```sh
-node /path/to/pixel-mat/scripts/pixel-mat.mjs whole-prepare --input board.png --width 16 --height 16 --colors 16 --output sprite.pixeltool
-node /path/to/pixel-mat/scripts/pixel-mat.mjs preview --input sprite.pixeltool --scale 1 --output sprite.png
+```powershell
+$pixelMatCli = "$env:USERPROFILE\.agents\skills\pixel-mat\scripts\pixel-mat.mjs"
+node $pixelMatCli whole-prepare --input accepted-board.png --width 16 --height 16 --colors 16 --palette palette.json --output example.pixeltool
+node $pixelMatCli preview --input example.pixeltool --scale 1 --output example.png
+node $pixelMatCli inspect --input example.pixeltool
 ```
 
-Use `--palette existing.pixeltool` to retain an accepted palette. For ordinary
-image drafts, use `prepare`. See the [skill guide](skills/pixel-mat/SKILL.md) and
-[CLI reference](skills/pixel-mat/references/cli.md) for the other workflows.
+Success produces `example.pixeltool` and a 16×16 `example.png`; `inspect` reports
+`width: 16` and `height: 16`. Open the project in the app to continue editing.
+For a regular image draft, use `prepare` instead of `whole-prepare`.
+If an output already exists, choose a new filename.
+
+</details>
 
 ## AI access and current limits
 

@@ -3,7 +3,8 @@
 Pixel Mat **0.23.0-beta.2** is a local, unsigned Windows x64 folder build.
 Published files are listed on [GitHub Releases](https://github.com/hjcud/pixel-mat/releases).
 There is no automatic updater. The owner authorized source and beta publication
-after manual review; a repository rename remains a separate decision.
+after manual review. The canonical repository is `hjcud/pixel-mat`; its name
+change preserves project formats and existing recovery data.
 This release revises whole-chip landmark-allocation guidance and adds an exact
 replay regression for the preferred board and palette. Its decoder and optional
 region-allocation beta remain unchanged. The earlier releases remain historical. Current catalogs
