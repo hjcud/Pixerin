@@ -2,133 +2,127 @@
 
 [English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md)
 
-AIスキルで実際のピクセルサイズの素材を作り、ローカルエディターで仕上げます。
-Pixel MatはWindowsアプリ、単独実行できるNode CLI、AIホスト用スキルを
-同じリポジトリで提供し、ピクセル・パレット・プロジェクトの処理を共有します。
+ゲーム用ピクセルアートの下絵を作るAIスキルと、仕上げ用のWindowsエディターです。
+必要なピクセルサイズと色数に変換し、アプリでピクセル・レイヤー・パレットを編集できます。
 
-画像モデルが下書きを作り、ローカルツールが指定サイズ、色数、編集可能な
-`.pixeltool`ファイルを生成します。顔・手・小物の細部がすべて残るわけでは
-ないため、実寸で確認してください。
+**Windowsベータ · 0.23.0-beta.2**
+[アプリ](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip) ·
+[スキル](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip) ·
+[変更内容・チェックサム](https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2) ·
+[ポートフォリオの作例](https://hjcud.github.io/#pixel-mat)
 
-**Windowsベータ: 0.23.0-beta.2。** 公開ファイルは
-[リリースページ](https://github.com/hjcud/pixel-mat/releases)、署名なしフォルダー版の
-起動と更新は[ベータの案内](BETA_DISTRIBUTION.md)を参照してください。
-今回の候補では韓国語の原文から6言語の翻訳を新たに作成しました。
-[翻訳の由来](TRANSLATION_PROVENANCE_REVIEW.md)と
-[公開前の確認事項](PUBLICATION_CHECKLIST.md)も記録しています。
+## 作った理由
 
-## 出力例
+16×16のピクセルアートを頼んでも、大きな画像が返ってきたり、ピクセルの境界や色が
+揃わなかったりしました。ゲームには実際のピクセルサイズが決まった素材が必要でした。
+生成指示、ローカル変換、エディターをつなぎ、PNGとして使った後も編集を続けられるようにしました。
 
-| 物体、32×32を8倍表示 | 人物、32×32を8倍表示 |
+## 16×16キャラクターの作例
+
+| AIが生成した16×16色チップボード | 実際の16×16出力を16倍に拡大 |
 | --- | --- |
-| ![剣](docs/comparison/sword-native-display.png) | ![探検家](docs/comparison/explorer-native-display.png) |
+| <img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="256個の色チップを並べた実際の生成画像"> | <img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="採用した赤いフードのキャラクターを整数倍率で拡大"> |
 
-テキストのみで生成した同じ原画像をローカル変換しています。剣は大きな材質の
-区別を保ちますが、探検家は顔と手の細部を失います。
-[原画像・実寸・プロンプト・限界](docs/COMPARISON.md)も公開しています。
-画像ツールの実モデルIDが不明なため、同一GPTを使った統制比較とは呼びません。
+以前採用したボードと、透明色を含む16色の固定パレットを使った例です。
+現在のアプリとスキルでも同じピクセルを再現できます。
+[元のPNG・プロジェクト・再現手順](docs/whole-style-recovery/README.md) ·
+[別途保存した同一ユーザープロンプトの比較](docs/whole-comparison/README.md)
 
-[Miniworldの事例](docs/MINIWORLD_CASE_STUDY.md)では住民・木・家の実際の下書きから
-ネイティブ変換、位置合わせ、パレット調整、アプリ編集までを示します。原画像と
-編集可能な結果、13件のRGBA再現検証を公開し、マップはUnity実行画面ではないオフライン配置例です。
+### 16×16の標準生成フロー
+
+1. **残す特徴の配置を計画。** 顔・体・手・小物を最終的な256マスの中で
+   まとめて配置するようAIに指示し、色チップボードを生成します。
+2. **格子を検査して代表色を取得。** ローカルコードで分離したマスの数と整列を
+   確認し、各マスの中央領域からRGBそれぞれの中央値を求めます。
+3. **背景を分離。** 外周からつながる灰色の空きマスだけを透明にし、
+   対象内部の似た色は残します。
+4. **パレットに合わせて保存。** 指定パレットに色を合わせるか、設定した色数に
+   整理して、実サイズのPNGと編集可能な`.pixeltool`プロジェクトを保存します。
+
+16×16の標準は **Whole-chip central median（中央代表色）** です。
+**領域割り当て**は同じボードに使えるベータ版の選択肢で、他のサイズには通常の
+画像変換を使います。[生成フローの詳細](skills/pixel-mat/references/whole-image.md)
+
+## 結果を続けて編集
+
+<img src="docs/readme/editor.png" width="800" alt="Miniworldの32×40の家を開いたPixel Mat Windowsエディター、韓国語UI">
+
+Miniworldの32×40の家を開いたアプリ画面です。ゲーム素材の作例は
+[ポートフォリオ](https://hjcud.github.io/#pixel-mat)でも確認できます。
+
+| 作業 | 使用するフロー |
+| --- | --- |
+| 指示や参照画像から生成 | 画像生成後、色チップまたは通常画像を変換 |
+| 正確なピクセルや再利用パーツを設計 | AIが作成した格子・パーツ配置を`from-grid` / `from-parts`で構成 |
+| 既存スプライトを修正 | 手動ツール、または選択範囲・パレット・アルファを保護した限定的なAI修正 |
+| 採用したスプライトをアニメーション化 | ピクセルパーツと動作計画を再利用し、シート・フレームJSON・APNGを出力 |
+
+AIの提案を確認してから適用し、1回の操作で元に戻せます。
+アプリと単独実行CLIはピクセル・パレット・プロジェクトの処理コードを共有しています。
 
 ## アプリを使う
 
-検証済みWindows x64ベータフォルダーを受け取ったら、全体を展開して
-`PixelTool.exe`を起動します。互換性のため従来の実行ファイル名を維持します。
-署名付きインストーラーは含みません。
+1. 上のWindows x64 ZIPをダウンロードし、**フォルダー全体を展開**します。
+2. `PixelTool.exe`を実行します。実行に必要なファイルも一緒に保持してください。署名なしのベータ版です。
+3. PNGまたは`.pixeltool`を開いて編集し、プロジェクトを保存して実サイズのPNGを書き出します。
 
-ソースからの起動にはWindows、Node **22.12以上**、pnpmが必要です。
+手動編集とファイル操作はオフラインで動作し、アプリは7つのUI言語に対応しています。
+[インストール・更新](BETA_DISTRIBUTION.md)と[エディターガイド](docs/EDITOR_GUIDE.md)をご覧ください。
 
-```sh
-pnpm install
-pnpm start
-```
+## スキルのインストールと使い方
 
-1. スキルが作ったPNGまたは`.pixeltool`を開きます。
-2. アクティブレイヤーを鉛筆・選択範囲・マスク・パレットで編集します。
-3. Ctrl+Sで編集可能なプロジェクトを保存し、元の解像度のPNGを書き出します。
-4. アニメーションはパネル配置メニューから開き、シート・JSON・APNGを書き出します。
+上のスキルZIPにある`pixel-mat`フォルダーを、ランタイムと依存ファイルごと使用します。
+AIホストが対応するスキルディレクトリに配置してください。**Node 22以上**が必要です。
+Electronや追加パッケージのインストールは不要です。
+[インストールと最初の作業](skills/pixel-mat/references/getting-started.md)
 
-手動編集、ローカル変換、ファイル入出力はオフラインで使えます。アプリの
-既存7言語は維持され、READMEの3言語とは別です。
+画像生成が使えるAIホストに、自然言語で依頼します。
 
-## スキルのインストールと使用
+> Pixel Matで16×16の探検家を、透明色を含めて最大16色で作ってください。
+> 実サイズと整数倍率の拡大を確認し、PNGと編集用プロジェクトを渡してください。
 
-```sh
-pnpm build:skill
-```
-
-`dist/pixel-mat-skill.zip`内の`pixel-mat`フォルダー全体を使います。
-Node **22以上**が必要で、Electronや追加パッケージのインストールは不要です。
-[インストールと最初の作業](skills/pixel-mat/references/getting-started.md)で、
-ホストが対応する配置先を確認してください。リポジトリのスキル原本フォルダー
-だけでは、単独実行用ランタイムは含まれません。
-
-画像を表示できるAIホストには、自然言語で依頼します。
-
-> Pixel Matスキルで32×32、透明色を含め16色以内の探検家を作ってください。
-> 実寸と整数倍の拡大を確認し、PNGと編集可能なプロジェクトを渡してください。
-
-これはホストへの依頼で、ターミナルのコマンドではありません。直接変換する場合:
+生成した16×16色チップボードをローカルで変換する場合:
 
 ```sh
-node /path/to/pixel-mat/scripts/pixel-mat.mjs prepare --input draft.png --output sprite.pixeltool --width 32 --height 32 --colors 16
-node /path/to/pixel-mat/scripts/pixel-mat.mjs preview --input sprite.pixeltool --output sprite.png --scale 1
+node /path/to/pixel-mat/scripts/pixel-mat.mjs whole-prepare --input board.png --width 16 --height 16 --colors 16 --output sprite.pixeltool
+node /path/to/pixel-mat/scripts/pixel-mat.mjs preview --input sprite.pixeltool --scale 1 --output sprite.png
 ```
 
-正確なインデックス格子には`from-grid`、再利用パーツには`from-parts`、
-範囲を限定した修正には`review-context`/`refine`、一貫したフレームには
-`render-motion`を使います。[スキル](skills/pixel-mat/SKILL.md)と
-[CLI](skills/pixel-mat/references/cli.md)に入出力と拒否された計画の修正方法があります。
+採用済みのパレットを維持するには`--palette existing.pixeltool`を指定します。
+通常の画像下絵には`prepare`を使います。他の作業は[スキルガイド](skills/pixel-mat/SKILL.md)と
+[CLIリファレンス](skills/pixel-mat/references/cli.md)をご覧ください。
 
-## AI接続と費用
+## AI接続と現在の制限
 
-AI提案はアクティブレイヤー・選択範囲・パレット・アルファ・マスク・細部保護を
-検証してから表示します。適用と取り消しは一括です。Preciseは限定した格子編集、
-Wholeは画像下書きとローカル変換です。再変換は追加の生成リクエストを使いません。
+ローカルエディターとCLIにはAIアカウントは不要です。生成には自分のホストアカウント、
+サブスクリプションの利用枠、またはAPIクレジットを使用します。開発者はトークンや
+クレジットを提供しません。CLI自体はモデルを呼び出しません。
 
-アプリ内APIは自分で設定したOpenAI・Claude・Geminiのキーとモデルを使います。
-Whole画像生成は現在OpenAI APIに対応します。初期状態では未接続です。
-設定 → AIのCodexスキル項目を開くと、公式CLIコマンドでバージョンとログイン状態を
-確認し、ホストでのスキル・ファイル受け渡しを案内します。推論の実行や認証ファイルの
-抽出は行わず、サブスクリプションのログインをアプリ内画像APIに変換しません。
-確認終了はCodexのログアウトではありません。[データの扱い](DATA_HANDLING.md)を参照してください。
+アプリ内のAI接続は別途設定します。画像全体のAPI生成にはOpenAIを使い、ホストの
+サブスクリプションがアプリ内API接続になるわけではありません。Codexの項目はCLIの
+状態確認とスキル・ファイルの受け渡しを案内します。[接続とデータ処理](DATA_HANDLING.md)
 
-ツールとローカルCLIは[MITライセンス](LICENSE)で無料です。AI利用には自分の
-アカウント、契約の利用枠、APIクレジットを使います。開発者はトークンや
-クレジットを提供しません。ローカルの決定的処理はモデルを呼び出しません。
-APIトークン、画像生成料金、ホストの契約利用量を分け、測定できない値はunknownと
-記します。節約率は作りません。PixelLabや新しい有料サービスは不要です。
-
-## 通常機能と実験
-
-標準変換は原画像の縦横比、特徴サンプリング、知覚色空間での原画像色の
-パレット調整を使い、ディザリングを行いません。Source structureは任意です。
-[手法と根拠](docs/TECHNIQUES.md)で標準・任意・研究機能を分けています。
-AIによる原画像分析・形状再構成・ホスト作成レイアウト・source planesは実験機能です。
-安定した16px人物再現や単色チップ生成の成功は主張しません。好まれた簡潔な
-全身比率やシルエットと、原画像の表情再現は別に評価します。
-
-新規キャンバスは一辺3840px、合計8,294,400pxまでで、レイヤーメモリの制限も
-適用されます。精密AI編集と自動モーションの範囲はさらに小さく、大画像生成は
-実験段階です。静止画v1/v2・アニメーションv3・自動保存・内部識別子を維持します。
-Asepriteプロジェクトの読み込みはありません。[編集案内](docs/EDITOR_GUIDE.md)を参照してください。
+結果は実サイズで確認してください。格子と色数が正しくても、表情や小物の細部が
+十分に残らないことがあります。原画像の解析・再構成・レイアウト・サンプリング平面は
+実験機能です。採用したボードとパレットを保管してください。再生成は新しい絵になります。
+[手法と検証記録](docs/TECHNIQUES.md)
 
 ## 開発と貢献
 
+ソースからの実行にはWindows、Node **22.12以上**、pnpmが必要です。
+
 ```sh
+pnpm install --frozen-lockfile
+pnpm start
 pnpm test
-pnpm test:desktop
-pnpm build
-pnpm test:package
 pnpm build:skill
 ```
 
-デスクトップ検証は隔離プロファイルとモックのモデルを使います。合格は技術的な
-動作の証拠で、作品品質の承認ではありません。[貢献](CONTRIBUTING.md)、
-[Issue](https://github.com/hjcud/pixel-mat/issues)、[セキュリティ報告](SECURITY.md)、
-[ライセンス範囲と出典](LICENSE_SCOPE.md)、[外部構成要素](THIRD_PARTY_NOTICES.md)を確認してください。
-リポジトリへの貢献は英語が基本です。リポジトリは
-**[hjcud/pixel-mat](https://github.com/hjcud/pixel-mat)**です。
-[リポジトリ名と履歴の整理](docs/REPOSITORY_PLAN.md)に変更内容を記録しています。
+[貢献ガイド](CONTRIBUTING.md)にデスクトップ・配布物の検証方法を記載しています。
+自動化したモデル検証ではモックを使用します。
+[Issue](https://github.com/hjcud/pixel-mat/issues)は英語でお願いします。
+
+コードとスキル指示は[MITライセンス](LICENSE)です。参照画像とゲーム素材の権利は
+[ライセンスの範囲](LICENSE_SCOPE.md)で区別しています。
+[セキュリティ](SECURITY.md) · [外部コンポーネント](THIRD_PARTY_NOTICES.md) ·
+[翻訳の出典](TRANSLATION_PROVENANCE_REVIEW.md)

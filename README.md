@@ -2,164 +2,132 @@
 
 [English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md)
 
-Create native pixel art with an AI skill, then open the result in a small local
-editor to finish it. Pixel Mat pairs a Windows desktop app with a standalone
-Node CLI and an AI-host skill. They share the pixel, palette and project core.
+An AI skill for making game pixel art, with a Windows editor to finish the result.
+Create a draft at the required pixel size and color limit, then edit its pixels,
+layers and palette in the app.
 
-The image model supplies a draft; local tools produce the requested grid,
-limited palette and editable `.pixeltool` file. Review the actual native result:
-conversion cannot recover every face, hand or small prop.
+**Windows beta · 0.23.0-beta.2**
+[Download app](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip) ·
+[Download skill](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip) ·
+[Release notes and checksums](https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2) ·
+[Portfolio examples](https://hjcud.github.io/#pixel-mat)
 
-The [preferred whole-chip style replay](docs/whole-style-recovery/README.md)
-retains an accepted board, palette and native result together. Workflow 2 restores
-source-landmark priorities; a fresh generation is a new drawing, not an exact
-reproduction. The separate same-user-prompt experiment remains unchanged.
+## Why I built it
 
-**Windows beta: 0.23.0-beta.2.** See the
-[release page](https://github.com/hjcud/pixel-mat/releases) for published files and
-[beta installation and updates](BETA_DISTRIBUTION.md) for the unsigned folder build.
-This candidate replaces all six translated catalogs from Korean-only authoring
-input; see [translation provenance](TRANSLATION_PROVENANCE_REVIEW.md) and
-[the publication checklist](PUBLICATION_CHECKLIST.md).
+Asking for 16×16 pixel art can still return a large image with soft or inconsistent
+pixel boundaries. I needed assets with actual pixel dimensions for my game.
+Pixel Mat connects generation instructions, local pixel conversion and an editor
+so a draft can become a PNG and a project I can keep working on.
 
-## What the workflow produces
+## A 16×16 character
 
-The [current whole-image comparison](docs/WHOLE_COMPARISON.md) uses the same user
-brief and reference for an ordinary Codex-host image request and the preferred
-whole-chip central-median workflow. Both explicitly request native 16x16.
-Region allocation is an advanced beta choice. These new routes share the app
-and skill runtime; their native constraints do not guarantee faithful faces.
-
-| Object, 32×32 at 8× | Character, 32×32 at 8× |
+| AI-generated 16×16 chip board | Native 16×16 result, enlarged 16× |
 | --- | --- |
-| ![Native sword](docs/comparison/sword-native-display.png) | ![Native explorer](docs/comparison/explorer-native-display.png) |
+| <img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="Actual generated board with 256 separated color chips"> | <img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="Chosen red-hood character at an exact 16x enlargement"> |
 
-These text-only generated examples use the same original raster before and after
-local conversion. The sword keeps broad material separation; the explorer loses
-facial and hand detail. See [originals, native-scale views, exact prompts and limits](docs/COMPARISON.md).
-The underlying image model is unknown, so this is not a controlled same-GPT benchmark.
+This retained example uses the original board and a fixed palette of 16 entries,
+including transparency. The current app and skill reproduce its pixels exactly.
+[Native PNG, project and replay](docs/whole-style-recovery/README.md) ·
+[Separate identical-user-prompt comparison](docs/whole-comparison/README.md)
 
-The [Miniworld case study](docs/MINIWORLD_CASE_STUDY.md) follows actual citizen,
-tree and house drafts through native conversion, registration, palette work and
-editor opening. It includes the original drafts, editable results and a replay
-of 13 exact RGBA checks; the map is an offline placement fixture, not Unity gameplay.
+### The default 16×16 workflow
+
+1. **Plan the pixel allocation.** The skill asks the AI to place the face, body,
+   hands and props together within the final 256 cells, then generate a chip board.
+2. **Check the grid and read its colors.** Local code finds the separated chips,
+   validates their count and alignment, and reads each chip's central RGB medians.
+3. **Separate the background.** Only empty gray cells connected to the outside
+   become transparent, keeping enclosed matching colors in the subject.
+4. **Match the palette and save.** Map colors to a supplied palette or fit the
+   requested color limit. Save a native PNG and an editable `.pixeltool` project.
+
+At 16×16, **Whole-chip central median** is the default. **Region allocation** is
+an optional beta projection of the same board. Other sizes use standard raster
+conversion. See [workflow details](skills/pixel-mat/references/whole-image.md).
+
+## Work with the result
+
+<img src="docs/readme/editor.png" width="800" alt="Pixel Mat Windows editor with a 32x40 Miniworld house project, Korean UI">
+
+The Windows editor with a 32×40 Miniworld house project. More game resource
+examples are in the [portfolio](https://hjcud.github.io/#pixel-mat).
+
+| Task | Available workflow |
+| --- | --- |
+| Generate from a brief or reference | Image generation followed by chip or raster conversion |
+| Design exact pixels or reusable parts | AI-authored grids and part layouts with `from-grid` / `from-parts` |
+| Refine an existing sprite | Manual tools or bounded AI proposals, with selection, palette and alpha protections |
+| Animate an accepted sprite | Reuse native parts and motion plans; export sheets, frame JSON and APNG |
+
+Review AI proposals before applying them, then undo the change in one step.
+The app and standalone CLI share the pixel, palette and project code.
 
 ## Start with the app
 
-Use the complete Windows x64 beta folder when a reviewed package is supplied;
-extract it before launching `PixelTool.exe`. The executable keeps its historical
-filename for compatibility. No installer or signing certificate is bundled.
+1. Download the Windows x64 ZIP above and extract the **complete folder**.
+2. Run `PixelTool.exe`; keep the runtime files beside it. The beta is unsigned.
+3. Open a PNG or `.pixeltool`, edit it, save the project and export a native PNG.
 
-To run from source, install Node **22.12+** and pnpm on Windows:
-
-```sh
-pnpm install
-pnpm start
-```
-
-1. Open a PNG or a `.pixeltool` file produced by the skill.
-2. Edit the active layer with pencil, selections, masks and palette tools.
-3. Save the editable project with Ctrl+S; export a native-resolution PNG.
-4. For animation, open Animation from Panel layout, then export sheets, JSON and APNG.
-
-Manual drawing, file editing, conversion and export work offline. The app keeps
-seven UI languages; the three README languages do not change that support.
+Manual editing and file operations work offline. The app supports seven UI
+languages. See [installation and updates](BETA_DISTRIBUTION.md) and the
+[editor guide](docs/EDITOR_GUIDE.md).
 
 ## Install and use the skill
 
-Build the self-contained distribution:
+Download the skill ZIP above and keep the complete `pixel-mat` folder, including
+its runtime and dependencies. Install it in your AI host's supported skill
+directory. **Node 22+** is required; Electron and a package install are not.
+[Installation and first task](skills/pixel-mat/references/getting-started.md)
+
+Ask an image-capable AI host:
+
+> Use Pixel Mat to make a 16×16 explorer with at most 16 colors including
+> transparency. Show the native result and an integer enlargement, and deliver
+> the PNG and editable project.
+
+To process a generated 16×16 chip board locally:
 
 ```sh
-pnpm build:skill
+node /path/to/pixel-mat/scripts/pixel-mat.mjs whole-prepare --input board.png --width 16 --height 16 --colors 16 --output sprite.pixeltool
+node /path/to/pixel-mat/scripts/pixel-mat.mjs preview --input sprite.pixeltool --scale 1 --output sprite.png
 ```
 
-Extract `dist/pixel-mat-skill.zip`. Keep the complete `pixel-mat` folder, including
-its runtime and bundled dependency. It needs Node **22+**, no Electron or
-additional package installation. Follow [skill installation and first task](skills/pixel-mat/references/getting-started.md)
-for your host's supported skill location. Installing the source skill folder
-alone does not include the standalone runtime.
+Use `--palette existing.pixeltool` to retain an accepted palette. For ordinary
+image drafts, use `prepare`. See the [skill guide](skills/pixel-mat/SKILL.md) and
+[CLI reference](skills/pixel-mat/references/cli.md) for the other workflows.
 
-In an image-capable AI host, ask in natural language:
+## AI access and current limits
 
-> Use the Pixel Mat skill to make a 32×32 explorer with at most 16 colors.
-> Show the native result and an integer enlargement, and deliver the PNG and editable project.
+The local editor and CLI work without an AI account. Generation uses your own
+host account, subscription allowance or API credits; the developer supplies no
+tokens or credits. The CLI itself makes no model requests.
 
-This is a host request, not a terminal command. A direct local conversion is:
+In-app AI connections are configured separately. Whole-image API generation
+uses OpenAI; a host subscription is not an in-app API connection. The Codex
+section provides CLI status inspection and a skill/file handoff.
+[Connection and data handling](DATA_HANDLING.md)
 
-```sh
-node /path/to/pixel-mat/scripts/pixel-mat.mjs prepare --input draft.png --output sprite.pixeltool --width 32 --height 32 --colors 16
-node /path/to/pixel-mat/scripts/pixel-mat.mjs preview --input sprite.pixeltool --output sprite.png --scale 1
-```
-
-Use `from-grid` for exact indexed designs, `from-parts` for reusable native parts,
-`review-context`/`refine` for bounded repairs, and `render-motion` for coherent
-frames. [Skill guide](skills/pixel-mat/SKILL.md) and [CLI commands](skills/pixel-mat/references/cli.md)
-cover inputs, outputs and recovery from rejected plans.
-
-## Editing and AI connections
-
-- Layers, selections, palette/alpha locks, masks and detail protection constrain
-  writes. AI proposals are validated before review and applied atomically with
-  one-step undo; other layers remain context.
-- Precise edits use a bounded native-grid request. Whole edits use an image
-  draft and local fitting. Local reconversion changes sampling, placement,
-  transparency and palette without another generation request.
-- OpenAI, Claude and Gemini API connections use your own configured key and model.
-  Whole-image generation currently uses OpenAI API. No provider is connected by default.
-- Settings → AI → Work with the Codex skill checks the installed CLI's version
-  and sign-in status through supported commands, then explains the skill/file
-  handoff. It makes no inference request and does not turn a subscription sign-in
-  into an in-app image API. End inspection forgets the result without signing
-  Codex out. See [connection and data boundaries](DATA_HANDLING.md).
-
-The tool and local CLI are free under the [MIT license](LICENSE).
-AI hosts and model services may charge or apply subscription/API limits. You use
-your own account, subscription allowance or API credits; the developer supplies
-neither tokens nor credits. Local deterministic processing makes no model request.
-Reported API tokens, image-generation costs and host subscription accounting are
-separate; unknown usage is displayed as unknown. No token-saving percentage is claimed.
-No PixelLab account or additional paid service is required.
-
-## Supported methods and limits
-
-Default conversion preserves source aspect ratio, uses feature-aware sampling
-and perceptual source-color palette fitting, and avoids dithering. Indexed grids,
-shared frame palettes and exact native motion are local operations.
-Optional Source structure preserves source-cell support where feasible.
-See [methods and evidence](docs/TECHNIQUES.md).
-
-AI source analysis, shape reconstruction, host-authored layouts and source planes
-are **experimental**. Reliable 16px character likeness and uniform single-color
-chip generation remain unsolved. User-liked compact styles are retained separately
-from source-expression fidelity; a larger face is not automatically better art.
-Rejected research methods do not become defaults.
-
-New canvases support up to 3840 pixels per side and 8,294,400 pixels total, subject
-to layer-memory limits. Precise AI scopes and automatic motion have smaller
-limits. Large whole-image requests remain experimental. Static v1/v2 projects,
-animation v3, autosaves and existing internal identifiers stay compatible.
-There is no Aseprite project importer. See [editor guide](docs/EDITOR_GUIDE.md).
+Review the result at its native size. A valid grid and palette do not guarantee
+facial expression or small prop detail. Source analysis, reconstruction, layouts
+and sampling planes remain experimental. Keep accepted boards and palettes:
+another generation is a new drawing. [Methods and evidence](docs/TECHNIQUES.md)
 
 ## Develop and contribute
 
+From source on Windows, use Node **22.12+** and pnpm:
+
 ```sh
+pnpm install --frozen-lockfile
+pnpm start
 pnpm test
-pnpm test:desktop
-pnpm build
-pnpm test:package
 pnpm build:skill
 ```
 
-Desktop checks use isolated profiles and mocked model calls. Passing checks
-establish technical behavior, not artwork quality. [Contributing](CONTRIBUTING.md)
-lists the appropriate focused checks and test storage rules.
+[Contributing](CONTRIBUTING.md) covers the focused desktop and package checks;
+automated model checks use mocks. Open [issues](https://github.com/hjcud/pixel-mat/issues)
+in English.
 
-Report reproducible bugs and suggestions using the
-[current repository's issues](https://github.com/hjcud/pixel-mat/issues).
-Use English for repository contributions. See [security reporting](SECURITY.md),
-[license scope and asset provenance](LICENSE_SCOPE.md), and
-[third-party notices](THIRD_PARTY_NOTICES.md).
-
-The repository is **[hjcud/pixel-mat](https://github.com/hjcud/pixel-mat)**.
-[Repository identity and history](docs/REPOSITORY_PLAN.md) records the rename and
-source import reconstruction. Project formats and recovery identifiers are unchanged.
+Code and skill instructions are [MIT licensed](LICENSE). Reference and game
+artwork have a separate [license scope](LICENSE_SCOPE.md).
+[Security](SECURITY.md) · [Third-party notices](THIRD_PARTY_NOTICES.md) ·
+[Translation provenance](TRANSLATION_PROVENANCE_REVIEW.md)
