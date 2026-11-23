@@ -1,14 +1,34 @@
-# Pixel Mat
+<p align="center"><a href="README.md">English</a> · <a href="README.ko.md">한국어</a> · <strong>日本語</strong></p>
 
-[English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md)
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero.ja.dark.svg">
+    <img src="docs/readme/hero.ja.light.svg" alt="Pixel Matロゴと、採用した実際の16×16キャラクターを整数倍率で拡大した画像" width="900">
+  </picture>
+  <h1>Pixel Mat</h1>
+</div>
 
-ゲーム用ピクセルアートの下絵を作るAIスキルと、仕上げ用のWindowsエディターです。
-必要なピクセルサイズと色数に変換し、アプリでピクセル・レイヤー・パレットを編集できます。
+<p align="center"><strong>ゲーム用ピクセルアートを作るAIスキル。<br>結果を仕上げるWindowsエディター。</strong></p>
 
-**Windowsベータ · 0.23.0-beta.2**
-[アプリ](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip) ·
-[スキル](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip) ·
-[変更内容・チェックサム](https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2)
+<p align="center"><sub>Windowsベータ · 0.23.0-beta.2</sub></p>
+
+<p align="center">
+  <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip"><strong>Windowsアプリをダウンロード ↓</strong></a>&ensp;·&ensp;
+  <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip"><strong>AIスキルをダウンロード ↓</strong></a><br>
+  <sub><a href="https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2">変更内容・チェックサム</a></sub>
+</p>
+
+<table align="center">
+  <tr>
+    <td width="280" align="center"><strong>正確な格子のPNG</strong><br><sub>ゲームに必要な実サイズ</sub></td>
+    <td width="280" align="center"><strong>編集可能なプロジェクト</strong><br><sub>ピクセル · レイヤー · パレット</sub></td>
+    <td width="280" align="center"><strong>7つのUI言語</strong><br><sub>オフラインで手動編集</sub></td>
+  </tr>
+</table>
+
+<p align="center"><a href="#クイックスタート">クイックスタート</a> &ensp;·&ensp; <a href="#作業別の依頼例">作業別の依頼</a> &ensp;·&ensp; <a href="#1616の標準生成フロー">生成フロー</a> &ensp;·&ensp; <a href="#ローカル作例を実行">ローカル作例</a></p>
+
+---
 
 ## 作った理由
 
@@ -16,9 +36,16 @@
 揃わなかったりしました。ゲームには実際のピクセルサイズが決まった素材が必要でした。
 生成指示、ローカル変換、エディターをつなぎ、PNGとして使った後も編集を続けられるようにしました。
 
-| 生成した16×16色チップボード | 実際の16×16出力を16倍に拡大 |
-| --- | --- |
-| <img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="256個の色チップを並べた実際の生成画像"> | <img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="赤いフードのキャラクターを整数倍率で拡大"> |
+<table align="center">
+  <tr>
+    <th width="420" align="center">生成した16×16色チップボード</th>
+    <th width="420" align="center">実際の16×16出力</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="256個の色チップを並べた実際の生成画像"><br><sub>最終的な256マスの配置をAIで計画</sub></td>
+    <td align="center"><img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="採用した赤いフードのキャラクターを正確に16倍に拡大"><br><sub>16倍拡大 · 中央代表色</sub></td>
+  </tr>
+</table>
 
 透明色を含む16色の固定パレットを使った例です。
 [作例ファイルと処理記録](docs/whole-style-recovery/README.md) ·
@@ -80,7 +107,9 @@
 4. 編集したタブを閉じてから`edited.pixeltool`を開き直し、編集が残っていることを確認します。
    PNGも16×16のままであることを確認し、比較用に元のプロジェクトを保管してください。
 
-<img src="docs/readme/editor.png" width="800" alt="Miniworldの32×40の家を開いたPixel Mat Windowsエディター、韓国語UI">
+<p align="center">
+  <img src="docs/readme/editor.png" width="800" alt="Miniworldの32×40の家を開いたPixel Mat Windowsエディター、韓国語UI">
+</p>
 
 画面は別の32×40のMiniworldの家を開いた例です。手動編集とファイル操作はオフラインで
 動作し、アプリは7つのUI言語に対応しています。

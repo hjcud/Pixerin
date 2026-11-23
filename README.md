@@ -1,15 +1,34 @@
-# Pixel Mat
+<p align="center"><strong>English</strong> · <a href="README.ko.md">한국어</a> · <a href="README.ja.md">日本語</a></p>
 
-[English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md)
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero.en.dark.svg">
+    <img src="docs/readme/hero.en.light.svg" alt="Pixel Mat logo and the accepted native 16×16 character, enlarged with exact pixel cells" width="900">
+  </picture>
+  <h1>Pixel Mat</h1>
+</div>
 
-An AI skill for making game pixel art, with a Windows editor to finish the result.
-Create a draft at the required pixel size and color limit, then edit its pixels,
-layers and palette in the app.
+<p align="center"><strong>An AI skill for making game pixel art.<br>A Windows editor to finish the result.</strong></p>
 
-**Windows beta · 0.23.0-beta.2**
-[Download app](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip) ·
-[Download skill](https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip) ·
-[Release notes and checksums](https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2)
+<p align="center"><sub>Windows beta · 0.23.0-beta.2</sub></p>
+
+<p align="center">
+  <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip"><strong>Download Windows app ↓</strong></a>&ensp;·&ensp;
+  <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip"><strong>Download AI skill ↓</strong></a><br>
+  <sub><a href="https://github.com/hjcud/pixel-mat/releases/tag/v0.23.0-beta.2">Release notes &amp; checksums</a></sub>
+</p>
+
+<table align="center">
+  <tr>
+    <td width="280" align="center"><strong>Exact-grid PNG</strong><br><sub>The size your game needs</sub></td>
+    <td width="280" align="center"><strong>Editable projects</strong><br><sub>Pixels · layers · palette</sub></td>
+    <td width="280" align="center"><strong>7 UI languages</strong><br><sub>Offline manual editing</sub></td>
+  </tr>
+</table>
+
+<p align="center"><a href="#quick-start">Quick start</a> &ensp;·&ensp; <a href="#requests-by-task">Requests by task</a> &ensp;·&ensp; <a href="#how-the-default-1616-workflow-works">How it works</a> &ensp;·&ensp; <a href="#try-the-local-example">Local example</a></p>
+
+---
 
 ## Why I built it
 
@@ -18,9 +37,16 @@ pixel boundaries. I needed assets with actual pixel dimensions for my game.
 Pixel Mat connects generation instructions, local pixel conversion and an editor
 so a draft can become a PNG and a project I can keep working on.
 
-| Generated 16×16 chip board | Native 16×16 result, enlarged 16× |
-| --- | --- |
-| <img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="Actual generated board with 256 separated color chips"> | <img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="Red-hood character at an exact 16x enlargement"> |
+<table align="center">
+  <tr>
+    <th width="420" align="center">Generated 16×16 chip board</th>
+    <th width="420" align="center">Native 16×16 result</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/whole-style-recovery/accepted-board.png" width="256" alt="Actual generated board with 256 separated color chips"><br><sub>AI plans the final 256 cells</sub></td>
+    <td align="center"><img src="docs/whole-style-recovery/accepted-median-display.png" width="256" alt="Accepted red-hood character at an exact 16x enlargement"><br><sub>Enlarged 16× · central median</sub></td>
+  </tr>
+</table>
 
 This example uses a fixed palette of 16 entries, including transparency.
 [Example files and processing record](docs/whole-style-recovery/README.md) ·
@@ -81,7 +107,9 @@ and invocation method. [Host setup and troubleshooting](skills/pixel-mat/referen
 4. Close the edited tab, reopen `edited.pixeltool`, and check that the edit remains.
    The exported PNG should still be 16×16. Keep the original project for comparison.
 
-<img src="docs/readme/editor.png" width="800" alt="Pixel Mat Windows editor with a 32x40 Miniworld house project, Korean UI">
+<p align="center">
+  <img src="docs/readme/editor.png" width="800" alt="Pixel Mat Windows editor with a 32x40 Miniworld house project, Korean UI">
+</p>
 
 The editor with a separate 32×40 Miniworld house project. Manual editing and file
 operations work offline; the app supports seven UI languages.
