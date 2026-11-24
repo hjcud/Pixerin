@@ -8,10 +8,6 @@
   <h1>Pixel Mat</h1>
 </div>
 
-<p align="center"><strong>ゲーム用ピクセルアートを作るAIスキル。<br>結果を仕上げるWindowsエディター。</strong></p>
-
-<p align="center"><sub>Windowsベータ · 0.23.0-beta.2</sub></p>
-
 <p align="center">
   <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip"><strong>Windowsアプリをダウンロード ↓</strong></a>&ensp;·&ensp;
   <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip"><strong>AIスキルをダウンロード ↓</strong></a><br>
@@ -36,6 +32,44 @@
 揃わなかったりしました。ゲームには実際のピクセルサイズが決まった素材が必要でした。
 生成指示、ローカル変換、エディターをつなぎ、PNGとして使った後も編集を続けられるようにしました。
 
+両条件に同じ[ユーザープロンプト](docs/whole-comparison/common-prompt.txt)と
+[参照画像](docs/whole-comparison/reference.png)を渡し、**実際の16×16ピクセルアートと
+透明色を含む最大16色**を明示しました。
+
+<table align="center">
+  <tr>
+    <th width="420" align="center">通常のGPT画像生成</th>
+    <th width="420" align="center">Pixel Matの画像全体の修正</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/whole-comparison/gpt-original.png" width="256" alt="通常の画像生成の原画像を縮小表示したもの、原ファイルは未変更"><br><sub>原画像を縮小表示</sub></td>
+    <td align="center"><img src="docs/whole-comparison/whole-median-display.png" width="256" alt="同一プロンプト実験の実際のPixel Mat 16×16出力を正確に16倍に拡大"><br><sub>実際の出力を16倍に拡大</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>1254×1254</strong><br><sub>実際の画像サイズ</sub></td>
+    <td align="center"><strong>16×16</strong><br><sub>実際の画像サイズ</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>58,266</strong><br><sub>異なるRGBA値</sub></td>
+    <td align="center"><strong>16</strong><br><sub>透明色を含むRGBA値</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>PNG</strong><br><sub>画像ファイル</sub></td>
+    <td align="center"><strong>PNG + .pixeltool</strong><br><sub>画像 + 編集可能なプロジェクト</sub></td>
+  </tr>
+</table>
+
+2026-11-22にCodexホストの画像ツールで、それぞれ1回生成しました。Pixel Mat側にはスキル指示と
+ローカル変換を加えています。この実験で確認した違いはサイズ・色数・編集可能性です。
+顔とランタンの細部は依然として単純化されています。
+[原ファイル・比較条件・測定記録](docs/whole-comparison/README.md)
+
+<details>
+<summary><strong>採用した中央代表色の作例と色チップボードを見る</strong></summary>
+
+ヘッダーには、別途採用した以下の生成結果を使用しています。透明色を含む16色の固定
+パレットで、上の同一プロンプト実験とは生成プロンプトが異なります。
+
 <table align="center">
   <tr>
     <th width="420" align="center">生成した16×16色チップボード</th>
@@ -47,11 +81,16 @@
   </tr>
 </table>
 
-透明色を含む16色の固定パレットを使った例です。
-[作例ファイルと処理記録](docs/whole-style-recovery/README.md) ·
-[別途保存した同一ユーザープロンプトの比較](docs/whole-comparison/README.md)
+[採用ファイルと処理記録](docs/whole-style-recovery/README.md)
+
+</details>
 
 ## クイックスタート
+
+**開始前のAI接続確認:** **スキル**はホストのアカウントと利用可能なツールを使います。
+**アプリ内AI**にはAPI接続とクレジットを別途設定する必要があり、ホストの契約だけでは
+接続されません。手動編集とローカル変換はオフラインで動作します。
+[接続ガイド](DATA_HANDLING.md)
 
 | 目的 | 始め方 | 必要な環境 |
 | --- | --- | --- |
@@ -174,13 +213,10 @@ node $pixelMatCli inspect --input example.pixeltool
 
 ## AI接続と現在の制限
 
-ローカルエディターとCLIにはAIアカウントは不要です。生成には自分のホストアカウント、
-サブスクリプションの利用枠、またはAPIクレジットを使用します。開発者はトークンや
-クレジットを提供しません。CLI自体はモデルを呼び出しません。
-
-アプリ内のAI接続は別途設定します。画像全体のAPI生成にはOpenAIを使い、ホストの
-サブスクリプションがアプリ内API接続になるわけではありません。Codexの項目はCLIの
-状態確認とスキル・ファイルの受け渡しを案内します。[接続とデータ処理](DATA_HANDLING.md)
+生成には自分のアカウントの利用枠やAPIクレジットを使い、開発者は提供しません。
+CLI自体はモデルを呼び出しません。アプリ内の画像全体のAPI生成にはOpenAIを使い、
+Codexの項目はCLIの状態確認とスキル・ファイルの受け渡しを案内します。
+[接続とデータ処理](DATA_HANDLING.md)
 
 結果は実サイズで確認してください。格子と色数が正しくても、表情や小物の細部が
 十分に残らないことがあります。原画像の解析・再構成・レイアウト・サンプリング平面は

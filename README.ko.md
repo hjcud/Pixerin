@@ -8,10 +8,6 @@
   <h1>Pixel Mat</h1>
 </div>
 
-<p align="center"><strong>게임용 픽셀 아트를 만드는 AI 스킬.<br>결과를 다듬는 Windows 편집기.</strong></p>
-
-<p align="center"><sub>Windows 베타 · 0.23.0-beta.2</sub></p>
-
 <p align="center">
   <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip"><strong>Windows 앱 다운로드 ↓</strong></a>&ensp;·&ensp;
   <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip"><strong>AI 스킬 다운로드 ↓</strong></a><br>
@@ -36,6 +32,44 @@
 않은 경우가 있었습니다. 게임에서는 실제 픽셀 크기에 맞는 리소스가 필요했습니다.
 생성 지침과 로컬 변환, 편집기를 연결해 PNG로 쓰고 이후에도 수정할 수 있도록 만들었습니다.
 
+두 조건에 같은 [사용자 프롬프트](docs/whole-comparison/common-prompt.txt)와
+[참조 이미지](docs/whole-comparison/reference.png)를 전달하고, 모두 **실제 16×16 픽셀 아트와
+투명색 포함 최대 16색**을 명시했습니다.
+
+<table align="center">
+  <tr>
+    <th width="420" align="center">일반 GPT 이미지 생성</th>
+    <th width="420" align="center">Pixel Mat 전체 수정</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/whole-comparison/gpt-original.png" width="256" alt="일반 이미지 생성의 원본을 축소 표시한 이미지, 원본 파일은 변경하지 않음"><br><sub>원본 이미지를 축소 표시</sub></td>
+    <td align="center"><img src="docs/whole-comparison/whole-median-display.png" width="256" alt="동일 프롬프트 실험의 실제 Pixel Mat 16×16 결과를 정확히 16배 확대한 이미지"><br><sub>실제 출력의 16배 확대</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>1254×1254</strong><br><sub>실제 이미지 크기</sub></td>
+    <td align="center"><strong>16×16</strong><br><sub>실제 이미지 크기</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>58,266</strong><br><sub>서로 다른 RGBA 값</sub></td>
+    <td align="center"><strong>16</strong><br><sub>투명색을 포함한 RGBA 값</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>PNG</strong><br><sub>이미지 파일</sub></td>
+    <td align="center"><strong>PNG + .pixeltool</strong><br><sub>이미지 + 편집 가능한 프로젝트</sub></td>
+  </tr>
+</table>
+
+2026-11-22에 Codex 호스트의 이미지 도구로 각각 한 번 생성했습니다. Pixel Mat 조건에는 스킬 지침과
+로컬 변환이 추가됩니다. 이 실험에서 확인한 차이는 크기·색 수·편집 가능성이며,
+얼굴과 랜턴의 세부 표현은 여전히 단순해집니다.
+[원본 파일·비교 조건·측정 기록](docs/whole-comparison/README.md)
+
+<details>
+<summary><strong>선호한 중앙 대표색 결과와 색칩 보드 보기</strong></summary>
+
+대표 이미지에는 별도로 채택한 아래 생성 결과를 사용했습니다. 투명색 포함 16색 고정
+팔레트이며, 위 동일 프롬프트 실험과는 생성 프롬프트가 다릅니다.
+
 <table align="center">
   <tr>
     <th width="420" align="center">생성한 16×16 색칩 보드</th>
@@ -47,11 +81,16 @@
   </tr>
 </table>
 
-투명색 포함 16색 고정 팔레트를 사용한 예시입니다.
-[예제 파일·처리 기록](docs/whole-style-recovery/README.md) ·
-[별도의 동일 사용자 프롬프트 비교](docs/whole-comparison/README.md)
+[채택한 파일·처리 기록](docs/whole-style-recovery/README.md)
+
+</details>
 
 ## 빠른 시작
+
+**시작 전 AI 연결 확인:** **스킬**은 호스트 계정과 그 환경의 도구를 사용합니다.
+**앱 내부 AI**는 API 연결과 크레딧을 별도로 설정해야 하며, 호스트 구독만으로 연결되지
+않습니다. 수동 편집과 로컬 변환은 오프라인으로 작동합니다.
+[연결 안내](DATA_HANDLING.md)
 
 | 하고 싶은 작업 | 시작 위치 | 필요한 환경 |
 | --- | --- | --- |
@@ -142,7 +181,7 @@
 4. **팔레트에 맞춰 저장합니다.** 지정한 팔레트나 목표 색 수에 맞춰 PNG와
    편집 가능한 프로젝트를 만듭니다.
 
-16×16의 기본값은 **Whole-chip central median(중앙 대표색)**입니다.
+16×16의 기본값은 <strong>Whole-chip central median(중앙 대표색)</strong>입니다.
 **영역 배정**은 같은 보드에서 선택하는 베타 변환이며, 다른 크기에는 일반 이미지
 변환을 사용합니다. 앱과 CLI는 이 처리를 공유합니다. AI 제안은 편집 보호 조건을
 검증한 뒤 적용하고 한 번에 실행 취소할 수 있습니다.
@@ -174,13 +213,10 @@ node $pixelMatCli inspect --input example.pixeltool
 
 ## AI 연결·현재 한계
 
-로컬 편집기와 CLI는 AI 계정 없이 사용할 수 있습니다. 생성에는 본인의 호스트
-계정, 구독 한도 또는 API 크레딧을 사용하며 개발자가 토큰이나 크레딧을 제공하지
-않습니다. CLI 자체는 모델을 호출하지 않습니다.
-
-앱 내부 AI 연결은 별도로 설정합니다. 전체 이미지 API 생성은 OpenAI를 사용하며,
-호스트 구독이 앱 내부 API 연결로 바뀌지는 않습니다. Codex 항목은 CLI 상태 확인과
-스킬·파일 전달을 안내합니다. [연결·데이터 처리](DATA_HANDLING.md)
+생성에는 본인 계정의 사용 한도나 API 크레딧이 쓰이며, 개발자가 이를 제공하지
+않습니다. CLI 자체는 모델을 호출하지 않습니다. 앱의 전체 이미지 API 생성은 OpenAI를
+사용하며, Codex 항목은 CLI 상태 확인과 스킬·파일 전달을 안내합니다.
+[연결·데이터 처리](DATA_HANDLING.md)
 
 결과는 실제 크기에서 확인하세요. 격자와 색 수가 맞아도 표정이나 작은 소품이
 충분히 남지 않을 수 있습니다. 원본 분석·재구성·레이아웃·샘플링 평면은 실험

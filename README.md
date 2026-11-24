@@ -8,10 +8,6 @@
   <h1>Pixel Mat</h1>
 </div>
 
-<p align="center"><strong>An AI skill for making game pixel art.<br>A Windows editor to finish the result.</strong></p>
-
-<p align="center"><sub>Windows beta · 0.23.0-beta.2</sub></p>
-
 <p align="center">
   <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/PixelMat-0.23.0-beta.2-win-x64.zip"><strong>Download Windows app ↓</strong></a>&ensp;·&ensp;
   <a href="https://github.com/hjcud/pixel-mat/releases/download/v0.23.0-beta.2/pixel-mat-skill-0.23.0-beta.2.zip"><strong>Download AI skill ↓</strong></a><br>
@@ -37,6 +33,44 @@ pixel boundaries. I needed assets with actual pixel dimensions for my game.
 Pixel Mat connects generation instructions, local pixel conversion and an editor
 so a draft can become a PNG and a project I can keep working on.
 
+Both conditions received the same [user prompt](docs/whole-comparison/common-prompt.txt)
+and [reference](docs/whole-comparison/reference.png), explicitly asking for
+**native 16×16 pixel art and at most 16 colors including transparency**.
+
+<table align="center">
+  <tr>
+    <th width="420" align="center">Ordinary GPT image request</th>
+    <th width="420" align="center">Pixel Mat whole-image workflow</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/whole-comparison/gpt-original.png" width="256" alt="Original ordinary image-tool output, displayed smaller without changing the source file"><br><sub>Original image, displayed smaller</sub></td>
+    <td align="center"><img src="docs/whole-comparison/whole-median-display.png" width="256" alt="Actual same-prompt Pixel Mat 16×16 output enlarged exactly 16 times"><br><sub>Native output enlarged 16×</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>1254×1254</strong><br><sub>Actual image dimensions</sub></td>
+    <td align="center"><strong>16×16</strong><br><sub>Actual image dimensions</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>58,266</strong><br><sub>Distinct RGBA values</sub></td>
+    <td align="center"><strong>16</strong><br><sub>RGBA values, including transparency</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>PNG</strong><br><sub>Image file</sub></td>
+    <td align="center"><strong>PNG + .pixeltool</strong><br><sub>Image + editable project</sub></td>
+  </tr>
+</table>
+
+Recorded on 2026-11-22: both were generated once through the Codex host image tool. Pixel Mat adds
+its skill instructions and local conversion. This retained experiment demonstrates
+output size, palette limits and editability; face and lantern detail still simplify.
+[Original files, conditions and measurements](docs/whole-comparison/README.md)
+
+<details>
+<summary><strong>Preferred central-median example and its chip board</strong></summary>
+
+The header uses this separate accepted generation with a fixed 16-entry palette,
+including transparency. Its prompt differs from the comparison above.
+
 <table align="center">
   <tr>
     <th width="420" align="center">Generated 16×16 chip board</th>
@@ -48,11 +82,16 @@ so a draft can become a PNG and a project I can keep working on.
   </tr>
 </table>
 
-This example uses a fixed palette of 16 entries, including transparency.
-[Example files and processing record](docs/whole-style-recovery/README.md) ·
-[Separate identical-user-prompt comparison](docs/whole-comparison/README.md)
+[Accepted files and processing record](docs/whole-style-recovery/README.md)
+
+</details>
 
 ## Quick start
+
+**AI access before you start:** The **skill** uses your host account and available
+tools. **In-app AI** needs a separately configured API connection and credits;
+a host subscription does not supply them. Manual editing and local conversion
+work offline. [Connection guide](DATA_HANDLING.md)
 
 | I want to… | Start here | Requirements |
 | --- | --- | --- |
@@ -174,14 +213,10 @@ If an output already exists, choose a new filename.
 
 ## AI access and current limits
 
-The local editor and CLI work without an AI account. Generation uses your own
-host account, subscription allowance or API credits; the developer supplies no
-tokens or credits. The CLI itself makes no model requests.
-
-In-app AI connections are configured separately. Whole-image API generation
-uses OpenAI; a host subscription is not an in-app API connection. The Codex
-section provides CLI status inspection and a skill/file handoff.
-[Connection and data handling](DATA_HANDLING.md)
+Generation uses your own account allowance or API credits; the developer supplies
+neither. The CLI itself makes no model requests. In-app whole-image API generation
+uses OpenAI; the Codex section provides CLI status inspection and a skill/file
+handoff. [Connection and data handling](DATA_HANDLING.md)
 
 Review the result at its native size. A valid grid and palette do not guarantee
 facial expression or small prop detail. Source analysis, reconstruction, layouts
