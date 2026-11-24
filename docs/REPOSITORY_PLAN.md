@@ -1,6 +1,6 @@
 # Repository identity and reconstructed source history
 
-Updated 2026-11-23 after the owner's explicit authorization.
+Updated 2026-11-24 after the owner's explicit authorization.
 
 ## Repository
 
@@ -20,11 +20,17 @@ it was split into 56 related source/resource/test/documentation commits at the
 owner's request. The seven later changes follow those imports without changing
 their file snapshots. The complete pre-rename source tree is exactly unchanged.
 
-Import timestamps are assigned to previously empty contribution dates between
-2026-09-15 and 2026-11-21. This is a reconstructed import history, not evidence
-that development or validation happened on those assigned days. The requested
-2026-12-02 upper bound does not authorize claims about future work; future dates
-are not assigned or described as observed empty days.
+The initial import schedule used previously empty contribution dates between
+2026-09-15 and 2026-11-21. On 2026-11-24, the owner requested three weekday gaps:
+imports dated September 29, October 21 and November 5 were reassigned to the
+preceding evenings. Weekend timestamps, every imported file snapshot, commit
+order, identities and messages remain unchanged. A second verified local bundle
+preserves the complete history before this timestamp adjustment.
+
+This is a reconstructed import history, not evidence that development or
+validation happened on those assigned days. The requested 2026-12-02 upper bound
+does not authorize claims about future work; future dates are not assigned or
+described as observed empty days.
 
 The original history is backed up in a verified local Git bundle. Public release
 tags keep their original commit IDs and source trees, preserving existing release
