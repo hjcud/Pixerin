@@ -147,10 +147,10 @@
    PNGも16×16のままであることを確認し、比較用に元のプロジェクトを保管してください。
 
 <p align="center">
-  <img src="docs/readme/editor.png" width="800" alt="Miniworldの32×40の家を開いたPixel Mat Windowsエディター、韓国語UI">
+  <img src="docs/readme/editor.ja.png" width="800" alt="日本語UIでMiniworldの32×40の家を開いたPixel Mat Windowsエディター">
 </p>
 
-画面は別の32×40のMiniworldの家を開いた例です。手動編集とファイル操作はオフラインで
+画面は別の32×40のMiniworldの家を開いた日本語UIです。手動編集とファイル操作はオフラインで
 動作し、アプリは7つのUI言語に対応しています。
 [インストール・更新](BETA_DISTRIBUTION.md) · [エディターガイド](docs/EDITOR_GUIDE.md)
 

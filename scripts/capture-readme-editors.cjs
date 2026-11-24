@@ -1,0 +1,80 @@
+if (require("./test-runner.cjs").bootstrap(__filename)) return;
+const { _electron } = require("./test-electron.cjs");
+const fs = require("node:fs/promises");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const { createHash } = require("node:crypto");
+
+(async () => {
+  const root = path.resolve(__dirname, "..");
+  const option = process.argv.indexOf("--app");
+  assert(option >= 0 && process.argv[option + 1], "Use --app PATH_TO_PixelTool.exe from the complete beta distribution");
+  const executablePath = path.resolve(process.argv[option + 1]);
+  await fs.access(executablePath);
+  const version = require("../package.json").version;
+  const profile = await require("./test-runner.cjs").createProfile("readme-editors-");
+  const source = "docs/miniworld/house/native.pixeltool";
+  const original = await fs.readFile(path.join(root, source));
+  const { validateDocument, documentRGBA } = await import("../src/core.mjs");
+  const { setLanguage, t } = await import("../src/i18n.mjs");
+  const sourceDocument = validateDocument(JSON.parse(original));
+  const rgba = Buffer.from(documentRGBA(sourceDocument));
+  assert.deepEqual([sourceDocument.width, sourceDocument.height], [32, 40]);
+  // User-authored names stay opaque; use neutral names only in the disposable copy.
+  const copy = JSON.parse(original);
+  copy.name = "Miniworld House";
+  copy.layers.forEach((layer, index) => { layer.name = index ? "House " + (index + 1) : "House"; });
+  const project = path.join(profile, "Miniworld House.pixeltool");
+  await fs.writeFile(project, JSON.stringify(copy));
+  const env = { ...process.env, PIXELTOOL_USER_DATA: path.join(profile, "user-data"), OPENAI_API_KEY: "", ANTHROPIC_API_KEY: "", GEMINI_API_KEY: "" };
+  delete env.ELECTRON_RUN_AS_NODE;
+  let app;
+  const captures = [];
+  try {
+    app = await _electron.launch({ executablePath, args: [], env });
+    assert.equal(await app.evaluate(({ app }) => app.getVersion()), version);
+    let page = await require("./first-editor.cjs")(app);
+    const host = await page.evaluate(async () => (await window.pixeltool.workspaceState()).host);
+    await app.evaluate(({ BrowserWindow }, id) => BrowserWindow.fromId(id).setContentSize(1424, 921), host);
+    await app.evaluate(({ dialog }, file) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [file] }); }, project);
+    await page.locator("#open-btn").click();
+    page = await require("./next-editor.cjs")(app, page);
+    await page.locator("#zoom-label").click();
+    await page.locator("#zoom-value").fill("1000");
+    await page.locator("#zoom-value").press("Enter");
+    assert.equal(await page.locator("#zoom-label").textContent(), "1000%");
+    await page.locator("#palette button").nth(1).click();
+    for (const language of ["en", "ko", "ja"]) {
+      setLanguage(language);
+      await page.locator("#settings-btn").click();
+      await page.locator("#settings-tab-display").click();
+      await page.locator("#pref-language").selectOption(language);
+      await page.locator("#pref-theme").selectOption("dark");
+      await page.waitForFunction(locale => document.documentElement.lang === locale, language);
+      await page.locator("#settings-dialog .dialog-close").first().click();
+      await page.mouse.move(740, 900);
+      await page.evaluate(async () => { await document.fonts.ready; await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))); });
+      assert.equal((await page.locator('[data-tool="pencil"] > span:nth-child(2)').textContent()).trim(), t("연필"));
+      assert.equal((await page.locator("#open-btn").innerText()).trim(), t("열기"));
+      const draft = validateDocument(await page.evaluate(() => window.pixeltool.loadDraft()));
+      assert.deepEqual(Buffer.from(documentRGBA(draft)), rgba, "Language selection must not alter artwork");
+      const canvas = await page.locator("#pixel-canvas").evaluate(canvas => ({ width: canvas.width, height: canvas.height, pixels: [...canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data] }));
+      assert.deepEqual([canvas.width, canvas.height], [32, 40]);
+      assert.deepEqual(Buffer.from(canvas.pixels), rgba);
+      const viewport = await page.evaluate(() => ({ width: innerWidth, height: innerHeight, language: document.documentElement.lang, theme: document.documentElement.dataset.theme, pageOverflow: document.documentElement.scrollWidth > innerWidth }));
+      assert.deepEqual([viewport.width, viewport.height], [1424, 921]);
+      assert.equal(viewport.pageOverflow, false);
+      assert.equal(viewport.theme, "dark");
+      const file = "editor." + language + ".png";
+      await page.screenshot({ path: path.join(profile, file), animations: "disabled" });
+      const bytes = await fs.readFile(path.join(profile, file));
+      captures.push({ file, language, width: viewport.width, height: viewport.height, bytes: bytes.length, sha256: createHash("sha256").update(bytes).digest("hex"), verifiedLabels: { open: t("열기"), pencil: t("연필") } });
+    }
+    assert.deepEqual(await fs.readFile(path.join(root, source)), original, "Original project must remain unchanged");
+    const output = path.join(root, "docs/readme");
+    for (const capture of captures) await fs.copyFile(path.join(profile, capture.file), path.join(output, capture.file));
+    const record = { capturedAt: new Date().toISOString(), appVersion: version, sourceProject: source, sourceProjectSHA256: createHash("sha256").update(original).digest("hex"), sourcePixelsSHA256: createHash("sha256").update(rgba).digest("hex"), capture: "Actual packaged app; language and theme selected through settings; native file picker selects a disposable project copy", canvas: { width: 32, height: 40, zoomPercent: 1000 }, theme: "dark", artworkUnchanged: true, userProfileModified: false, modelCalls: 0, names: "Neutral document/layer names in the disposable copy; original project unchanged", captures };
+    await fs.writeFile(path.join(output, "editor-captures.json"), JSON.stringify(record, null, 2) + "\n");
+    console.log(JSON.stringify({ version, languages: captures.map(capture => capture.language), viewport: "1424x921", artworkUnchanged: true, modelCalls: 0 }));
+  } finally { if (app) await app.close(); }
+})().catch(error => { console.error(error); process.exitCode = 1; });

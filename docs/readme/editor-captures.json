@@ -1,0 +1,56 @@
+{
+  "capturedAt": "2026-11-24T02:49:38.233Z",
+  "appVersion": "0.23.0-beta.2",
+  "sourceProject": "docs/miniworld/house/native.pixeltool",
+  "sourceProjectSHA256": "8c75c17d27036b9f5cf4b1f2e7b4453597ac6b48098d2b350db83fe96b902ea4",
+  "sourcePixelsSHA256": "194d9e8ef0ddbd99ff934472d5a4a30850c3540c63e88772a6a63c22c20491e9",
+  "capture": "Actual packaged app; language and theme selected through settings; native file picker selects a disposable project copy",
+  "canvas": {
+    "width": 32,
+    "height": 40,
+    "zoomPercent": 1000
+  },
+  "theme": "dark",
+  "artworkUnchanged": true,
+  "userProfileModified": false,
+  "modelCalls": 0,
+  "names": "Neutral document/layer names in the disposable copy; original project unchanged",
+  "captures": [
+    {
+      "file": "editor.en.png",
+      "language": "en",
+      "width": 1424,
+      "height": 921,
+      "bytes": 87120,
+      "sha256": "a2bed3b7875d4c9374134464624d914ce795ffd62f205ec5b08cb13cb8641d50",
+      "verifiedLabels": {
+        "open": "Open",
+        "pencil": "Pencil"
+      }
+    },
+    {
+      "file": "editor.ko.png",
+      "language": "ko",
+      "width": 1424,
+      "height": 921,
+      "bytes": 74506,
+      "sha256": "778f2891102b02831a76c932790b5f6be3549fe8c0bbed7ed5b683a021e642ed",
+      "verifiedLabels": {
+        "open": "열기",
+        "pencil": "연필"
+      }
+    },
+    {
+      "file": "editor.ja.png",
+      "language": "ja",
+      "width": 1424,
+      "height": 921,
+      "bytes": 105202,
+      "sha256": "d28fd47067c3b06e8b338971074bd521e45287cdf0cd340e6ac19a46f249fdf2",
+      "verifiedLabels": {
+        "open": "開く",
+        "pencil": "鉛筆"
+      }
+    }
+  ]
+}

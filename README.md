@@ -147,11 +147,11 @@ and invocation method. [Host setup and troubleshooting](skills/pixel-mat/referen
    The exported PNG should still be 16×16. Keep the original project for comparison.
 
 <p align="center">
-  <img src="docs/readme/editor.png" width="800" alt="Pixel Mat Windows editor with a 32x40 Miniworld house project, Korean UI">
+  <img src="docs/readme/editor.en.png" width="800" alt="Pixel Mat Windows editor in English with a 32x40 Miniworld house project">
 </p>
 
-The editor with a separate 32×40 Miniworld house project. Manual editing and file
-operations work offline; the app supports seven UI languages.
+The English interface with a separate 32×40 Miniworld house project. Manual
+editing and file operations work offline; the app supports seven UI languages.
 [Installation and updates](BETA_DISTRIBUTION.md) · [Editor guide](docs/EDITOR_GUIDE.md)
 
 ## Requests by task

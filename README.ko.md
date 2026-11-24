@@ -147,11 +147,11 @@
    PNG 크기도 16×16이어야 합니다. 비교할 수 있도록 원본 프로젝트를 보관하세요.
 
 <p align="center">
-  <img src="docs/readme/editor.png" width="800" alt="32×40 Miniworld 집 프로젝트를 연 실제 Pixel Mat Windows 편집기">
+  <img src="docs/readme/editor.ko.png" width="800" alt="한국어 UI에서 32×40 Miniworld 집 프로젝트를 연 Pixel Mat Windows 편집기">
 </p>
 
-위 화면은 별도의 32×40 Miniworld 집 프로젝트입니다. 수동 편집과 파일 입출력은
-오프라인으로 작동하며, 앱은 7개 UI 언어를 지원합니다.
+위 화면은 별도의 32×40 Miniworld 집 프로젝트를 연 한국어 UI입니다.
+수동 편집과 파일 입출력은 오프라인으로 작동하며, 앱은 7개 UI 언어를 지원합니다.
 [설치·업데이트](BETA_DISTRIBUTION.md) · [편집기 안내](docs/EDITOR_GUIDE.md)
 
 ## 작업별 요청 예시
