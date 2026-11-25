@@ -16,13 +16,13 @@
 
 <table align="center">
   <tr>
-    <td width="280" align="center"><strong>正確な格子のPNG</strong><br><sub>ゲームに必要な実サイズ</sub></td>
-    <td width="280" align="center"><strong>編集可能なプロジェクト</strong><br><sub>ピクセル · レイヤー · パレット</sub></td>
-    <td width="280" align="center"><strong>7つのUI言語</strong><br><sub>オフラインで手動編集</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.ja.md#3d形状からベースを作る"><strong>3Dベース</strong></a><br><sub>内蔵形状5種類 → 実サイズのピクセル</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.ja.md#スプライトアニメーションを作る"><strong>アニメ制作</strong></a><br><sub>フレーム → シート · JSON · APNG</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.ja.md#つながるタイルを作る"><strong>タイル制作</strong></a><br><sub>繰り返し模様 · Blob-47</sub></td>
   </tr>
 </table>
 
-<p align="center"><a href="#クイックスタート">クイックスタート</a> &ensp;·&ensp; <a href="#作業別の依頼例">作業別の依頼</a> &ensp;·&ensp; <a href="#1616の標準生成フロー">生成フロー</a> &ensp;·&ensp; <a href="#ローカル作例を実行">ローカル作例</a></p>
+<p align="center"><a href="docs/FEATURES.ja.md"><strong>機能ツアー</strong></a> &ensp;·&ensp; <a href="#クイックスタート">クイックスタート</a> &ensp;·&ensp; <a href="#作業別の依頼例">作業別の依頼</a> &ensp;·&ensp; <a href="#1616の標準生成フロー">生成フロー</a> &ensp;·&ensp; <a href="#ローカル作例を実行">ローカル作例</a></p>
 
 ---
 

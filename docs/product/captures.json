@@ -1,0 +1,118 @@
+{
+  "capturedAt": "2026-11-25T03:58:37.561Z",
+  "appVersion": "0.23.0-beta.2",
+  "viewport": {
+    "width": 1424,
+    "height": 921
+  },
+  "theme": "dark",
+  "source": "Actual packaged app; languages selected in Settings; shape, crystal and tile fixtures are generated locally by this script",
+  "geometry": {
+    "kinds": 5,
+    "canvas": [
+      32,
+      32
+    ],
+    "acceptedPixelsMatchPreview": true,
+    "crop": "Dialog heading, shape setup, native previews and adjustment controls"
+  },
+  "animation": {
+    "canvas": [
+      32,
+      32
+    ],
+    "frames": 4,
+    "durationMs": 120,
+    "source": "Local diamond raster translated by native integer offsets"
+  },
+  "tiles": {
+    "size": 16,
+    "variants": 47,
+    "source": "Local two-color procedural moss and earth fixtures"
+  },
+  "modelCalls": 0,
+  "userProfileModified": false,
+  "captures": [
+    {
+      "file": "geometry.en.png",
+      "scene": "geometry",
+      "language": "en",
+      "width": 1000,
+      "height": 617,
+      "bytes": 36809,
+      "sha256": "ad2fb454f76a07ca1ae4cc90a48aea26576c31fe3e74e0643e0b8a92e6cf30d5"
+    },
+    {
+      "file": "geometry.ko.png",
+      "scene": "geometry",
+      "language": "ko",
+      "width": 1000,
+      "height": 617,
+      "bytes": 31885,
+      "sha256": "da3c6eddf5603642fc498b4373db31f46a22c089c9403d158d3f89a4f0257106"
+    },
+    {
+      "file": "geometry.ja.png",
+      "scene": "geometry",
+      "language": "ja",
+      "width": 1000,
+      "height": 617,
+      "bytes": 42992,
+      "sha256": "93f22ee16153f47a6ccd6250249c0f9562b43975126d5d59c471138c17765f07"
+    },
+    {
+      "file": "animation.en.png",
+      "scene": "animation",
+      "language": "en",
+      "width": 1424,
+      "height": 921,
+      "bytes": 75212,
+      "sha256": "28ae576275b4840deb30c63f6cd7c626b40160c5892ee99563515a166edf908b"
+    },
+    {
+      "file": "animation.ko.png",
+      "scene": "animation",
+      "language": "ko",
+      "width": 1424,
+      "height": 921,
+      "bytes": 63857,
+      "sha256": "5d34ee023fa6c368605596d4ed3c119b96bdd40a43050b3d0814983ce18ddeb6"
+    },
+    {
+      "file": "animation.ja.png",
+      "scene": "animation",
+      "language": "ja",
+      "width": 1424,
+      "height": 921,
+      "bytes": 93119,
+      "sha256": "ae80e20bf6da41db09d37c30a38af50964ad2eed116a2951d36a5fe5c3474b3c"
+    },
+    {
+      "file": "tiles.en.png",
+      "scene": "tiles",
+      "language": "en",
+      "width": 820,
+      "height": 647,
+      "bytes": 17515,
+      "sha256": "851810bfd94abde80f7895d8dfab9122cd82489c9bb26572a1983e3117e6d4f1"
+    },
+    {
+      "file": "tiles.ko.png",
+      "scene": "tiles",
+      "language": "ko",
+      "width": 820,
+      "height": 647,
+      "bytes": 16213,
+      "sha256": "45a1c648eb5fdc6f447749f874cc78f09b82fac110bd2b25730743ad5464a7ad"
+    },
+    {
+      "file": "tiles.ja.png",
+      "scene": "tiles",
+      "language": "ja",
+      "width": 820,
+      "height": 647,
+      "bytes": 22706,
+      "sha256": "3f6b32fdfbcdf1aeda59045a0172d936d5e9353d2eb0c598e542184465bce543"
+    }
+  ]
+}

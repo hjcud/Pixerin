@@ -16,13 +16,13 @@
 
 <table align="center">
   <tr>
-    <td width="280" align="center"><strong>정확한 격자의 PNG</strong><br><sub>게임에 필요한 실제 크기</sub></td>
-    <td width="280" align="center"><strong>편집 가능한 프로젝트</strong><br><sub>픽셀 · 레이어 · 팔레트</sub></td>
-    <td width="280" align="center"><strong>7개 UI 언어</strong><br><sub>오프라인 수동 편집</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.ko.md#3d-도형으로-베이스-만들기"><strong>3D 베이스</strong></a><br><sub>내장 도형 5종 → 실제 픽셀</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.ko.md#스프라이트-애니메이션-만들기"><strong>애니메이션</strong></a><br><sub>프레임 → 시트 · JSON · APNG</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.ko.md#이어지는-타일-만들기"><strong>타일 제작</strong></a><br><sub>반복 무늬 · Blob-47</sub></td>
   </tr>
 </table>
 
-<p align="center"><a href="#빠른-시작">빠른 시작</a> &ensp;·&ensp; <a href="#작업별-요청-예시">작업별 요청</a> &ensp;·&ensp; <a href="#1616-기본-생성-방식">생성 방식</a> &ensp;·&ensp; <a href="#로컬-예제-실행">로컬 예제</a></p>
+<p align="center"><a href="docs/FEATURES.ko.md"><strong>기능 둘러보기</strong></a> &ensp;·&ensp; <a href="#빠른-시작">빠른 시작</a> &ensp;·&ensp; <a href="#작업별-요청-예시">작업별 요청</a> &ensp;·&ensp; <a href="#1616-기본-생성-방식">생성 방식</a> &ensp;·&ensp; <a href="#로컬-예제-실행">로컬 예제</a></p>
 
 ---
 

@@ -16,13 +16,13 @@
 
 <table align="center">
   <tr>
-    <td width="280" align="center"><strong>Exact-grid PNG</strong><br><sub>The size your game needs</sub></td>
-    <td width="280" align="center"><strong>Editable projects</strong><br><sub>Pixels · layers · palette</sub></td>
-    <td width="280" align="center"><strong>7 UI languages</strong><br><sub>Offline manual editing</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.md#start-with-a-3d-shape"><strong>3D shape bases</strong></a><br><sub>Five built-in shapes → native pixels</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.md#assemble-a-sprite-animation"><strong>Sprite animation</strong></a><br><sub>Frames → sheets · JSON · APNG</sub></td>
+    <td width="280" align="center"><a href="docs/FEATURES.md#build-connected-tiles"><strong>Tiles and autotiles</strong></a><br><sub>Repeating textures · Blob-47</sub></td>
   </tr>
 </table>
 
-<p align="center"><a href="#quick-start">Quick start</a> &ensp;·&ensp; <a href="#requests-by-task">Requests by task</a> &ensp;·&ensp; <a href="#how-the-default-1616-workflow-works">How it works</a> &ensp;·&ensp; <a href="#try-the-local-example">Local example</a></p>
+<p align="center"><a href="docs/FEATURES.md"><strong>Feature tour</strong></a> &ensp;·&ensp; <a href="#quick-start">Quick start</a> &ensp;·&ensp; <a href="#requests-by-task">Requests by task</a> &ensp;·&ensp; <a href="#how-the-default-1616-workflow-works">How it works</a> &ensp;·&ensp; <a href="#try-the-local-example">Local example</a></p>
 
 ---
 

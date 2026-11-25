@@ -16,6 +16,7 @@ third-party component's terms or license third-party user inputs.
 | Reference-conditioned comparison artwork in `docs/whole-comparison` | Owner-selected reference and derived experimental artwork; the software MIT grant does not establish or replace the reference's rights. See the [case-study scope](docs/whole-comparison/README.md). |
 | Retained style and rejected trials in `docs/whole-style-recovery` | The same owner-selected reference-conditioned scope applies; selected reproduction evidence is not a separately licensed asset pack. See [replay and trial scope](docs/whole-style-recovery/README.md). |
 | README visuals in `docs/readme` | Header layouts reuse the project wordmark and the retained character case; the localized editor screenshots show actual Pixel Mat UI with an owner-selected Miniworld project. Character and game artwork are not separately relicensed by the software grant. See [visual sources](docs/readme/README.md). |
+| Product-tour captures and procedural examples in `docs/product` | Actual application UI and repository-owned local shape, animation and texture fixtures; the root MIT grant applies to the extent rights are held. The separately reused Miniworld house screenshot keeps its existing game-artwork scope. See [tour sources](docs/product/README.md). |
 | Text-only generated documentation examples | Supplied as examples with the repository's grant to the extent rights are held; no exclusivity or copyrightability claim |
 
 The name and logo can identify this project and modified copies, but this license
