@@ -15,7 +15,7 @@
   </tr>
   <tr>
     <td><a href="#確認して適用するai修正"><strong>AIによる調整</strong></a><br><sub>参照を渡し、修正案を比べて適用する結果を選びます。</sub></td>
-    <td><a href="#スプライトアニメーションを作る"><strong>スプライトアニメーション</strong></a><br><sub>フレームと時間を編集し、シート・JSON・APNGに書き出します。</sub></td>
+    <td><a href="#スプライトアニメーションを作る"><strong>アニメーション</strong></a><br><sub>フレームと時間を編集し、シート・JSON・APNGに書き出します。</sub></td>
   </tr>
   <tr>
     <td><a href="#つながるタイルを作る"><strong>反復タイルとオートタイル</strong></a><br><sub>繰り返し模様を確認し、Blob-47の地形接続を構成します。</sub></td>

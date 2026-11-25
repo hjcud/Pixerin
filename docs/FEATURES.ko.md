@@ -15,7 +15,7 @@
   </tr>
   <tr>
     <td><a href="#검토하고-적용하는-ai-수정"><strong>AI를 활용한 보정</strong></a><br><sub>참조를 전달하고 수정안을 비교해 적용할 결과를 고릅니다.</sub></td>
-    <td><a href="#스프라이트-애니메이션-만들기"><strong>스프라이트 애니메이션</strong></a><br><sub>프레임과 시간을 편집하고 시트·JSON·APNG로 내보냅니다.</sub></td>
+    <td><a href="#스프라이트-애니메이션-만들기"><strong>애니메이션</strong></a><br><sub>프레임과 시간을 편집하고 시트·JSON·APNG로 내보냅니다.</sub></td>
   </tr>
   <tr>
     <td><a href="#이어지는-타일-만들기"><strong>타일·오토타일</strong></a><br><sub>반복 무늬를 확인하고 Blob-47 지형 연결을 구성합니다.</sub></td>
