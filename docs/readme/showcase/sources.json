@@ -1,0 +1,45 @@
+{
+  "repository": "hjcud/hjcud.github.io",
+  "commit": "ad86137b21e451826ca0ed4818e05047f838390c",
+  "copiedOn": "2026-11-26",
+  "operation": "Unchanged PNG bytes; the identical character already exists in whole-style-recovery.",
+  "scope": "Owner-requested documentation display. The software MIT grant does not separately relicense game artwork or reference-conditioned character art.",
+  "assets": [
+    {
+      "file": "house.png",
+      "sourcePath": "assets/pixel-mat/miniworld-showcase/house.png",
+      "gitBlob": "2fd437c898b4b1172174570b9b82e0eb5c7b81ac",
+      "sha256": "254bc0a62b48e84ab66952c4a0950e9dc95f68b6aaa4edc321eaaaac2850a55d",
+      "bytes": 1655,
+      "width": 32,
+      "height": 40
+    },
+    {
+      "file": "pine.png",
+      "sourcePath": "assets/pixel-mat/miniworld-showcase/pine.png",
+      "gitBlob": "b015c5beba3cd2e086e28ce57e5b978d389383a5",
+      "sha256": "2f4522891e3f61332933ca51932ed50ed1b081cf6e094f6c4c3395958a106dd3",
+      "bytes": 1294,
+      "width": 24,
+      "height": 40
+    },
+    {
+      "file": "coastal-map.png",
+      "sourcePath": "assets/pixel-mat/miniworld-showcase/coastal-map.png",
+      "gitBlob": "d48beb8670f9958822b843dc8e07038fbc0f5421",
+      "sha256": "15c2596d0c41396d22ab5e93e39ccbca0b99ecdd74d5d55c289bb76cf90bc27a",
+      "bytes": 261706,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "file": "../../whole-style-recovery/accepted-median.png",
+      "sourcePath": "assets/pixel-mat/complex-character/central-median.png",
+      "gitBlob": "989a1669452b70b9c40f9f93f71b3b27479da1e3",
+      "sha256": "13ca5bc2533ae45f5da16cea5f97ceed57ac27687ae8c28cc20b5103a01c3350",
+      "bytes": 453,
+      "width": 16,
+      "height": 16
+    }
+  ]
+}

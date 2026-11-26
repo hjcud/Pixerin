@@ -3,22 +3,53 @@
 ## Header artwork
 
 `hero.<language>.<theme>.svg` pairs the existing Pixel Mat wordmark with the
-accepted native 16x16 character. English, Korean and Japanese each have light
-and dark variants selected by the README's `picture` element.
+blue-roof house, pine tree and accepted red-hood character. English, Korean and
+Japanese each have light and dark variants selected by the README's `picture`
+element. The same artwork appears in all three languages.
 
-Reproduce or verify all six SVGs from the retained sources:
+Reproduce or verify the six headers and three gallery SVGs from retained sources:
 
 ```sh
 node scripts/readme-assets.mjs
 node scripts/readme-assets.mjs --check
 ```
 
-The generator reads the existing logo SVGs in `src/brand` and
-`docs/whole-style-recovery/accepted-median.png`. It places each native pixel as
-an integer-sized SVG rectangle without redrawing or generating new artwork.
-The checkerboard represents transparency. The header is a documentation layout,
-not a screenshot of an application feature. Its character retains the
-[original case-study scope](../whole-style-recovery/README.md).
+The generator reads the existing logo SVGs in `src/brand`, `showcase/house.png`,
+`showcase/pine.png` and `docs/whole-style-recovery/accepted-median.png`. Each visible
+source pixel becomes an integer-sized SVG rectangle with its original RGB and
+alpha. Empty pixels stay transparent. No image generation or repainting occurs.
+The header and gallery are documentation layouts, not application screenshots.
+
+## Showcase artwork
+
+The owner requested these already-public images for the README on 2026-11-26.
+The PNGs are copied without resizing, recompression or retouching from the owner's
+public repository at commit
+[`ad86137b21e451826ca0ed4818e05047f838390c`](https://github.com/hjcud/hjcud.github.io/tree/ad86137b21e451826ca0ed4818e05047f838390c/assets/pixel-mat).
+[sources.json](showcase/sources.json) pins each source path, Git blob, SHA-256,
+byte count and native dimensions.
+
+| Image | Native size | README presentation |
+| --- | --- | --- |
+| [House](showcase/house.png) | 32x40 | Blue-roof Miniworld house, enlarged 4x in the gallery |
+| [Pine](showcase/pine.png) | 24x40 | Miniworld tree, enlarged 4x in the gallery |
+| [Character](../whole-style-recovery/accepted-median.png) | 16x16 | Accepted central-median result, enlarged 10x in the gallery |
+| [Coastal map](showcase/coastal-map.png) | 1920x1080 | Actual Unity camera capture, displayed smaller |
+
+The character is byte-identical to the public `complex-character/central-median.png`;
+the existing local file is reused rather than duplicated. Its generated chip
+board, palette, editable project and conversion record remain in the
+[retained character study](../whole-style-recovery/README.md).
+It is a separate generation from the recorded
+[same-user-prompt experiment](../whole-comparison/README.md). That experiment's
+files, numbers and limitations remain unchanged inside a README disclosure.
+The map shows the house and tree in the owner's game test scene; it does not
+show the separate red-hood character study or an unedited model output.
+
+The house, tree and game capture remain external game-project artwork, shown at
+their owner's request. The reference-conditioned character keeps its original
+case-study scope. Neither is independently relicensed as an asset pack by the
+editor's MIT software grant. See [license scope](../../LICENSE_SCOPE.md).
 
 ## Localized editor screenshots
 

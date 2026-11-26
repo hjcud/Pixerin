@@ -3,7 +3,7 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero.ja.dark.svg">
-    <img src="docs/readme/hero.ja.light.svg" alt="Pixel Matロゴと、採用した実際の16×16キャラクターを整数倍率で拡大した画像" width="900">
+    <img src="docs/readme/hero.ja.light.svg" alt="Pixel Matロゴと青い屋根の家、針葉樹、赤いフードのキャラクターを整数倍率で拡大した画像" width="900">
   </picture>
   <h1>Pixel Mat</h1>
 </div>
@@ -31,6 +31,29 @@
 16×16のピクセルアートを頼んでも、大きな画像が返ってきたり、ピクセルの境界や色が
 揃わなかったりしました。ゲームには実際のピクセルサイズが決まった素材が必要でした。
 生成指示、ローカル変換、エディターをつなぎ、PNGとして使った後も編集を続けられるようにしました。
+
+### 個々の素材からゲームシーンへ
+
+<table align="center">
+  <tr>
+    <td width="280" align="center"><img src="docs/readme/showcase/house-display.svg" width="128" alt="実際の32×40ピクセルを4倍に拡大したMiniworldの青い屋根の家"><br><strong>家</strong><br><sub>32×40 · Miniworld</sub></td>
+    <td width="280" align="center"><img src="docs/readme/showcase/pine-display.svg" width="96" alt="実際の24×40ピクセルを4倍に拡大したMiniworldの針葉樹"><br><strong>針葉樹</strong><br><sub>24×40 · Miniworld</sub></td>
+    <td width="280" align="center"><img src="docs/readme/showcase/character-display.svg" width="160" alt="採用した赤いフードのキャラクターの実際の16×16ピクセルを10倍に拡大"><br><strong>キャラクター</strong><br><sub>16×16 · 中央代表色</sub></td>
+  </tr>
+</table>
+
+家と木はPixel Matスキルで個人ゲーム用に制作し、調整してUnityのテストマップに
+配置した素材です。キャラクターは別途採用したWhole-chip central medianの作例です。
+上の素材は元のピクセルを変えず、整数倍率で拡大しています。
+
+<p align="center"><img src="docs/readme/showcase/coastal-map.png" width="900" alt="青い屋根の家、針葉樹の森、道、砂浜を配置した海岸テストマップの実際のUnityカメラキャプチャ"></p>
+
+*制作した家と木を配置したUnityテストマップ。* 実際のゲームカメラのキャプチャです。
+上のキャラクターは別の変換実験の結果です。
+[画像の出典と利用範囲](docs/readme/README.md#showcase-artwork)
+
+<details>
+<summary><strong>同一プロンプトでのGPT / Pixel Mat比較記録を見る</strong></summary>
 
 両条件に同じ[ユーザープロンプト](docs/whole-comparison/common-prompt.txt)と
 [参照画像](docs/whole-comparison/reference.png)を渡し、**実際の16×16ピクセルアートと
@@ -64,11 +87,13 @@
 顔とランタンの細部は依然として単純化されています。
 [原ファイル・比較条件・測定記録](docs/whole-comparison/README.md)
 
+</details>
+
 <details>
 <summary><strong>採用した中央代表色の作例と色チップボードを見る</strong></summary>
 
-ヘッダーには、別途採用した以下の生成結果を使用しています。透明色を含む16色の固定
-パレットで、上の同一プロンプト実験とは生成プロンプトが異なります。
+ヘッダーとキャラクターのギャラリーには、別途採用した以下の生成結果を使用しています。
+透明色を含む16色の固定パレットで、上の同一プロンプト実験とは生成プロンプトが異なります。
 
 <table align="center">
   <tr>

@@ -3,7 +3,7 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero.ko.dark.svg">
-    <img src="docs/readme/hero.ko.light.svg" alt="Pixel Mat 로고와 채택한 실제 16×16 캐릭터를 정수 배율로 확대한 대표 이미지" width="900">
+    <img src="docs/readme/hero.ko.light.svg" alt="Pixel Mat 로고와 푸른 지붕의 집, 침엽수, 빨간 후드 캐릭터를 정수 배율로 확대한 대표 이미지" width="900">
   </picture>
   <h1>Pixel Mat</h1>
 </div>
@@ -31,6 +31,29 @@
 16×16 픽셀 아트를 요청해도 큰 이미지가 나오거나, 픽셀의 경계와 색이 일정하지
 않은 경우가 있었습니다. 게임에서는 실제 픽셀 크기에 맞는 리소스가 필요했습니다.
 생성 지침과 로컬 변환, 편집기를 연결해 PNG로 쓰고 이후에도 수정할 수 있도록 만들었습니다.
+
+### 개별 리소스에서 게임 장면까지
+
+<table align="center">
+  <tr>
+    <td width="280" align="center"><img src="docs/readme/showcase/house-display.svg" width="128" alt="실제 32×40 픽셀을 4배 확대한 Miniworld의 푸른 지붕 집"><br><strong>집</strong><br><sub>32×40 · Miniworld</sub></td>
+    <td width="280" align="center"><img src="docs/readme/showcase/pine-display.svg" width="96" alt="실제 24×40 픽셀을 4배 확대한 Miniworld 침엽수"><br><strong>침엽수</strong><br><sub>24×40 · Miniworld</sub></td>
+    <td width="280" align="center"><img src="docs/readme/showcase/character-display.svg" width="160" alt="채택한 빨간 후드 캐릭터의 실제 16×16 픽셀을 10배 확대한 이미지"><br><strong>캐릭터</strong><br><sub>16×16 · 중앙 대표색</sub></td>
+  </tr>
+</table>
+
+집과 나무는 Pixel Mat 스킬로 개인 게임용 리소스를 만들고, 다듬어 Unity 테스트 맵에
+배치한 예시입니다. 캐릭터는 별도로 채택한 Whole-chip central median 결과입니다.
+위 리소스는 원본 픽셀을 바꾸지 않고 정수 배율로 확대했습니다.
+
+<p align="center"><img src="docs/readme/showcase/coastal-map.png" width="900" alt="푸른 지붕의 집과 침엽수 숲, 길, 해변을 배치한 해안 테스트 맵의 실제 Unity 카메라 캡처"></p>
+
+*제작한 집과 나무를 배치한 Unity 테스트 맵.* 실제 게임 카메라 캡처이며,
+위 캐릭터는 별도의 변환 실험 결과입니다.
+[이미지 출처·아트워크 범위](docs/readme/README.md#showcase-artwork)
+
+<details>
+<summary><strong>동일 프롬프트의 GPT / Pixel Mat 비교 기록 보기</strong></summary>
 
 두 조건에 같은 [사용자 프롬프트](docs/whole-comparison/common-prompt.txt)와
 [참조 이미지](docs/whole-comparison/reference.png)를 전달하고, 모두 **실제 16×16 픽셀 아트와
@@ -64,11 +87,13 @@
 얼굴과 랜턴의 세부 표현은 여전히 단순해집니다.
 [원본 파일·비교 조건·측정 기록](docs/whole-comparison/README.md)
 
+</details>
+
 <details>
 <summary><strong>선호한 중앙 대표색 결과와 색칩 보드 보기</strong></summary>
 
-대표 이미지에는 별도로 채택한 아래 생성 결과를 사용했습니다. 투명색 포함 16색 고정
-팔레트이며, 위 동일 프롬프트 실험과는 생성 프롬프트가 다릅니다.
+대표 이미지와 캐릭터 갤러리에는 별도로 채택한 아래 생성 결과를 사용했습니다.
+투명색 포함 16색 고정 팔레트이며, 위 동일 프롬프트 실험과는 생성 프롬프트가 다릅니다.
 
 <table align="center">
   <tr>

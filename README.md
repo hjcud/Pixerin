@@ -3,7 +3,7 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero.en.dark.svg">
-    <img src="docs/readme/hero.en.light.svg" alt="Pixel Mat logo and the accepted native 16×16 character, enlarged with exact pixel cells" width="900">
+    <img src="docs/readme/hero.en.light.svg" alt="Pixel Mat with a blue-roof house, pine tree and red-hood character, enlarged with exact pixel cells" width="900">
   </picture>
   <h1>Pixel Mat</h1>
 </div>
@@ -32,6 +32,30 @@ Asking for 16×16 pixel art can still return a large image with soft or inconsis
 pixel boundaries. I needed assets with actual pixel dimensions for my game.
 Pixel Mat connects generation instructions, local pixel conversion and an editor
 so a draft can become a PNG and a project I can keep working on.
+
+### From individual sprites to a game scene
+
+<table align="center">
+  <tr>
+    <td width="280" align="center"><img src="docs/readme/showcase/house-display.svg" width="128" alt="Blue-roof Miniworld house, native 32×40 pixels enlarged 4×"><br><strong>House</strong><br><sub>32×40 · Miniworld</sub></td>
+    <td width="280" align="center"><img src="docs/readme/showcase/pine-display.svg" width="96" alt="Miniworld pine tree, native 24×40 pixels enlarged 4×"><br><strong>Pine tree</strong><br><sub>24×40 · Miniworld</sub></td>
+    <td width="280" align="center"><img src="docs/readme/showcase/character-display.svg" width="160" alt="Accepted red-hood character, native 16×16 pixels enlarged 10×"><br><strong>Character</strong><br><sub>16×16 · central median</sub></td>
+  </tr>
+</table>
+
+The house and tree were made for my game with the Pixel Mat skill, then refined
+and placed in a Unity test map. The character is the separately accepted
+Whole-chip central median example. Each sprite above preserves the source pixels
+at an integer enlargement.
+
+<p align="center"><img src="docs/readme/showcase/coastal-map.png" width="900" alt="Actual Unity camera capture of a coastal test map with blue-roof houses, pine woods, paths and a beach"></p>
+
+*The house and tree in a Unity test map.* This is an actual game camera capture;
+the character above belongs to a separate conversion study.
+[Image sources and artwork scope](docs/readme/README.md#showcase-artwork)
+
+<details>
+<summary><strong>Recorded same-prompt GPT / Pixel Mat comparison</strong></summary>
 
 Both conditions received the same [user prompt](docs/whole-comparison/common-prompt.txt)
 and [reference](docs/whole-comparison/reference.png), explicitly asking for
@@ -65,11 +89,14 @@ its skill instructions and local conversion. This retained experiment demonstrat
 output size, palette limits and editability; face and lantern detail still simplify.
 [Original files, conditions and measurements](docs/whole-comparison/README.md)
 
+</details>
+
 <details>
 <summary><strong>Preferred central-median example and its chip board</strong></summary>
 
-The header uses this separate accepted generation with a fixed 16-entry palette,
-including transparency. Its prompt differs from the comparison above.
+The header and character gallery use this separate accepted generation with a
+fixed 16-entry palette, including transparency. Its prompt differs from the
+recorded same-prompt comparison above.
 
 <table align="center">
   <tr>
